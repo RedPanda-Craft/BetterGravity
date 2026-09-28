@@ -648,8 +648,15 @@ const WILLOW_SIDEBAR_COLLAPSED_WIDTH = "52px";
 const WILLOW_SIDEBAR_TRANSITION = "width 300ms cubic-bezier(0.2, 0, 0, 1), background-color 300ms cubic-bezier(0.2, 0, 0, 1)";
 const TOGGLE_SELECTOR = 'button[data-testid="sidebar-toggle"][aria-label="Toggle Sidebar"]';
 
+function getMainSidebarToggle() {
+  return document.querySelector('.absolute.top-0.left-0 button[data-testid="sidebar-toggle"]') ||
+         document.querySelector('div.absolute.top-0.left-0 button[data-testid="sidebar-toggle"]') ||
+         document.querySelector('button[data-testid="sidebar-toggle"][aria-label="Toggle Sidebar"]') ||
+         document.querySelector('button[data-testid="sidebar-toggle"]');
+}
+
 function isSidebarCollapsed() {
-  const toggle = document.querySelector(TOGGLE_SELECTOR);
+  const toggle = getMainSidebarToggle();
   if (toggle && toggle.hasAttribute("aria-expanded")) {
     return toggle.getAttribute("aria-expanded") === "false";
   }
@@ -742,13 +749,17 @@ function ensureSidebarHeader(sidebar, collapsed) {
     `;
     logoBtn.addEventListener("click", () => {
       const sb = document.querySelector(SIDEBAR_SELECTOR);
-      if (sb && sb.getAttribute("data-collapsed") === "true") {
-        sb.setAttribute("data-collapsed", "false");
-        const gp = sb.parentElement?.parentElement;
-        if (gp) enforceSidebarGeometry(gp, false);
-        const toggle = document.querySelector(TOGGLE_SELECTOR);
-        if (toggle) toggle.click();
-      }
+      if (!sb) return;
+      const willCollapse = !isSidebarCollapsed();
+      sb.setAttribute("data-collapsed", String(willCollapse));
+      document.documentElement.setAttribute("data-sidebar-collapsed", String(willCollapse));
+      const gp = sb.parentElement?.parentElement;
+      if (gp) enforceSidebarGeometry(gp, willCollapse);
+      const toggle = getMainSidebarToggle();
+      if (toggle) toggle.click();
+      ensureExperienceSwitch(sb);
+      ensureScrollNav();
+      updateSidebarItemsState(sb, willCollapse);
     });
     header.prepend(logoBtn);
   }
@@ -2900,12 +2911,16 @@ plugin.dom.observe(TOGGLE_SELECTOR, (toggle) => {
   listenToElement(toggle, "click", () => {
     const sb = document.querySelector(SIDEBAR_SELECTOR);
     if (sb) {
-      const willCollapse = toggle.getAttribute("aria-expanded") !== "false";
+      const willCollapse = toggle.hasAttribute("aria-expanded")
+        ? toggle.getAttribute("aria-expanded") !== "false"
+        : !isSidebarCollapsed();
       sb.setAttribute("data-collapsed", String(willCollapse));
       document.documentElement.setAttribute("data-sidebar-collapsed", String(willCollapse));
       const grandParent = sb.parentElement?.parentElement;
       if (grandParent) enforceSidebarGeometry(grandParent, willCollapse);
       ensureExperienceSwitch(sb);
+      ensureScrollNav();
+      updateSidebarItemsState(sb, willCollapse);
     }
   });
   const toggleObserver = new MutationObserver(() => {

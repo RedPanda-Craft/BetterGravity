@@ -361,10 +361,10 @@ div:has(+ div > [data-testid="sidebar-toggle"]):has(svg),
 
 /* Closed, Willow's rail hides the close toggle completely: the collapsed logo
  * button assumes the expand role with `side_nav_expand` on hover. */
-[data-testid="sidebar-toggle"][aria-label*="Toggle Sidebar"][aria-expanded="false"],
-html[data-sidebar-collapsed="true"] [data-testid="sidebar-toggle"][aria-label="Toggle Sidebar"],
-[role="navigation"][aria-label="Sidebar"][data-collapsed="true"] ~ * [data-testid="sidebar-toggle"][aria-label="Toggle Sidebar"],
-div:has(> [role="navigation"][aria-label="Sidebar"][data-collapsed="true"]) ~ * [data-testid="sidebar-toggle"][aria-label="Toggle Sidebar"] {
+html[data-sidebar-collapsed="true"] [data-testid="sidebar-toggle"][aria-label*="Toggle Sidebar"],
+html[data-sidebar-collapsed="true"] .absolute.top-0.left-0 [data-testid="sidebar-toggle"],
+[role="navigation"][aria-label="Sidebar"][data-collapsed="true"] ~ * [data-testid="sidebar-toggle"][aria-label*="Toggle Sidebar"],
+div:has(> [role="navigation"][aria-label="Sidebar"][data-collapsed="true"]) ~ * [data-testid="sidebar-toggle"][aria-label*="Toggle Sidebar"] {
   opacity: 0 !important;
   visibility: hidden !important;
   pointer-events: none !important;
@@ -372,9 +372,7 @@ div:has(> [role="navigation"][aria-label="Sidebar"][data-collapsed="true"]) ~ * 
 }
 
 /* Open, the button crosses the rail to Willow's corner: 288 − 14 − 40 = 234,
- * `top-1.5` = 6, `h-10 w-10 rounded-full text-[#e3e3e3] hover:bg-white/[0.08]`.
- * Willow's staged reveal: lands 50ms before the 300ms width settles (250ms delay)
- * so the button never paints over a rail that is still narrower than itself. */
+ * `top-1.5` = 6, `h-10 w-10 rounded-full text-[#e3e3e3] hover:bg-white/[0.08]`. */
 [data-testid="sidebar-toggle"][aria-label*="Toggle Sidebar"] {
   position: absolute !important;
   left: 234px !important;
@@ -384,9 +382,9 @@ div:has(> [role="navigation"][aria-label="Sidebar"][data-collapsed="true"]) ~ * 
   border-radius: 9999px !important;
   color: var(--gemini-body-text, #e3e3e3) !important;
   background-color: transparent !important;
-  opacity: 0;
-  visibility: hidden;
-  animation: willow-sidenav-show-close-button 50ms linear 250ms forwards !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -396,6 +394,16 @@ div:has(> [role="navigation"][aria-label="Sidebar"][data-collapsed="true"]) ~ * 
   outline: none !important;
   z-index: 50 !important;
   transition: background-color 150ms ease, color 150ms ease !important;
+}
+
+/* When sidebar is not collapsed, ensure main toggle is always visible and clickable */
+html:not([data-sidebar-collapsed="true"]) .absolute.top-0.left-0 [data-testid="sidebar-toggle"],
+html:not([data-sidebar-collapsed="true"]) [data-testid="sidebar-toggle"][aria-label*="Toggle Sidebar"],
+[role="navigation"][aria-label="Sidebar"]:not([data-collapsed="true"]) ~ * [data-testid="sidebar-toggle"][aria-label*="Toggle Sidebar"],
+div:has(> [role="navigation"][aria-label="Sidebar"]:not([data-collapsed="true"])) ~ * [data-testid="sidebar-toggle"][aria-label*="Toggle Sidebar"] {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
 }
 
 [data-testid="sidebar-toggle"][aria-label*="Toggle Sidebar"]:hover {

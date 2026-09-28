@@ -3,6 +3,7 @@ import os from "node:os";
 import path from "node:path";
 import asar from "@electron/asar";
 import { RUNTIME_FILES } from "../src/native/index.js";
+import { createArchive } from "../src/native/archive.js";
 
 export interface Fixture {
   readonly root: string;
@@ -25,7 +26,7 @@ export async function writeHostArchive(destination: string, version: string): Pr
     fs.mkdirSync(path.join(staging, "dist"), { recursive: true });
     fs.writeFileSync(path.join(staging, "dist", "main.js"), `console.log(${JSON.stringify(version)});\n`);
     fs.mkdirSync(path.dirname(destination), { recursive: true });
-    await asar.createPackage(staging, destination);
+    await createArchive(staging, destination);
   } finally {
     fs.rmSync(staging, { recursive: true, force: true });
   }
@@ -41,7 +42,7 @@ export async function writeForeignArchive(destination: string): Promise<void> {
     );
     fs.writeFileSync(path.join(staging, "index.js"), "");
     fs.mkdirSync(path.dirname(destination), { recursive: true });
-    await asar.createPackage(staging, destination);
+    await createArchive(staging, destination);
   } finally {
     fs.rmSync(staging, { recursive: true, force: true });
   }

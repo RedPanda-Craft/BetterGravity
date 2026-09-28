@@ -12,8 +12,10 @@ const options = () => ({ runtimeSource: fixture.runtimeSource, closeHost: noopHo
 const install = () => runOperation("install", fixture.root, options());
 
 function readArchiveJson(archivePath: string, entry: string): Record<string, unknown> {
-  asar.uncache(archivePath);
-  return JSON.parse(asar.extractFile(archivePath, entry).toString("utf8")) as Record<string, unknown>;
+  asar.uncacheAll();
+  const content = asar.extractFile(archivePath, entry);
+  asar.uncacheAll();
+  return JSON.parse(content.toString("utf8")) as Record<string, unknown>;
 }
 
 beforeEach(async () => {

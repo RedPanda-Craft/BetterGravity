@@ -1,10 +1,10 @@
 {
   "version": "3.0.0",
-  "generatedAt": "2026-09-25T02:57:27.321Z",
+  "generatedAt": "2026-09-28T16:46:59.473Z",
   "files": {
     "patcher-cli.cjs": {
       "path": "apps/installer-windows/Patcher/patcher-cli.cjs",
-      "sha256": "ed070debb74f68eb204618e416fce597e282cef5aafcb5776cfcd5a66285f8b8"
+      "sha256": "d4eb741b930bdbcbde0975b225966a024b5ede623206a198d477859ec6689e2f"
     },
     "runtime/main.cjs": {
       "path": "apps/installer-windows/Patcher/runtime/main.cjs",
@@ -16,7 +16,7 @@
     },
     "runtime/repair.cjs": {
       "path": "apps/installer-windows/Patcher/runtime/repair.cjs",
-      "sha256": "311c41885adc8976ee4b4f9921b6fbeb524391152e6c3e5e2956bd1955b8fc31"
+      "sha256": "6c1c415be63c74af034fac29eb60cbe2c3561f9bdb6a70cad7f2449e65473f41"
     },
     "runtime/overlay.html": {
       "path": "apps/installer-windows/Patcher/runtime/overlay.html",

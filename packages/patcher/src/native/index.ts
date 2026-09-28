@@ -3,7 +3,7 @@ import { BETTERGRAVITY_VERSION, isSupportedHostVersion } from "@bettergravity/sh
 import { fs } from "./fs.js";
 import type { InstallOperation, InstallationState, OperationResult, ProgressReporter } from "../types.js";
 import { createBootstrapArchive } from "./bootstrap.js";
-import { isBootstrapArchive, readHostManifest, readMarker, sha256, uncacheAll } from "./archive.js";
+import { isBootstrapArchive, readHostManifest, readMarker, sha256, uncacheAll, verifyBootstrapArchive } from "./archive.js";
 import { closeAntigravity } from "./process.js";
 import { installationPaths, isAntigravityIde, type InstallationPaths } from "./paths.js";
 
@@ -179,7 +179,7 @@ export async function runOperation(
 
   fs.rmSync(paths.stagedAsar, { force: true });
   await createBootstrapArchive(paths.stagedAsar, host, sha256(paths.originalAsar));
-  if (!isBootstrapArchive(paths.stagedAsar)) {
+  if (!(await verifyBootstrapArchive(paths.stagedAsar))) {
     fs.rmSync(paths.stagedAsar, { force: true });
     throw new Error("The BetterGravity bootstrap could not be verified before installation.");
   }

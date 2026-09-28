@@ -3817,8 +3817,10 @@ function installationPaths(targetRoot) {
 
 // packages/patcher/src/native/archive.ts
 function readJsonFromArchive(archivePath, entry) {
-  import_asar.default.uncache(archivePath);
-  return JSON.parse(import_asar.default.extractFile(archivePath, entry).toString("utf8"));
+  import_asar.default.uncacheAll();
+  const content = import_asar.default.extractFile(archivePath, entry);
+  import_asar.default.uncacheAll();
+  return JSON.parse(content.toString("utf8"));
 }
 function readHostManifest(archivePath) {
   const manifest = readJsonFromArchive(archivePath, "package.json");
@@ -3842,14 +3844,61 @@ function readMarker(archivePath) {
 function isBootstrapArchive(archivePath) {
   return readMarker(archivePath) !== void 0;
 }
+async function verifyBootstrapArchive(archivePath, retries = 5, delayMs = 25) {
+  for (let attempt = 0; attempt < retries; attempt += 1) {
+    uncacheAll();
+    if (isBootstrapArchive(archivePath)) {
+      return true;
+    }
+    if (attempt < retries - 1) {
+      await new Promise((resolve) => setTimeout(resolve, delayMs));
+    }
+  }
+  return false;
+}
 function sha256(filePath) {
   return import_node_crypto.default.createHash("sha256").update(fs.readFileSync(filePath)).digest("hex");
 }
 function uncacheAll() {
   import_asar.default.uncacheAll();
 }
+async function waitForArchiveReady(archivePath, maxAttempts = 10, delayMs = 20) {
+  for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+    try {
+      import_asar.default.uncacheAll();
+      import_asar.default.getRawHeader(archivePath);
+      import_asar.default.uncacheAll();
+      return;
+    } catch (error) {
+      if (attempt === maxAttempts - 1) {
+        throw error;
+      }
+      await new Promise((resolve) => setTimeout(resolve, delayMs));
+    }
+  }
+}
 async function createArchive(sourceDirectory, destination) {
-  await import_asar.default.createPackage(sourceDirectory, destination);
+  const stream = await import_asar.default.createPackage(sourceDirectory, destination);
+  if (stream && typeof stream.once === "function" && !stream.closed) {
+    await new Promise((resolve, reject) => {
+      if (stream.closed) {
+        resolve();
+        return;
+      }
+      const onClose = () => {
+        stream.off?.("error", onError);
+        resolve();
+      };
+      const onError = (err) => {
+        stream.off?.("close", onClose);
+        reject(err);
+      };
+      stream.once?.("close", onClose);
+      stream.once?.("error", onError);
+    });
+  }
+  import_asar.default.uncacheAll();
+  await waitForArchiveReady(destination);
 }
 
 // packages/patcher/src/native/bootstrap.ts
@@ -4107,7 +4156,7 @@ async function runOperation(operation, installationPath, options, onProgress = (
   onProgress({ percent: 52, stage: "apply", message: "Deployed the BetterGravity runtime." });
   fs.rmSync(paths.stagedAsar, { force: true });
   await createBootstrapArchive(paths.stagedAsar, host, sha256(paths.originalAsar));
-  if (!isBootstrapArchive(paths.stagedAsar)) {
+  if (!await verifyBootstrapArchive(paths.stagedAsar)) {
     fs.rmSync(paths.stagedAsar, { force: true });
     throw new Error("The BetterGravity bootstrap could not be verified before installation.");
   }

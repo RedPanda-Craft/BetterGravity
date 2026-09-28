@@ -15,9 +15,14 @@ Windows, macOS & Linux, Antigravity 2.x.
 ### macOS
 1. Download `BetterGravity-Installer-<version>-<arch>.dmg` from the
    [releases page](https://github.com/YashjitPal/BetterGravity/releases).
-2. Open the DMG and launch BetterGravity Installer. If macOS Gatekeeper warns
-   that the developer cannot be verified, right-click (or Control-click) the app
-   and choose **Open**.
+2. Open the DMG and launch BetterGravity Installer.
+   - **If macOS warns that the app is "damaged and can’t be opened" or cannot be verified**: Because BetterGravity is an open-source tool without paid Apple Developer ID notarization, macOS Gatekeeper quarantines downloaded binaries.
+     - **Quick Terminal fix**: Run:
+       ```bash
+       xattr -cr /Applications/BetterGravityInstaller.app
+       ```
+       (or `xattr -cr /Volumes/BetterGravity/BetterGravityInstaller.app` if running directly from the disk image).
+     - **Settings alternative**: Open **System Settings → Privacy & Security**, scroll down to the **Security** section, and click **Open Anyway**.
 3. The installer automatically discovers `/Applications/Antigravity.app`. Press **Install**.
 4. Reopen Antigravity. BetterGravity is now in **Settings → BetterGravity**.
 
@@ -87,6 +92,15 @@ the installer will report **Antigravity changed** next time you open it, and
 
 **Does BetterGravity support Antigravity IDE?**
 No. Google offers two distinct applications: the standalone **Antigravity 2.0** desktop app (`Antigravity.exe`) and the VS Code-based **Antigravity IDE** (`Antigravity IDE.exe`). BetterGravity is currently built specifically for the Antigravity 2.0 desktop app. Antigravity IDE support is on the roadmap for a future release.
+
+**macOS displays “BetterGravityInstaller is damaged and can’t be opened. You should eject the disk image.”**
+This is a standard macOS Gatekeeper check triggered on macOS (Sonoma, Sequoia) when an open-source application is downloaded outside the App Store without paid Apple Developer ID notarization. The binary is intact and not actually damaged.
+
+To clear the quarantine attribute and open the installer, run this command in Terminal:
+```bash
+xattr -cr /Applications/BetterGravityInstaller.app
+```
+*(Or `xattr -cr /Volumes/BetterGravity/BetterGravityInstaller.app` if opening from the mounted DMG).* Alternatively, go to **System Settings → Privacy & Security**, scroll down to the **Security** section, and click **Open Anyway**.
 
 **The installer says Antigravity was not found.**
 Use **Choose a different location** and pick the folder containing

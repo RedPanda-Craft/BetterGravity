@@ -1,8 +1,10 @@
 import { execSync } from "node:child_process";
-import { cpSync, existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 const workspace = resolve(import.meta.dirname, "..");
+const pkg = JSON.parse(readFileSync(resolve(workspace, "package.json"), "utf8"));
+const appVersion = pkg.version || "3.0.0";
 const outDir = resolve(workspace, "dist-native");
 const macDir = resolve(workspace, "apps", "installer-macos");
 const appDir = resolve(outDir, "BetterGravityInstaller.app");
@@ -60,7 +62,7 @@ const plistContent = `<?xml version="1.0" encoding="UTF-8"?>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
-    <string>2.0.2</string>
+    <string>${appVersion}</string>
     <key>LSMinimumSystemVersion</key>
     <string>13.0</string>
     <key>NSHighResolutionCapable</key>
@@ -68,6 +70,13 @@ const plistContent = `<?xml version="1.0" encoding="UTF-8"?>
 </dict>
 </plist>`;
 writeFileSync(resolve(contentsDir, "Info.plist"), plistContent, "utf8");
+
+// 3.5. Ad-hoc codesign the application bundle so macOS Gatekeeper can verify binary integrity
+try {
+  execSync(`codesign --force --deep --sign - "${appDir}"`, { stdio: "inherit" });
+} catch (e) {
+  console.warn("Notice: Ad-hoc codesign skipped or unavailable:", e.message);
+}
 
 // 4. Archive into BetterGravity-Installer-macOS.zip
 const zipDest = resolve(outDir, "BetterGravity-Installer-macOS.zip");

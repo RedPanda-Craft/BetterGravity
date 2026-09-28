@@ -15,13 +15,17 @@ const resourcesDir = resolve(contentsDir, "Resources");
 mkdirSync(macosBinDir, { recursive: true });
 mkdirSync(resourcesDir, { recursive: true });
 
-// 1. Build Swift release executable
-execSync("swift build -c release", { cwd: macDir, stdio: "inherit" });
+// 1. Build Swift release executable (universal for Apple Silicon & Intel)
+try {
+  execSync("swift build -c release --arch arm64 --arch x86_64", { cwd: macDir, stdio: "inherit" });
+} catch {
+  execSync("swift build -c release", { cwd: macDir, stdio: "inherit" });
+}
 
 // Locate compiled binary (.build/release or .build/apple/Products/Release)
 const possibleBinaryPaths = [
-  resolve(macDir, ".build", "release", "BetterGravityInstaller"),
-  resolve(macDir, ".build", "apple", "Products", "Release", "BetterGravityInstaller")
+  resolve(macDir, ".build", "apple", "Products", "Release", "BetterGravityInstaller"),
+  resolve(macDir, ".build", "release", "BetterGravityInstaller")
 ];
 
 let binaryPath = possibleBinaryPaths.find((p) => existsSync(p));
@@ -72,6 +76,9 @@ const plistContent = `<?xml version="1.0" encoding="UTF-8"?>
 writeFileSync(resolve(contentsDir, "Info.plist"), plistContent, "utf8");
 
 // 3.5. Ad-hoc codesign the application bundle so macOS Gatekeeper can verify binary integrity
+try {
+  execSync(`xattr -cr "${appDir}"`);
+} catch {}
 try {
   execSync(`codesign --force --deep --sign - "${appDir}"`, { stdio: "inherit" });
 } catch (e) {

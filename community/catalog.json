@@ -321,12 +321,12 @@
       "author": "Yashjit Pal",
       "source": "https://github.com/YashjitPal/BetterGravity",
       "path": "community/plugins/fork-chat",
-      "bytes": 71248,
+      "bytes": 71718,
       "files": [
         {
           "name": "index.js",
-          "bytes": 56945,
-          "sha256": "98d074d0a13bdd4d1bc3723f149b40b3b396a43ac6998a4354bb360dc34e2bd2"
+          "bytes": 57415,
+          "sha256": "ad99262a79ce80fc11e7c6d6e1817741e923eb9c5fa9d61661f22a03efa25449"
         },
         {
           "name": "plugin.json",

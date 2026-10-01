@@ -314,24 +314,17 @@ async function forkFromSnapshot(agentService, request) {
     throw error;
   }
 
-  if (!sharedWorktree) return {
-    newCascadeId: snapshotId,
-    newProjectId: started.projectEnvInfo?.projectId || projectId || "outside-of-project",
-    forkedAtStepIndex: snapshot.steps.length - 1
-  };
-
-  // Let the native service create the worktree from the now-idle prefix.
-  // Keep its backing conversation archived because the fork can reference it.
+  const targetForkWorkspace = sharedWorktree ? 2 : 1;
   let keepSnapshotActive = false;
   try {
     return await agentService.forkConversation({
       sourceCascadeId: snapshotId,
       forkAtStepIndex: snapshot.steps.length - 1,
-      targetForkWorkspace: 2
+      targetForkWorkspace
     });
   } catch (worktreeErr) {
     const wtMsg = worktreeErr?.message || String(worktreeErr);
-    if (/not a valid branch name|check-ref-format|failed to create worktree|vcs unknown|cannot clone workspace|no git repository/i.test(wtMsg)) {
+    if (sharedWorktree && /not a valid branch name|check-ref-format|failed to create worktree|vcs unknown|cannot clone workspace|no git repository/i.test(wtMsg)) {
       plugin.ui.toast({
         title: "Worktree branch unavailable",
         body: "Git worktree requires a valid repository. Forking into current workspace instead...",
@@ -453,9 +446,17 @@ async function runFork(sourceCascadeId, forkAtStepIndex, targetForkWorkspace, ti
         throw new Error("No conversation ID returned by the server.");
       }
 
+      const store = findStore();
+      const state = store?.getState();
+      const sourceSummary = state?.trajectorySummaries?.summaries?.[sourceCascadeId];
+      const sourceProjectId =
+        sourceSummary?.trajectoryMetadata?.projectId ||
+        sourceSummary?.projectEnvInfo?.projectId ||
+        (state?.workspace?.activeProjectId && state.workspace.activeProjectId !== "outside-of-project" ? state.workspace.activeProjectId : null);
+      const effectiveProjectId = response.newProjectId || sourceProjectId;
+
       // Rename forked conversation to "Forked • " + original conversation name
       try {
-        const store = findStore();
         if (store && typeof store.dispatch === "function") {
           store.dispatch({
             type: "updateOptimisticSummary",
@@ -472,7 +473,14 @@ async function runFork(sourceCascadeId, forkAtStepIndex, targetForkWorkspace, ti
         }
       } catch {}
 
-      const navigated = await navigateToConversation(response.newCascadeId, response.newProjectId);
+      // Inform branch tree plugin if available to maintain DAG lineage
+      if (globalThis.__bettergravityBranchTree?.recordLineage) {
+        try {
+          globalThis.__bettergravityBranchTree.recordLineage(response.newCascadeId, sourceCascadeId);
+        } catch {}
+      }
+
+      const navigated = await navigateToConversation(response.newCascadeId, effectiveProjectId);
       plugin.ui.toast({
         title: "Conversation forked!",
         body: navigated ? "Switched to your new branch." : "Your new branch is ready to open from the sidebar.",

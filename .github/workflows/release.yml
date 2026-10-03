@@ -26,7 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Ensure GitHub Release exists
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ github.event.release.tag_name || (github.ref_type == 'tag' && github.ref_name) || github.event.inputs.tag }}
           name: BetterGravity ${{ github.event.release.tag_name || (github.ref_type == 'tag' && github.ref_name) || github.event.inputs.tag }}
@@ -98,7 +98,7 @@ jobs:
             exit $BUILD_STATUS
           }
       - name: Attach native installers to GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ github.event.release.tag_name || (github.ref_type == 'tag' && github.ref_name) || github.event.inputs.tag }}
           files: ${{ matrix.files }}

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-28T13:01:52.032Z",
+  "generatedAt": "2026-10-02T09:57:35.203Z",
   "entries": [
     {
       "id": "catppuccin-accent",
@@ -321,12 +321,12 @@
       "author": "Yashjit Pal",
       "source": "https://github.com/YashjitPal/BetterGravity",
       "path": "community/plugins/fork-chat",
-      "bytes": 70963,
+      "bytes": 71859,
       "files": [
         {
           "name": "index.js",
-          "bytes": 56660,
-          "sha256": "a11e5ae6fa9b558d6136572204994f5fba47ff79ed6c4e816b1be1e4cab2a498"
+          "bytes": 57556,
+          "sha256": "b0f727ab4d97b032c8cb7f6aa79e3c2329fed230d399f22159e68bef33c7df39"
         },
         {
           "name": "plugin.json",

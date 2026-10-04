@@ -5718,6 +5718,37 @@ let storeSubscription;
 const providerSubscriptions = new Map();
 const ACTIVITY_ROOTS = `${ROW_LIST}, ${VIEW}, ${COMPOSER}, [data-testid="running-items-panel"], [data-testid="browser-agent-cursor"]`;
 
+let lastTypingTimestamp = 0;
+const TYPING_DEBOUNCE_MS = 600;
+
+function markUserTyping() {
+  lastTypingTimestamp = Date.now();
+}
+
+function isUserTyping() {
+  if (Date.now() - lastTypingTimestamp < TYPING_DEBOUNCE_MS) return true;
+  const active = document.activeElement;
+  if (!active) return false;
+  const tag = active.tagName?.toLowerCase();
+  if (tag === "input" || tag === "textarea" || active.isContentEditable || active.closest?.('[contenteditable="true"]')) {
+    return true;
+  }
+  return false;
+}
+
+if (typeof window !== "undefined") {
+  window.addEventListener("keydown", markUserTyping, { capture: true, passive: true });
+  window.addEventListener("compositionstart", markUserTyping, { capture: true, passive: true });
+  window.addEventListener("compositionupdate", markUserTyping, { capture: true, passive: true });
+  window.addEventListener("input", markUserTyping, { capture: true, passive: true });
+  plugin.onDispose(() => {
+    window.removeEventListener("keydown", markUserTyping, true);
+    window.removeEventListener("compositionstart", markUserTyping, true);
+    window.removeEventListener("compositionupdate", markUserTyping, true);
+    window.removeEventListener("input", markUserTyping, true);
+  });
+}
+
 function releaseActivitySubscription(subscription) {
   try {
     if (typeof subscription === "function") subscription();
@@ -5727,10 +5758,12 @@ function releaseActivitySubscription(subscription) {
 }
 
 function scheduleActivity() {
+  if (isUserTyping()) return;
   if (surface === null || activityTimer !== undefined) return;
   // Throttle a burst, without restarting the timer on every streamed token.
   activityTimer = setTimeout(() => {
     activityTimer = undefined;
+    if (isUserTyping()) return;
     poll();
   }, ACTIVITY_COALESCE_MS);
 }
@@ -5802,7 +5835,7 @@ function syncActivitySources() {
     });
     activityObserver.disconnect();
     for (const root of roots) activityObserver.observe(root, {
-      subtree: true, childList: true, characterData: true, attributes: true,
+      subtree: true, childList: true, attributes: true,
       attributeFilter: ["data-testid", "data-cascade-id", "data-selected", "aria-label", "class", "hidden"]
     });
   }
@@ -5906,6 +5939,7 @@ function begin() {
 }
 
 function poll() {
+  if (isUserTyping()) return;
   if (libraryPage && !libraryCreating && (!libraryPage.isConnected || location.href !== libraryHref)) closePetLibrary();
   if (surface === null) return;
   syncActivitySources();

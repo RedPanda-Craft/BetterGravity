@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-02T09:57:35.203Z",
+  "generatedAt": "2026-10-05T09:49:57.010Z",
   "entries": [
     {
       "id": "catppuccin-accent",
@@ -826,7 +826,7 @@
       "author": "Yashjit Pal",
       "source": "https://github.com/YashjitPal/BetterGravity",
       "path": "community/plugins/pets",
-      "bytes": 1507945,
+      "bytes": 1509221,
       "files": [
         {
           "name": "assets/rocky.webp",
@@ -835,8 +835,8 @@
         },
         {
           "name": "index.js",
-          "bytes": 260353,
-          "sha256": "5c7d52c637fcf6ea3ebcd659d6ea8bb0ded71b68d4ccc8dd812e686c12d76f13"
+          "bytes": 261650,
+          "sha256": "1c7849dc05ef00dfacebc84368b9310dbd62ddf07ee85156307e7ee07cd59a65"
         },
         {
           "name": "plugin.json",
@@ -970,8 +970,8 @@
         },
         {
           "name": "styles/hud.css",
-          "bytes": 42099,
-          "sha256": "610f7b7405a2a8284de38e5583f3f7a3ee43e7e4fbd20f0205ad242a1cb4f670"
+          "bytes": 42078,
+          "sha256": "f7680050829820611012443d34416d27a519ed95ecf4bf6f3e056d79f5768fea"
         },
         {
           "name": "styles/library.css",

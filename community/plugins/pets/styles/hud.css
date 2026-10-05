@@ -51,9 +51,9 @@
   --pet-border-strong: #ffffff33;
 
   /* frame 2-139: _Material_ in .electron-dark, non-native, with a surface id. */
-  --pet-material-background: rgba(30, 32, 44, 0.78);
-  --pet-material-border: rgba(255, 255, 255, 0.12);
-  --pet-material-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), inset 0 -1px 2px rgba(255, 255, 255, 0.08), 0 8px 32px rgba(0, 0, 0, 0.35);
+  --pet-material-background: #202020e6;
+  --pet-material-border: #ffffff1f;
+  --pet-material-shadow: inset 0 1px 1px #fff3, inset 0 -1px 2px #ffffff14, 0 3px 16px #00000059;
 
   /* Codex's stack spring: damping 18.85, mass 1, stiffness 180, velocity 0.
      Sampled at 120Hz through settling, including its 4.5% overshoot. */
@@ -100,9 +100,7 @@
   background: var(--pet-badge-background, var(--pet-info-soft));
   color: var(--pet-badge-foreground, var(--pet-text));
   box-shadow: var(--pet-material-shadow);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transform: translateZ(0);
+  backdrop-filter: blur(4px);
   font: 500 12px / 1 var(--vscode-font-family, ui-sans-serif, system-ui, sans-serif);
   cursor: grab;
   touch-action: none;
@@ -358,10 +356,6 @@
      keeps the content's 54px height instead of adding two layout pixels. */
   border: 0;
   box-shadow: inset 0 0 0 1px var(--pet-material-border), var(--pet-material-shadow);
-  backdrop-filter: blur(12px) saturate(160%);
-  -webkit-backdrop-filter: blur(12px) saturate(160%);
-  transform: translateZ(0);
-  contain: layout paint;
 
   /* Codex marks its own notification card root `no-drag`, and for the same reason
      it needs it: a press that lands inside one of the host window's drag regions
@@ -810,9 +804,7 @@
   background: color-mix(in srgb, var(--pet-surface) 65%, transparent);
   color: var(--pet-text);
   box-shadow: 0 2px 6px rgb(0 0 0 / 0.2);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  transform: translateZ(0);
+  backdrop-filter: blur(24px);
 
   cursor: pointer;
   opacity: 0;
@@ -966,10 +958,7 @@
      Nothing in the frame sheet turns this one off, not even reduced transparency,
      so it is unguarded here too. 4px, not the 24px the badge and the dismiss X
      use: those are Tailwind's backdrop-blur-xl, a different surface. */
-  backdrop-filter: blur(12px) saturate(160%);
-  -webkit-backdrop-filter: blur(12px) saturate(160%);
-  transform: translateZ(0);
-  contain: layout paint;
+  backdrop-filter: blur(4px);
 
   /* Codex's own declaration, and the reason a press here reaches the page at all:
      inside one of the host's drag regions the window manager takes the press
@@ -1010,13 +999,10 @@
   padding: 4px;
   border: 0.5px solid #ffffff26;
   border-radius: 16px;
-  background: #282828cc;
+  background: #282828e6;
   color: #ededed;
-  box-shadow: 0 8px 32px #00000066;
-  backdrop-filter: blur(12px) saturate(160%);
-  -webkit-backdrop-filter: blur(12px) saturate(160%);
-  transform: translateZ(0);
-  contain: layout paint;
+  box-shadow: 0 8px 24px #0005;
+  backdrop-filter: blur(8px);
   font: 14px/20px ui-sans-serif, system-ui, sans-serif;
   user-select: none;
   -webkit-app-region: no-drag;

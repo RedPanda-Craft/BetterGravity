@@ -4983,21 +4983,29 @@ function getEditorTextRange(editor) {
 }
 
 let lastExpansionTimestamp = 0;
+let lastExpandedTextLength = 0;
+let isTransitioningExpansion = false;
 
 function setBoxExpanded(box, expanded) {
   const isExpanded = box.getAttribute("data-expanded") === "true";
   if (isExpanded !== expanded) {
+    isTransitioningExpansion = true;
+    lastExpansionTimestamp = performance.now();
     if (expanded) {
       box.setAttribute("data-expanded", "true");
-      lastExpansionTimestamp = Date.now();
     } else {
       box.removeAttribute("data-expanded");
+      lastExpandedTextLength = 0;
     }
+    requestAnimationFrame(() => {
+      isTransitioningExpansion = false;
+    });
   }
 }
 
 function checkPromptExpansion(box) {
   if (!box || !box.isConnected) return;
+  if (isTransitioningExpansion) return;
 
   const currentTool = getSelectedTool();
   // 1. If a tool is selected, always expand and mount tool chip
@@ -5024,6 +5032,7 @@ function checkPromptExpansion(box) {
 
   const text = (editor.textContent || "").replace(/[\uFEFF\u200B]/g, "");
   if (!text.trim()) {
+    lastExpandedTextLength = 0;
     setBoxExpanded(box, false);
     return;
   }
@@ -5032,6 +5041,7 @@ function checkPromptExpansion(box) {
 
   // Fast exit: short single-line draft cannot wrap or collide with right-side controls
   if (text.length < 20 && !text.includes("\n")) {
+    lastExpandedTextLength = 0;
     setBoxExpanded(box, false);
     return;
   }
@@ -5042,8 +5052,8 @@ function checkPromptExpansion(box) {
     return;
   }
 
-  // If editor content height has already wrapped past single-row threshold (~24px)
-  if (!isAlreadyExpanded && editor.scrollHeight > 28) {
+  // If editor content height has already wrapped past single-row threshold (line-height is 24px)
+  if (editor.scrollHeight > 32) {
     setBoxExpanded(box, true);
     return;
   }
@@ -5058,7 +5068,7 @@ function checkPromptExpansion(box) {
 
   if (!isAlreadyExpanded) {
     // In single-row mode:
-    // Check if text line wrapped onto a second line
+    // Check if text line wrapped onto a second line (real line jump >= 16px)
     let hasWrapped = false;
     let rangeRect = null;
     try {
@@ -5067,7 +5077,7 @@ function checkPromptExpansion(box) {
       if (rects.length > 1) {
         const firstTop = rects[0].top;
         for (let i = 1; i < rects.length; i++) {
-          if (Math.abs(rects[i].top - firstTop) > 6) {
+          if (Math.abs(rects[i].top - firstTop) >= 16) {
             hasWrapped = true;
             break;
           }
@@ -5076,16 +5086,18 @@ function checkPromptExpansion(box) {
     } catch (_) {}
 
     if (hasWrapped) {
+      lastExpandedTextLength = text.length;
       setBoxExpanded(box, true);
       return;
     }
 
-    // Check if the single text line reaches the point before the model selector and couldn't fit there
+    // Check if the single text line reaches the point before the model selector
     if (rangeRect && card) {
       const pill = card.querySelector('[data-testid="model-selector-trigger"]');
       if (pill) {
         const pillRect = pill.getBoundingClientRect();
         if (pillRect.left > 0 && rangeRect.right >= pillRect.left - 6) {
+          lastExpandedTextLength = text.length;
           setBoxExpanded(box, true);
           return;
         }
@@ -5095,13 +5107,16 @@ function checkPromptExpansion(box) {
     setBoxExpanded(box, false);
   } else {
     // In 2-row mode:
-    // Dwell-time guard: prevent rapid ping-pong oscillation right after expanding
-    if (Date.now() - lastExpansionTimestamp < 350) {
+    // Anti-flapping lock: never collapse while actively typing forward or within cooldown
+    if (performance.now() - lastExpansionTimestamp < 350) {
+      return;
+    }
+    if (lastExpandedTextLength > 0 && text.length >= lastExpandedTextLength) {
       return;
     }
 
-    // If text is clearly multiline by height, stay expanded without measuring rects
-    if (editor.scrollHeight > 36) {
+    // If editor has wrapped lines, stay expanded
+    if (editor.scrollHeight > 32) {
       setBoxExpanded(box, true);
       return;
     }
@@ -5115,7 +5130,7 @@ function checkPromptExpansion(box) {
       if (rects.length > 1) {
         const firstTop = rects[0].top;
         for (let i = 1; i < rects.length; i++) {
-          if (Math.abs(rects[i].top - firstTop) > 6) {
+          if (Math.abs(rects[i].top - firstTop) >= 16) {
             hasWrapped = true;
             break;
           }
@@ -5131,7 +5146,7 @@ function checkPromptExpansion(box) {
     if (card && card.clientWidth > 100) {
       const cardWidth = card.clientWidth;
       const pill = card.querySelector('[data-testid="model-selector-trigger"]');
-      const pillWidth = pill ? pill.offsetWidth : 85;
+      const pillWidth = pill ? pill.offsetWidth : 148;
       const plusWidth = 32;
       const micWidth = 32;
       const sendWidth = 32;
@@ -5141,9 +5156,9 @@ function checkPromptExpansion(box) {
       const availableSingleRowWidth = Math.max(100, cardWidth - leftSpace - rightSpace);
 
       // Strong Schmitt-trigger hysteresis dampening: collapse back to single row ONLY when
-      // text width has substantially receded below the single row boundary (minimum 60px safe margin)
-      // or text is under 20 chars. This completely prevents edge-wrapping oscillation loops.
-      if (textWidth <= availableSingleRowWidth - 60) {
+      // text width has substantially receded below the single row boundary (minimum 48px safe margin)
+      // and user actually deleted characters.
+      if (textWidth <= availableSingleRowWidth - 48) {
         setBoxExpanded(box, false);
         return;
       }
@@ -5536,7 +5551,9 @@ plugin.dom.observe(INPUT_BOX, (box) => {
   let ro = null;
   let mo = null;
   if (editor) {
-    ro = new ResizeObserver(() => requestPromptExpansionCheck());
+    ro = new ResizeObserver(() => {
+      if (!isTransitioningExpansion) requestPromptExpansionCheck();
+    });
     ro.observe(editor);
 
     mo = new MutationObserver(() => requestPromptExpansionCheck());
@@ -5550,11 +5567,15 @@ plugin.dom.observe(INPUT_BOX, (box) => {
   });
   boxMo.observe(box, { childList: true });
 
+  const onWindowResize = () => requestPromptExpansionCheck();
+  window.addEventListener("resize", onWindowResize);
+
   remember(box, {
     disconnect: () => {
       box.removeEventListener("input", onInput);
       box.removeEventListener("paste", onPasteOrDrop);
       box.removeEventListener("drop", onPasteOrDrop);
+      window.removeEventListener("resize", onWindowResize);
       if (ro) ro.disconnect();
       if (mo) mo.disconnect();
       boxMo.disconnect();

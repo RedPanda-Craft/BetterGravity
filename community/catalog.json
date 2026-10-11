@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-11T14:43:46.338Z",
+  "generatedAt": "2026-10-11T15:21:18.958Z",
   "entries": [
     {
       "id": "catppuccin-accent",
@@ -377,7 +377,7 @@
       "author": "Yashjit Pal",
       "source": "https://github.com/YashjitPal/BetterGravity",
       "path": "community/plugins/gemini-app",
-      "bytes": 956467,
+      "bytes": 957392,
       "files": [
         {
           "name": "assets/antigravity-mark.png",
@@ -396,8 +396,8 @@
         },
         {
           "name": "index.js",
-          "bytes": 392102,
-          "sha256": "41c6737e76e2063f2e7a0571be6b71ae91332ba8f28597b2bf7fec8de88eb5ae"
+          "bytes": 392205,
+          "sha256": "a855392b3f6a6d05f647116266d01c1947836aad658482b3317ec4272a01faca"
         },
         {
           "name": "plugin.json",
@@ -461,8 +461,8 @@
         },
         {
           "name": "styles/sidebar.css",
-          "bytes": 132370,
-          "sha256": "caae608b0f1c15942e5178584eaf471a7900aaccbee6614598ee01e77498cb7f"
+          "bytes": 133192,
+          "sha256": "61cfe4522a900ec20a1c2cd7a0f4a55bf7ade887a13e3e067ba3b538444985fc"
         },
         {
           "name": "styles/skills-tab.css",

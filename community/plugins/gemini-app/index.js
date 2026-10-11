@@ -7140,11 +7140,12 @@ function updateAllUserCards(profile) {
     if (imgEl) {
       if (profile.pictureUrl) {
         imgEl.src = profile.pictureUrl;
-        imgEl.style.display = "";
+        imgEl.style.removeProperty("display");
         if (fallbackEl) fallbackEl.style.display = "none";
       } else {
+        imgEl.removeAttribute("src");
         imgEl.style.display = "none";
-        if (fallbackEl) fallbackEl.style.display = "flex";
+        if (fallbackEl) fallbackEl.style.removeProperty("display");
       }
     }
     if (fallbackEl) {
@@ -7842,8 +7843,9 @@ function ensureSidebarUserCard(footer) {
     }
 
     img.addEventListener("error", () => {
+      img.removeAttribute("src");
       img.style.display = "none";
-      fallback.style.display = "flex";
+      fallback.style.removeProperty("display");
     });
 
     avatarWrap.appendChild(img);

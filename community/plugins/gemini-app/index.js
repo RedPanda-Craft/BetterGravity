@@ -1194,6 +1194,32 @@ function setExperienceUnreadIndicator(element, unread) {
   }
 }
 
+function isUserTyping() {
+  if (typeof document === 'undefined') return false;
+  const active = document.activeElement;
+  if (!active) return false;
+  const tag = active.tagName ? active.tagName.toLowerCase() : '';
+  if (tag === 'textarea' || tag === 'input') return true;
+  if (active.isContentEditable) return true;
+  return Boolean(
+    active.closest &&
+    active.closest(
+      'textarea, input, [contenteditable], [data-testid*="input"], [data-testid*="composer"], .bg-inline-edit-box, [role="textbox"]'
+    )
+  );
+}
+
+let experienceSwitchScheduled = false;
+function scheduleExperienceSwitchUpdate() {
+  if (experienceSwitchScheduled || isUserTyping() || document.hidden) return;
+  experienceSwitchScheduled = true;
+  queueMicrotask(() => {
+    experienceSwitchScheduled = false;
+    if (isUserTyping() || document.hidden) return;
+    updateExperienceSwitchDots();
+  });
+}
+
 function updateExperienceSwitchDots(switchElement) {
   const pills = switchElement ? [switchElement] : Array.from(document.querySelectorAll('#gemini-experience-switch'));
   if (pills.length === 0) return;
@@ -1202,9 +1228,7 @@ function updateExperienceSwitchDots(switchElement) {
   if (!store) return;
 
   if (!hostStoreUnsubscribe && typeof store.subscribe === 'function') {
-    hostStoreUnsubscribe = store.subscribe(() => {
-      updateExperienceSwitchDots();
-    });
+    hostStoreUnsubscribe = store.subscribe(scheduleExperienceSwitchUpdate);
   }
 
   const state = store.getState();
@@ -2986,17 +3010,29 @@ plugin.dom.observe(AUTOMATIONS_SELECTOR, (autoBtn) => {
 const activeViewBodyObserver = new MutationObserver((mutations) => {
   const hasRelevant = mutations.some(m => {
     if (m.type === 'childList') {
-      const added = Array.from(m.addedNodes);
-      const removed = Array.from(m.removedNodes);
-      return added.concat(removed).some(n =>
-        n.nodeType === 1 && (
+      const target = m.target;
+      if (target && target.nodeType === 1 && target.closest?.('[data-testid="planner-response-text"], [role="article"][aria-label="Agent response"], .composer, [data-testid="composer"]')) {
+        return false;
+      }
+      for (let i = 0; i < m.addedNodes.length; i++) {
+        const n = m.addedNodes[i];
+        if (n.nodeType === 1 && (
           n.id === 'bettergravity-pets-view' ||
           n.id === 'gemini-skills-view' ||
-          n.id?.endsWith('-view') ||
-          n.id?.endsWith('-page') ||
-          n.getAttribute?.('data-bettergravity-button') !== null
-        )
-      );
+          (n.id && (n.id.endsWith('-view') || n.id.endsWith('-page'))) ||
+          n.hasAttribute?.('data-bettergravity-button')
+        )) return true;
+      }
+      for (let i = 0; i < m.removedNodes.length; i++) {
+        const n = m.removedNodes[i];
+        if (n.nodeType === 1 && (
+          n.id === 'bettergravity-pets-view' ||
+          n.id === 'gemini-skills-view' ||
+          (n.id && (n.id.endsWith('-view') || n.id.endsWith('-page'))) ||
+          n.hasAttribute?.('data-bettergravity-button')
+        )) return true;
+      }
+      return false;
     }
     if (m.type === 'attributes') {
       if (m.attributeName === 'aria-pressed' || m.attributeName === 'data-bettergravity-active') return true;
@@ -3985,6 +4021,7 @@ listenToPage(window, 'hashchange', checkUrlForProjectSwitch);
 
 let lastCheckedUrl = '';
 const urlTicker = window.setInterval(() => {
+  if (document.hidden || isUserTyping()) return;
   if (window.location.href !== lastCheckedUrl) {
     lastCheckedUrl = window.location.href;
     checkUrlForProjectSwitch();
@@ -4357,6 +4394,7 @@ plugin.onDispose(() => {
     hostStoreUnsubscribe();
     hostStoreUnsubscribe = null;
   }
+  experienceSwitchScheduled = false;
   hostReduxStore = null;
 
   for (const [element, observer] of rememberedObservers()) {
@@ -6556,9 +6594,15 @@ function updateBubbleConnection(text) {
 }
 
 function collectBubbleTexts(root, into) {
-  if (root.nodeType !== Node.ELEMENT_NODE) return;
-  if (root.hasAttribute(BUBBLE_SIZE_MARKER)) into.add(root);
-  if (root.firstElementChild) {
+  if (!root || root.nodeType !== Node.ELEMENT_NODE) return;
+  if (root.hasAttribute(BUBBLE_SIZE_MARKER)) {
+    into.add(root);
+    return;
+  }
+  if (root.closest?.('[data-testid="planner-response-text"], [role="article"][aria-label="Agent response"], .composer, [data-testid="composer"]')) {
+    return;
+  }
+  if (root.firstElementChild && (root.matches?.('[data-testid="user-input-step"]') || root.querySelector?.(`[${BUBBLE_SIZE_MARKER}]`))) {
     for (const text of root.querySelectorAll(`[${BUBBLE_SIZE_MARKER}]`)) into.add(text);
   }
 }
@@ -6580,12 +6624,34 @@ function observeBubbleText(text, update) {
     // or a resize (hidden bubbles can already have zero size). Keep only their
     // weak handlers so a reattached native node resumes with the same controls.
     bubbleConnectionObserver = new MutationObserver(records => {
-      const changed = new Set();
-      for (const record of records) {
-        for (const node of record.removedNodes) if (!node.isConnected) collectBubbleTexts(node, changed);
-        for (const node of record.addedNodes) if (node.isConnected) collectBubbleTexts(node, changed);
+      let changed = null;
+      for (let i = 0; i < records.length; i++) {
+        const record = records[i];
+        const target = record.target;
+        if (target && target.nodeType === Node.ELEMENT_NODE &&
+            target.closest?.('[data-testid="planner-response-text"], [role="article"][aria-label="Agent response"], .composer, [data-testid="composer"]')) {
+          continue;
+        }
+        const removed = record.removedNodes;
+        for (let j = 0; j < removed.length; j++) {
+          const node = removed[j];
+          if (!node.isConnected) {
+            if (!changed) changed = new Set();
+            collectBubbleTexts(node, changed);
+          }
+        }
+        const added = record.addedNodes;
+        for (let j = 0; j < added.length; j++) {
+          const node = added[j];
+          if (node.isConnected) {
+            if (!changed) changed = new Set();
+            collectBubbleTexts(node, changed);
+          }
+        }
       }
-      for (const target of changed) updateBubbleConnection(target);
+      if (changed && changed.size > 0) {
+        for (const target of changed) updateBubbleConnection(target);
+      }
     });
     bubbleConnectionObserver.observe(document.documentElement, { childList: true, subtree: true });
   }
@@ -8191,6 +8257,7 @@ plugin.dom.observe(TOP_BAR_MORE, () => reconcileTopChips());
 for (const spec of TOP_CHIPS) plugin.dom.observe(spec.trigger, () => reconcileTopChips());
 
 const topChipsTicker = window.setInterval(() => {
+  if (document.hidden || isUserTyping()) return;
   if (!document.querySelector(HOME_SCROLLER) && !topChipHostEl) return;
   reconcileTopChips();
 }, 1000);
@@ -9294,11 +9361,21 @@ function setupScheduledTasksView(view) {
   }
 
   function submitScheduleDraft(draft) {
+    let safetyTimer = null;
+    const disconnectHeadless = () => {
+      if (safetyTimer) {
+        clearTimeout(safetyTimer);
+        safetyTimer = null;
+      }
+      try { headlessObserver.disconnect(); } catch (_) {}
+    };
+
     const headlessObserver = new MutationObserver(() => {
       const dlg = document.querySelector('[role="dialog"]:has([data-testid="new-sidecar-modal"])');
       if (dlg) dlg.classList.add('gemini-schedule-modal-headless');
     });
     headlessObserver.observe(document.body, { childList: true, subtree: true });
+    safetyTimer = setTimeout(disconnectHeadless, 3000);
 
     const rawNewBtn = view.querySelector('[data-testid="sidecar-new-button"]');
     if (rawNewBtn) rawNewBtn.click();
@@ -9306,7 +9383,7 @@ function setupScheduledTasksView(view) {
     setTimeout(() => {
       const modal = document.querySelector('[data-testid="new-sidecar-modal"]');
       if (!modal) {
-        headlessObserver.disconnect();
+        disconnectHeadless();
         closeScheduleEditor();
         return;
       }
@@ -9360,7 +9437,7 @@ function setupScheduledTasksView(view) {
           submitBtn.click();
         }
         setTimeout(() => {
-          headlessObserver.disconnect();
+          disconnectHeadless();
           closeScheduleEditor();
         }, 150);
       }, 80);

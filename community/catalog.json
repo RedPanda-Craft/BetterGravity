@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-11T16:51:38.992Z",
+  "generatedAt": "2026-10-11T17:51:02.731Z",
   "entries": [
     {
       "id": "catppuccin-accent",
@@ -377,7 +377,7 @@
       "author": "Yashjit Pal",
       "source": "https://github.com/YashjitPal/BetterGravity",
       "path": "community/plugins/gemini-app",
-      "bytes": 958726,
+      "bytes": 852686,
       "files": [
         {
           "name": "assets/antigravity-mark.png",
@@ -396,8 +396,8 @@
         },
         {
           "name": "index.js",
-          "bytes": 392665,
-          "sha256": "03d29566799cc6e581ce3b04757e7d9acd26c7350a250a57107c7983f0c36ab7"
+          "bytes": 329953,
+          "sha256": "d9d19c1817c526d44874a690b0a81cc66e83d88f067ecf821768f6d5966a2a27"
         },
         {
           "name": "plugin.json",
@@ -406,8 +406,8 @@
         },
         {
           "name": "styles/conversation.css",
-          "bytes": 76351,
-          "sha256": "f2504ccacc8372a3a0f47166c08103cfbcd55e3a00474690ad718b9a461102c8"
+          "bytes": 76409,
+          "sha256": "1cb86760c86229ee140c015c11ceb65405d799ffc8fe1798ab75a5b845a6660c"
         },
         {
           "name": "styles/dialog.css",
@@ -416,8 +416,8 @@
         },
         {
           "name": "styles/gemini-app.css",
-          "bytes": 2603,
-          "sha256": "111b0458af445d3967ec4650f850ccfd2f2202478ccc25ca0a04408b258907cd"
+          "bytes": 2553,
+          "sha256": "9525f98971572e4ae6b7a41a1d823e299e39ac1dbea0e64eacc872a569a0b212"
         },
         {
           "name": "styles/history.css",
@@ -446,8 +446,8 @@
         },
         {
           "name": "styles/prompt-box.css",
-          "bytes": 36196,
-          "sha256": "1e462cc5a2a296665c03a86f43b069cfcd4b94b6a2e976eb4d0318ae74065348"
+          "bytes": 36548,
+          "sha256": "c28223245bee794d51dc124208cae6ecdda9c6877c519f431d1b12cae73e43c2"
         },
         {
           "name": "styles/question-box.css",
@@ -456,8 +456,8 @@
         },
         {
           "name": "styles/schedules.css",
-          "bytes": 43765,
-          "sha256": "33284bc8ed98e597743119c7edc09fa91f2647631920908e574d7273f3e37284"
+          "bytes": 77,
+          "sha256": "48a554e061ff959dab86563b2001b0bc868cbae500018ec7f429ee46b6e947d7"
         },
         {
           "name": "styles/sidebar.css",

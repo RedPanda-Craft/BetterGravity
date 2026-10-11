@@ -94,7 +94,9 @@ body.gemini-skills-open [data-gemini-skills-hidden] {
 [data-testid="lifted-context-menu-trigger"] > .bg-card {
   padding: 20px 28px !important;
   border-radius: 40px !important;
+  border: none !important;
   background: var(--gemini-bubble-bg) !important;
+  box-shadow: none !important;
   overflow: visible !important;
   cursor: text !important;
 }

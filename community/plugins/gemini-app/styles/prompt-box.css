@@ -96,6 +96,7 @@
   padding: 12px 15px 12px 20px !important;
   border-radius: 32px !important;
   border: none !important;
+  outline: none !important;
   background: var(--gemini-composer-bg) !important;
   box-shadow: none !important;
   position: relative !important;
@@ -103,6 +104,14 @@
   font-family: var(--gemini-font);
   font-variation-settings: var(--gemini-font-axes);
   transition: none !important;
+}
+
+[data-testid="agent-input-box"]:focus-within,
+[data-testid="agent-input-box"]:focus-within > .rounded-2xl.bg-card-border,
+[data-testid="agent-input-box"]:focus-within > .rounded-2xl.bg-card-border > .bg-card:not([data-mention-menu]) {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 /* Flatten the control row and every wrapper inside it, so the buttons become

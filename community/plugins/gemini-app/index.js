@@ -3023,6 +3023,7 @@ plugin.dom.observe(AUTOMATIONS_SELECTOR, (autoBtn) => {
 });
 
 const activeViewBodyObserver = new MutationObserver((mutations) => {
+  if (isUserTyping()) return;
   const hasRelevant = mutations.some(m => {
     if (m.type === 'childList') {
       const target = m.target;
@@ -4031,17 +4032,31 @@ listenToPage(window, 'keydown', (e) => {
   }
 }, true);
 
-listenToPage(window, 'popstate', checkUrlForProjectSwitch);
-listenToPage(window, 'hashchange', checkUrlForProjectSwitch);
-
 let lastCheckedUrl = '';
-const urlTicker = window.setInterval(() => {
-  if (document.hidden || isUserTyping()) return;
+function checkUrlIfChanged() {
   if (window.location.href !== lastCheckedUrl) {
     lastCheckedUrl = window.location.href;
     checkUrlForProjectSwitch();
   }
-}, 300);
+}
+
+listenToPage(window, 'popstate', checkUrlIfChanged);
+listenToPage(window, 'hashchange', checkUrlIfChanged);
+
+const origPushState = history.pushState;
+history.pushState = function(...args) {
+  const ret = origPushState.apply(this, args);
+  checkUrlIfChanged();
+  return ret;
+};
+const origReplaceState = history.replaceState;
+history.replaceState = function(...args) {
+  const ret = origReplaceState.apply(this, args);
+  checkUrlIfChanged();
+  return ret;
+};
+
+const urlTicker = null;
 
 function hideConversationTime(row) {
   if (!row) return;
@@ -6565,6 +6580,7 @@ plugin.dom.observe(CONV_VIEW_SELECTOR, (view) => {
     });
   };
   const obs = new MutationObserver((records) => {
+    if (isUserTyping()) return;
     if (scanTurnMutations(records) || performance.now() - lastPass > 1000) scheduleUpdate();
   });
   obs.observe(view, { childList: true, subtree: true });
@@ -7915,11 +7931,8 @@ topChipsReady = true;
 plugin.dom.observe(TOP_BAR_MORE, () => reconcileTopChips());
 for (const spec of TOP_CHIPS) plugin.dom.observe(spec.trigger, () => reconcileTopChips());
 
-const topChipsTicker = window.setInterval(() => {
-  if (document.hidden || isUserTyping()) return;
-  if (!document.querySelector(HOME_SCROLLER) && !topChipHostEl) return;
-  reconcileTopChips();
-}, 1000);
+const topChipsTicker = null;
+plugin.dom.observe(HOME_SCROLLER, () => reconcileTopChips());
 reconcileTopChips();
 
 /* ---------------------------------------------------------------------------
@@ -8262,6 +8275,15 @@ plugin.dom.observe('input[data-testid="inline-edit-input"]', (nativeInput) => {
 let titleBarObserver = null;
 let titleBarResizeObserver = null;
 
+let historyArrowsRaf = null;
+function scheduleUpdateHistoryArrowsPosition() {
+  if (historyArrowsRaf !== null) return;
+  historyArrowsRaf = requestAnimationFrame(() => {
+    historyArrowsRaf = null;
+    updateHistoryArrowsPosition();
+  });
+}
+
 function updateHistoryArrowsPosition() {
   const titleBar = document.querySelector('[data-testid="title-menu-bar"]');
   if (!titleBar) return;
@@ -8299,12 +8321,12 @@ plugin.dom.observe('[data-testid="title-menu-bar"]', (titleBar) => {
   updateHistoryArrowsPosition();
 
   if (titleBarObserver) titleBarObserver.disconnect();
-  titleBarObserver = new MutationObserver(() => updateHistoryArrowsPosition());
+  titleBarObserver = new MutationObserver(() => scheduleUpdateHistoryArrowsPosition());
   titleBarObserver.observe(titleBar, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'class', 'hidden'] });
 
   if (typeof ResizeObserver !== 'undefined') {
     if (titleBarResizeObserver) titleBarResizeObserver.disconnect();
-    titleBarResizeObserver = new ResizeObserver(() => updateHistoryArrowsPosition());
+    titleBarResizeObserver = new ResizeObserver(() => scheduleUpdateHistoryArrowsPosition());
     titleBarResizeObserver.observe(titleBar);
     for (const child of titleBar.children) {
       child._geminiObserved = true;
@@ -8401,6 +8423,13 @@ plugin.onDispose(() => {
   for (const host of document.querySelectorAll("[data-gemini-top-chips]")) host.remove();
   for (const row of document.querySelectorAll("[data-gemini-parked-row]")) row.removeAttribute("data-gemini-parked-row");
   for (const dlg of document.querySelectorAll(".willow-gdlg-host")) dlg.remove();
+  if (historyArrowsRaf !== null) {
+    cancelAnimationFrame(historyArrowsRaf);
+    historyArrowsRaf = null;
+  }
+  if (activeViewBodyObserver) activeViewBodyObserver.disconnect();
+  history.pushState = origPushState;
+  history.replaceState = origReplaceState;
   closeSkillsView();
   cancelSentPromptGlide();
   document.getElementById("gemini-skills-button")?.remove();

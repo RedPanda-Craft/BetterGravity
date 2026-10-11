@@ -290,4 +290,13 @@ describe("Gemini App repeated work", () => {
     // Resting container remains clean without inline display: none
     expect(resting.style.display).toBe("");
   });
+
+  it("does not spawn background url or top-chips polling intervals", () => {
+    const setIntervalSpy = vi.spyOn(window, "setInterval");
+    startPlugin();
+    const calls = setIntervalSpy.mock.calls;
+    expect(calls.some(([, ms]) => ms === 300)).toBe(false);
+    expect(calls.some(([, ms]) => ms === 1000)).toBe(false);
+    setIntervalSpy.mockRestore();
+  });
 });

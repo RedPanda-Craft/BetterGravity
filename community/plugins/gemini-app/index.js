@@ -4982,11 +4982,14 @@ function getEditorTextRange(editor) {
   return range;
 }
 
+let lastExpansionTimestamp = 0;
+
 function setBoxExpanded(box, expanded) {
   const isExpanded = box.getAttribute("data-expanded") === "true";
   if (isExpanded !== expanded) {
     if (expanded) {
       box.setAttribute("data-expanded", "true");
+      lastExpansionTimestamp = Date.now();
     } else {
       box.removeAttribute("data-expanded");
     }
@@ -5028,7 +5031,7 @@ function checkPromptExpansion(box) {
   const isAlreadyExpanded = box.getAttribute("data-expanded") === "true";
 
   // Fast exit: short single-line draft cannot wrap or collide with right-side controls
-  if (!isAlreadyExpanded && text.length < 20 && !text.includes("\n")) {
+  if (text.length < 20 && !text.includes("\n")) {
     setBoxExpanded(box, false);
     return;
   }
@@ -5092,6 +5095,11 @@ function checkPromptExpansion(box) {
     setBoxExpanded(box, false);
   } else {
     // In 2-row mode:
+    // Dwell-time guard: prevent rapid ping-pong oscillation right after expanding
+    if (Date.now() - lastExpansionTimestamp < 350) {
+      return;
+    }
+
     // If text is clearly multiline by height, stay expanded without measuring rects
     if (editor.scrollHeight > 36) {
       setBoxExpanded(box, true);
@@ -5132,8 +5140,10 @@ function checkPromptExpansion(box) {
       const rightSpace = 8 + 4 + pillWidth + 4 + micWidth + 4 + sendWidth + 15;
       const availableSingleRowWidth = Math.max(100, cardWidth - leftSpace - rightSpace);
 
-      // Collapse back to single row only when text width easily fits before model selector
-      if (textWidth <= availableSingleRowWidth - 8) {
+      // Strong Schmitt-trigger hysteresis dampening: collapse back to single row ONLY when
+      // text width has substantially receded below the single row boundary (minimum 60px safe margin)
+      // or text is under 20 chars. This completely prevents edge-wrapping oscillation loops.
+      if (textWidth <= availableSingleRowWidth - 60) {
         setBoxExpanded(box, false);
         return;
       }
@@ -5533,12 +5543,10 @@ plugin.dom.observe(INPUT_BOX, (box) => {
     mo.observe(editor, { childList: true, subtree: true, characterData: true });
   }
 
-  const boxRo = new ResizeObserver(() => requestPromptExpansionCheck());
-  boxRo.observe(box);
-
+  // Dedicated observer on box childList to keep AI disclaimer attached without
+  // re-triggering prompt expansion checks on self-induced DOM mutations.
   const boxMo = new MutationObserver(() => {
     ensureAiDisclaimer(box);
-    requestPromptExpansionCheck();
   });
   boxMo.observe(box, { childList: true });
 
@@ -5549,7 +5557,6 @@ plugin.dom.observe(INPUT_BOX, (box) => {
       box.removeEventListener("drop", onPasteOrDrop);
       if (ro) ro.disconnect();
       if (mo) mo.disconnect();
-      boxRo.disconnect();
       boxMo.disconnect();
     }
   });

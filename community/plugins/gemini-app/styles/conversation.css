@@ -238,22 +238,22 @@ body.gemini-skills-open [data-gemini-skills-hidden] {
   overflow-wrap: anywhere;
 }
 
-/* The time, copy, and revert controls appear on hover inside the user bubble */
+/* The time, copy, and revert controls blend seamlessly with the native bubble (no capsule border/shadow) */
 [data-testid="lifted-context-menu-trigger"] .user-input-buttons-container,
 [data-testid="user-input-step"] .user-input-buttons-container {
   position: absolute !important;
-  bottom: 4px !important;
-  right: 6px !important;
+  bottom: 2px !important;
+  right: 4px !important;
   top: auto !important;
   left: auto !important;
   z-index: 20 !important;
   display: flex !important;
   align-items: center !important;
-  padding: 2px 6px !important;
+  padding: 2px 4px !important;
   border-radius: 9999px !important;
-  background-color: var(--gemini-surface-container, rgba(40, 42, 44, 0.95)) !important;
-  border: 1px solid var(--gemini-border, rgba(255, 255, 255, 0.1)) !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35) !important;
+  background-color: var(--gemini-bubble-bg, var(--card)) !important;
+  border: none !important;
+  box-shadow: 0 0 20px 12px var(--gemini-bubble-bg, var(--card)) !important;
   transition: opacity 150ms ease !important;
 }
 

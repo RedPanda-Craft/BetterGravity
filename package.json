@@ -32,7 +32,9 @@
     "community:check": "node scripts/community.mjs check",
     "community:build": "node scripts/community.mjs build",
     "verify": "pnpm verify:structure && pnpm verify:links && pnpm community:check",
-    "check": "pnpm verify && pnpm typecheck && pnpm build && pnpm test"
+    "check": "pnpm verify && pnpm typecheck && pnpm build && pnpm test",
+    "agent:verify": "node scripts/agent-sentinel.mjs",
+    "agent:check": "node scripts/agent-sentinel.mjs --full"
   },
   "devDependencies": {
     "@electron/asar": "^3.4.1",

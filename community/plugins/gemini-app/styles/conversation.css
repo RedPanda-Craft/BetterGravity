@@ -238,15 +238,29 @@ body.gemini-skills-open [data-gemini-skills-hidden] {
   overflow-wrap: anywhere;
 }
 
-/* The time, copy, and revert controls appear on hover. Inside a padded bubble
- * they would sit on the text, so they hang beneath it as Willow's do. */
-[data-testid="lifted-context-menu-trigger"] .user-input-buttons-container {
-  top: 100% !important;
-  bottom: auto !important;
-  right: 12px !important;
-  padding: 6px 4px !important;
-  background: transparent !important;
-  box-shadow: none !important;
+/* The time, copy, and revert controls appear on hover inside the user bubble */
+[data-testid="lifted-context-menu-trigger"] .user-input-buttons-container,
+[data-testid="user-input-step"] .user-input-buttons-container {
+  position: absolute !important;
+  bottom: 4px !important;
+  right: 6px !important;
+  top: auto !important;
+  left: auto !important;
+  z-index: 20 !important;
+  display: flex !important;
+  align-items: center !important;
+  padding: 2px 6px !important;
+  border-radius: 9999px !important;
+  background-color: var(--gemini-surface-container, rgba(40, 42, 44, 0.95)) !important;
+  border: 1px solid var(--gemini-border, rgba(255, 255, 255, 0.1)) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35) !important;
+  transition: opacity 150ms ease !important;
+}
+
+[data-testid="user-input-step"]:hover .user-input-buttons-container,
+[data-testid="lifted-context-menu-trigger"]:hover .user-input-buttons-container {
+  opacity: 1 !important;
+  pointer-events: auto !important;
 }
 
 /* --- 3b-1. Sent message attachments (Willow style) ----------------------------

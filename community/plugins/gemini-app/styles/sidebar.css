@@ -186,9 +186,7 @@ div.bg-border.flex-shrink-0.w-\[1px\] {
   pointer-events: none !important;
   transition: filter 300ms cubic-bezier(0.2, 0, 0, 1) !important;
   -webkit-font-smoothing: antialiased !important;
-  image-rendering: -webkit-optimize-contrast !important;
-  transform: translateZ(0) !important;
-  backface-visibility: hidden !important;
+  image-rendering: auto !important;
 }
 
 .gemini-logo-expand-wrap {

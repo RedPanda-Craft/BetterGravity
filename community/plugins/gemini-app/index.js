@@ -2688,6 +2688,21 @@ function ensureSkillsRow(block) {
 listenToPage(document, 'click', (e) => {
   const target = e.target;
   if (!target || !target.closest) return;
+
+  const historyBtn = target.closest('[data-testid="history-button"]');
+  if (historyBtn) {
+    e.preventDefault();
+    e.stopPropagation();
+    closeOpenCustomViews(target);
+    const searchBtn = document.querySelector('[data-testid="sidebar-search-button"]');
+    if (searchBtn) {
+      searchBtn.click();
+    } else {
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', code: 'KeyK', ctrlKey: true, bubbles: true }));
+    }
+    return;
+  }
+
   if (
     target.closest('#gemini-skills-view') ||
     target.closest('#gemini-skills-button') ||

@@ -325,3 +325,11 @@
   padding: 24px 8px !important;
   text-align: center !important;
 }
+
+/* Suppress legacy history deprecation and expiration warning banners */
+.h-full.w-full.flex.flex-col.items-center.overflow-y-auto [role="alert"],
+.h-full.w-full.flex.flex-col.items-center.overflow-y-auto [class*="alert"],
+.h-full.w-full.flex.flex-col.items-center.overflow-y-auto [class*="bg-amber"],
+.h-full.w-full.flex.flex-col.items-center.overflow-y-auto [class*="bg-yellow"] {
+  display: none !important;
+}

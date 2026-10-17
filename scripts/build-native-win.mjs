@@ -89,11 +89,9 @@ for (const arch of targetArches) {
   );
 
   const exeSrc = resolve(winPublishDir, "BetterGravityInstaller.exe");
-  const exeDest = resolve(outDir, `BetterGravity-Installer-Windows-${arch}.exe`);
   const superExeDest = resolve(outDir, `SuperGravity-Installer-Windows-${arch}.exe`);
 
   if (existsSync(exeSrc)) {
-    cpSync(exeSrc, exeDest);
     cpSync(exeSrc, superExeDest);
   }
 
@@ -118,12 +116,7 @@ try {
   rmSync(resolve(lightPublishDir, "BetterGravityInstaller.pdb"), { force: true });
 } catch {}
 
-const lightZip = resolve(outDir, "BetterGravity-Installer-Windows-Light.zip");
 const superLightZip = resolve(outDir, "SuperGravity-Installer-Windows-Light.zip");
-execSync(
-  `powershell -NoProfile -Command "Compress-Archive -Path '${lightPublishDir}\\*' -DestinationPath '${lightZip}' -Force"`,
-  { cwd: workspace, stdio: "inherit" }
-);
 execSync(
   `powershell -NoProfile -Command "Compress-Archive -Path '${lightPublishDir}\\*' -DestinationPath '${superLightZip}' -Force"`,
   { cwd: workspace, stdio: "inherit" }

@@ -43,7 +43,7 @@
 .ctp-accent-popup {
   position: fixed;
   z-index: 99999;
-  width: 284px;
+  width: 330px;
   background: var(--ctp-mantle, #181825);
   border: 1px solid var(--ctp-surface1, #45475a);
   border-radius: 14px;
@@ -102,6 +102,58 @@
   color: var(--ctp-overlay1, #7f849c);
   margin-bottom: 6px;
   text-transform: uppercase;
+}
+
+/* 2.5 Upper Tier: Studio Themes Switcher Tabs */
+.ctp-theme-section {
+  margin-bottom: 12px;
+}
+
+.ctp-theme-tabs {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 3px;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 3px;
+  border-radius: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ctp-theme-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 5px 2px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--ctp-subtext0, #a6adc8);
+  font-size: 10px;
+  font-weight: 550;
+  cursor: pointer;
+  transition: all 130ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  outline: none;
+  white-space: nowrap;
+}
+
+.ctp-theme-tab:hover:not(.is-active) {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.ctp-theme-tab.is-active {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.ctp-theme-preview-dot {
+  width: 6.5px;
+  height: 6.5px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
 /* 3. Upper Tier: 4 Flavor Segment Tabs */

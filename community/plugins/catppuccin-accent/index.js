@@ -356,17 +356,59 @@
   let currentAccentId = "peach";
   let observer = null;
 
+  const THEMES_CONFIG = [
+    { id: "everforest", name: "Everforest", file: "everforest-dark.css", color: "#a7c080" },
+    { id: "catppuccin", name: "Catppuccin", file: "catppuccin-turbo.css", color: "#fab387" },
+    { id: "flexoki",    name: "Flexoki",    file: "flexoki-dark.css",    color: "#da702c" },
+    { id: "kanagawa",   name: "Kanagawa",   file: "kanagawa-dragon.css", color: "#b6927b" },
+    { id: "melange",    name: "Melange",    file: "melange-dark.css",    color: "#d47766" }
+  ];
+
   function getTriggerButton() {
     return document.querySelector('[data-bettergravity-button="Palette"], [data-bettergravity-button="Accent"]');
   }
 
   function getActiveProvider() {
+    if (THEME_PROVIDERS.everforest.isActive()) return THEME_PROVIDERS.everforest;
     if (THEME_PROVIDERS.catppuccin.isActive()) return THEME_PROVIDERS.catppuccin;
     if (THEME_PROVIDERS.flexoki.isActive()) return THEME_PROVIDERS.flexoki;
     if (THEME_PROVIDERS.kanagawa.isActive()) return THEME_PROVIDERS.kanagawa;
-    if (THEME_PROVIDERS.everforest.isActive()) return THEME_PROVIDERS.everforest;
     if (THEME_PROVIDERS.melange.isActive()) return THEME_PROVIDERS.melange;
-    return null;
+    try {
+      const lastId = localStorage.getItem("__bettergravity_last_theme_id");
+      if (lastId && THEME_PROVIDERS[lastId]) return THEME_PROVIDERS[lastId];
+    } catch (_) {}
+    return THEME_PROVIDERS.everforest;
+  }
+
+  function switchTheme(targetId) {
+    const targetProvider = THEME_PROVIDERS[targetId];
+    if (!targetProvider) return;
+
+    activeProvider?.removeOverrides?.();
+    activeProvider = targetProvider;
+    try {
+      localStorage.setItem("__bettergravity_last_theme_id", targetId);
+    } catch (_) {}
+
+    const themeItem = THEMES_CONFIG.find(t => t.id === targetId);
+    if (themeItem && window.BetterGravity?.setSettings) {
+      window.BetterGravity.setSettings({ themes: { enabled: [themeItem.file] } });
+    }
+
+    const cfg = getSavedConfig(targetProvider);
+    targetProvider.apply(cfg.flavor, cfg.accent, true);
+
+    const triggerBtn = getTriggerButton();
+    if (triggerBtn) {
+      triggerBtn.title = `${targetProvider.name} Palette Switcher`;
+    }
+
+    if (popupEl) {
+      popupEl.remove();
+      popupEl = null;
+    }
+    openPopup();
   }
 
   function getSavedConfig(provider) {
@@ -890,6 +932,45 @@
 
     header.append(title, badge);
     popupEl.append(header);
+
+    // --- Section 0: 5 Studio Themes Switcher Tabs ---
+    const themeSec = document.createElement("div");
+    themeSec.className = "ctp-theme-section";
+
+    const themeLabel = document.createElement("div");
+    themeLabel.className = "ctp-section-label";
+    themeLabel.textContent = "STUDIO THEMES";
+
+    const themeTabs = document.createElement("div");
+    themeTabs.className = "ctp-theme-tabs";
+
+    THEMES_CONFIG.forEach((tc) => {
+      const tab = document.createElement("button");
+      tab.type = "button";
+      tab.className = `ctp-theme-tab ${tc.id === provider.id ? "is-active" : ""}`;
+      tab.setAttribute("data-theme-id", tc.id);
+
+      const dot = document.createElement("span");
+      dot.className = "ctp-theme-preview-dot";
+      dot.style.backgroundColor = tc.color;
+
+      const text = document.createElement("span");
+      text.textContent = tc.name;
+
+      tab.append(dot, text);
+
+      tab.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (tc.id !== provider.id) {
+          switchTheme(tc.id);
+        }
+      });
+
+      themeTabs.appendChild(tab);
+    });
+
+    themeSec.append(themeLabel, themeTabs);
+    popupEl.append(themeSec);
 
     // --- Section 1: Flavor Tabs (Only rendered when provider has multiple flavors) ---
     if (provider.hasFlavors && Object.keys(provider.flavors).length > 1) {

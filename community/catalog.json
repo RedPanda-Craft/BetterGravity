@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-17T11:12:17.929Z",
+  "generatedAt": "2026-10-17T11:22:32.523Z",
   "entries": [
     {
       "id": "catppuccin-accent",
@@ -11,12 +11,12 @@
       "author": "RedPanda-Craft",
       "source": "https://github.com/YashjitPal/BetterGravity",
       "path": "community/plugins/catppuccin-accent",
-      "bytes": 79437,
+      "bytes": 83272,
       "files": [
         {
           "name": "index.js",
-          "bytes": 54781,
-          "sha256": "557cebe39294275807a77a176773472e42725ce900964e19de191044e7d745b9"
+          "bytes": 57523,
+          "sha256": "61a827e90075e798bdb8eaf002d98d1a66992eb927965c487832566aa73cac2b"
         },
         {
           "name": "plugin.json",
@@ -30,8 +30,8 @@
         },
         {
           "name": "styles/accent.css",
-          "bytes": 23485,
-          "sha256": "9d62d0a70c01e03528bba8b68b354accd244299d29a0c1aac8476631ce587d0d"
+          "bytes": 24578,
+          "sha256": "f0b437b9b791604ebe3f41aff7a3b3924244299be9bb663096f7a01dca66d556"
         }
       ]
     },

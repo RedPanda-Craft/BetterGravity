@@ -1,6 +1,6 @@
 {
   "version": "3.0.0",
-  "generatedAt": "2026-10-14T07:14:48.362Z",
+  "generatedAt": "2026-10-17T10:50:52.676Z",
   "files": {
     "patcher-cli.cjs": {
       "path": "apps/installer-windows/Patcher/patcher-cli.cjs",
@@ -12,7 +12,7 @@
     },
     "runtime/preload.cjs": {
       "path": "apps/installer-windows/Patcher/runtime/preload.cjs",
-      "sha256": "95805408c45e0230f05804af3dff45a6d0053ea9fa8943218b6ffca819e158f2"
+      "sha256": "428fa12fcf5d3e31634268a693f9e9172fa735a53ba1c5a3bf2f1b791bfdc647"
     },
     "runtime/repair.cjs": {
       "path": "apps/installer-windows/Patcher/runtime/repair.cjs",

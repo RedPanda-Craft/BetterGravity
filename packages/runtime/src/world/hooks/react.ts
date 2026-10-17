@@ -32,6 +32,10 @@ function readKeyed(node: object, prefixes: readonly string[]): unknown {
   return undefined;
 }
 
+import { fiberReflector, type ResilientFiberReflector } from "../fiber-reflector.js";
+
+export { fiberReflector };
+
 export interface ReactTools {
   /** The fiber React attached to a DOM node, if there is one. */
   getFiber(node: Element): Fiber | undefined;
@@ -49,6 +53,8 @@ export interface ReactTools {
   forceUpdate(fiber: Fiber): boolean;
   /** The component instance for a class component, if it is one. */
   getInstance(fiber: Fiber): Record<string, unknown> | undefined;
+  /** Resilient Fiber reflection and duck-typing capability locator */
+  readonly reflector?: ResilientFiberReflector;
 }
 
 export function createReactTools(): ReactTools {
@@ -56,6 +62,7 @@ export function createReactTools(): ReactTools {
     from instanceof Element ? (readKeyed(from, FIBER_PREFIXES) as Fiber | undefined) : from;
 
   const tools: ReactTools = {
+    reflector: fiberReflector,
     getFiber: (node) => readKeyed(node, FIBER_PREFIXES) as Fiber | undefined,
 
     getProps: (node) => {

@@ -89,6 +89,23 @@ describe("applyThemes", () => {
     applyThemes([theme("a.css", true)]);
     expect(document.head.contains(foreign)).toBe(true);
   });
+
+  it("reconciles styles in-place without destroying DOM elements", () => {
+    applyThemes([theme("a.css", true, "body { color: red; }")]);
+    const firstStyle = document.querySelector(`style[${STYLE_ATTRIBUTE}="a.css"]`);
+    expect(firstStyle).not.toBeNull();
+
+    // Re-applying with identical CSS should preserve the exact same DOM node
+    applyThemes([theme("a.css", true, "body { color: red; }")]);
+    const secondStyle = document.querySelector(`style[${STYLE_ATTRIBUTE}="a.css"]`);
+    expect(secondStyle).toBe(firstStyle);
+
+    // Re-applying with updated CSS should update textContent in-place on the same node
+    applyThemes([theme("a.css", true, "body { color: blue; }")]);
+    const thirdStyle = document.querySelector(`style[${STYLE_ATTRIBUTE}="a.css"]`);
+    expect(thirdStyle).toBe(firstStyle);
+    expect(thirdStyle?.textContent).toBe("body { color: blue; }");
+  });
 });
 
 describe("PluginHost lifecycle", () => {

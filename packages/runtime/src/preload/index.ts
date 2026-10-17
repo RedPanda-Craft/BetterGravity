@@ -167,14 +167,44 @@ const bridge: RuntimeBridge = {
 /**
  * Themes are applied from the preload rather than the page world: they are
  * plain CSS, so they keep working even if the plugin runtime fails to boot.
+ *
+ * Injects themes as early as possible (document_start) rather than waiting for
+ * DOMContentLoaded. This eliminates FOUC and avoids secondary layout reflow.
  */
-async function applyThemesWhenReady(): Promise<void> {
-  await whenDocumentReady();
+function applyThemesEarly(state: RuntimeState): void {
+  let applied = false;
+  const inject = (): boolean => {
+    if (applied) return true;
+    const parent = document.head ?? document.documentElement;
+    if (!parent) return false;
+    applied = true;
+    if (document.documentElement && state.version) {
+      document.documentElement.setAttribute("data-bettergravity", state.version);
+    }
+    applyThemes(state.themes);
+    return true;
+  };
+
+  if (inject()) return;
+
+  const observer = new MutationObserver(() => {
+    if (inject()) observer.disconnect();
+  });
+  observer.observe(document, { childList: true, subtree: true });
+  document.addEventListener(
+    "readystatechange",
+    () => {
+      if (inject()) observer.disconnect();
+    },
+    { once: true }
+  );
+}
+
+async function bootThemesEarly(): Promise<void> {
   const state = (await ipcRenderer.invoke(CHANNEL.getState).catch(() => undefined)) as RuntimeState | undefined;
   if (!state) return;
 
-  document.documentElement.setAttribute("data-bettergravity", state.version);
-  applyThemes(state.themes);
+  applyThemesEarly(state);
   for (const diagnostic of state.diagnostics) report(`diagnostic — ${diagnostic.source}: ${diagnostic.message}`);
 }
 
@@ -250,7 +280,7 @@ if (isOverlayWindow) {
   });
 
   injectWorldRuntime();
-  void applyThemesWhenReady().catch((error: unknown) =>
+  void bootThemesEarly().catch((error: unknown) =>
     report(`could not apply themes: ${error instanceof Error ? error.message : String(error)}`)
   );
 }

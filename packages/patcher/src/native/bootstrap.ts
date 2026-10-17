@@ -46,6 +46,46 @@ export function bootstrapSource(version = BETTERGRAVITY_VERSION): string {
   ].join("\n");
 }
 
+export function superGravityBootstrapSource(version = BETTERGRAVITY_VERSION): string {
+  return [
+    `"use strict";`,
+    `const path = require("node:path");`,
+    `const { app } = require("electron");`,
+    ``,
+    `const resources = path.join(__dirname, "..");`,
+    `const originalAsar = path.join(resources, "_app.asar");`,
+    `let originalPackage = {};`,
+    `try {`,
+    `  originalPackage = require(path.join(originalAsar, "package.json"));`,
+    `} catch {}`,
+    `const originalMain = path.join(originalAsar, originalPackage.main || "index.js");`,
+    ``,
+    `if (originalPackage.productName || originalPackage.name) {`,
+    `  app.setName(originalPackage.productName || originalPackage.name);`,
+    `}`,
+    `app.setAppPath(originalAsar);`,
+    ``,
+    `const runtimeInfo = Object.freeze({`,
+    `  version: ${JSON.stringify(version)},`,
+    `  hostVersion: originalPackage.version || "unknown",`,
+    `  runtimeDirectory: path.join(resources, ${JSON.stringify(RUNTIME_DIRECTORY_NAME)})`,
+    `});`,
+    `global.SuperGravity = runtimeInfo;`,
+    `global.BetterGravity = runtimeInfo;`,
+    ``,
+    `try {`,
+    `  const mainScript = path.join(runtimeInfo.runtimeDirectory, "runtime", "main.cjs");`,
+    `  require(mainScript).activate(runtimeInfo);`,
+    `} catch (error) {`,
+    `  console.error("[SuperGravity] Runtime self-healing fallback activated; launching vanilla host.", error);`,
+    `}`,
+    ``,
+    `require.main.filename = originalMain;`,
+    `require(originalMain);`,
+    ``
+  ].join("\n");
+}
+
 export function createMarker(host: HostManifest, originalAsarSha256: string, version = BETTERGRAVITY_VERSION): InstallationMarker {
   return {
     schemaVersion: 1,

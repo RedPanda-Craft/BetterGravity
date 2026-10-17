@@ -120,14 +120,17 @@ function insidePlugin(base: string, relative: string, what: string): string {
  * look with some behaviour keeps its CSS in .css files. When `styles` is
  * declared and `main` is not, the entry script is optional.
  */
+const BUILTIN_PLUGINS = new Set(["timeslip", "fork-chat"]);
+
 export function readPlugins(directory: string, settings: RuntimeSettings): CatalogResult<PluginRecord> {
-  if (!settings.plugins.developerMode) return { entries: [], diagnostics: [] };
+  const isDev = settings.plugins.developerMode;
 
   const entries: PluginRecord[] = [];
   const diagnostics: RuntimeDiagnostic[] = [];
 
   for (const entry of listEntries(directory)) {
     if (!entry.isDirectory()) continue;
+    if (!isDev && !BUILTIN_PLUGINS.has(entry.name)) continue;
     const base = path.join(directory, entry.name);
     try {
       const manifest = JSON.parse(fs.readFileSync(path.join(base, "plugin.json"), "utf8")) as PluginManifest;

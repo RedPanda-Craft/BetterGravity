@@ -259,14 +259,33 @@ function flush(): void {
     if (watcher.positional) scanDocument(watcher);
   }
 }
+import { typingGuard } from "./typing-guard.js";
+
+export { typingGuard };
+
+export function isUserTyping(): boolean {
+  return typingGuard.isUserTyping;
+}
+
 /**
  * The observer callback already runs at a microtask checkpoint, so one more
  * microtask coalesces every callback raised in this task without letting a
  * frame through. A watcher's mark still lands before anything is painted.
+ *
+ * During active user typing, we guard the flush via TypingGuard scheduler to keep
+ * keystrokes smooth, responsive, and completely reflow-free.
  */
 function queueFlush(): void {
   if (flushQueued) return;
   flushQueued = true;
+
+  if (typingGuard.isUserTyping) {
+    typingGuard.guard("dom:flush", () => {
+      if (flushQueued) flush();
+    })();
+    return;
+  }
+
   queueMicrotask(flush);
 }
 

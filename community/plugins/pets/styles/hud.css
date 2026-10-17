@@ -100,7 +100,7 @@
   background: var(--pet-badge-background, var(--pet-info-soft));
   color: var(--pet-badge-foreground, var(--pet-text));
   box-shadow: var(--pet-material-shadow);
-  backdrop-filter: blur(4px);
+  backdrop-filter: none;
   font: 500 12px / 1 var(--vscode-font-family, ui-sans-serif, system-ui, sans-serif);
   cursor: grab;
   touch-action: none;
@@ -804,7 +804,7 @@
   background: color-mix(in srgb, var(--pet-surface) 65%, transparent);
   color: var(--pet-text);
   box-shadow: 0 2px 6px rgb(0 0 0 / 0.2);
-  backdrop-filter: blur(24px);
+  backdrop-filter: none;
 
   cursor: pointer;
   opacity: 0;
@@ -958,7 +958,7 @@
      Nothing in the frame sheet turns this one off, not even reduced transparency,
      so it is unguarded here too. 4px, not the 24px the badge and the dismiss X
      use: those are Tailwind's backdrop-blur-xl, a different surface. */
-  backdrop-filter: blur(4px);
+  backdrop-filter: none;
 
   /* Codex's own declaration, and the reason a press here reaches the page at all:
      inside one of the host's drag regions the window manager takes the press
@@ -1002,7 +1002,7 @@
   background: #282828e6;
   color: #ededed;
   box-shadow: 0 8px 24px #0005;
-  backdrop-filter: blur(8px);
+  backdrop-filter: none;
   font: 14px/20px ui-sans-serif, system-ui, sans-serif;
   user-select: none;
   -webkit-app-region: no-drag;

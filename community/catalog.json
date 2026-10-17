@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-17T15:08:24.519Z",
+  "generatedAt": "2026-10-17T15:46:00.015Z",
   "entries": [
     {
       "id": "catppuccin-accent",
@@ -11,7 +11,7 @@
       "author": "RedPanda-Craft",
       "source": "https://github.com/YashjitPal/BetterGravity",
       "path": "community/plugins/catppuccin-accent",
-      "bytes": 83272,
+      "bytes": 82556,
       "files": [
         {
           "name": "index.js",
@@ -30,8 +30,8 @@
         },
         {
           "name": "styles/accent.css",
-          "bytes": 24578,
-          "sha256": "267e1db814d6c7745993afba4580ca9872eb2219f9ee1b631605057df9a5e60a"
+          "bytes": 23862,
+          "sha256": "15d34d830a79665095f255b5466c7ba2d6b7d45cac5c98810ab10f09fec47cb2"
         }
       ]
     },
@@ -816,7 +816,7 @@
       "author": "Yashjit Pal",
       "source": "https://github.com/YashjitPal/BetterGravity",
       "path": "community/plugins/pets",
-      "bytes": 1507945,
+      "bytes": 1509221,
       "files": [
         {
           "name": "assets/rocky.webp",
@@ -825,8 +825,8 @@
         },
         {
           "name": "index.js",
-          "bytes": 260353,
-          "sha256": "5c7d52c637fcf6ea3ebcd659d6ea8bb0ded71b68d4ccc8dd812e686c12d76f13"
+          "bytes": 261650,
+          "sha256": "1c7849dc05ef00dfacebc84368b9310dbd62ddf07ee85156307e7ee07cd59a65"
         },
         {
           "name": "plugin.json",
@@ -960,8 +960,8 @@
         },
         {
           "name": "styles/hud.css",
-          "bytes": 42099,
-          "sha256": "610f7b7405a2a8284de38e5583f3f7a3ee43e7e4fbd20f0205ad242a1cb4f670"
+          "bytes": 42078,
+          "sha256": "f7680050829820611012443d34416d27a519ed95ecf4bf6f3e056d79f5768fea"
         },
         {
           "name": "styles/library.css",
@@ -1050,12 +1050,12 @@
       "author": "RedPanda-Craft",
       "source": "https://github.com/catppuccin/catppuccin",
       "path": "community/themes/catppuccin-turbo.css",
-      "bytes": 38641,
+      "bytes": 37572,
       "files": [
         {
           "name": "catppuccin-turbo.css",
-          "bytes": 38641,
-          "sha256": "047773b66dbef18d09515011dcbfaf9390400d96e004c1c343657e8fc9053dce"
+          "bytes": 37572,
+          "sha256": "801909d24297e37fe87d58071baff8d7322b392c22a1ce66f17b490be1ce5d76"
         }
       ]
     },

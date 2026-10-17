@@ -1988,13 +1988,12 @@ div[role="dialog"]:has(button.main-row-trigger) {
 }
 
 /* Hide session timestamps (e.g. "2m", "7d", "3mo") next to conversation rows */
-[data-testid="conversation-row-sidebar"] div[class*="group-hover:opacity-0"]:not(:has([data-testid="status-unread-dot"])):not(:has([data-testid="status-loading-spinner"])):not(:has([data-testid="attention-dot"])):not(:has(svg)):not(:has([class*="animate-spin"])):not(:has([aria-label="Loading"])) {
+[data-testid="conversation-row-sidebar"] div[class*="group-hover:opacity-0"]:not(:has(svg, [data-testid*="dot"], [data-testid*="spinner"], [class*="animate-spin"], [aria-label="Loading"])) {
   display: none !important;
 }
 
 [data-testid="conversation-row-sidebar"] div[class*="group-hover:opacity-0"] > span:not([aria-label="Loading"]),
-[data-testid="conversation-row-sidebar"] div[class*="group-hover:opacity-0"] > time,
-[data-testid="conversation-row-sidebar"] div[class*="group-hover:opacity-0"] > :not([data-testid="status-unread-dot"]):not([data-testid="status-loading-spinner"]):not([data-testid="attention-dot"]):not(svg):not([class*="animate-spin"]):not([aria-label="Loading"]):not(:has([data-testid="status-unread-dot"])):not(:has([data-testid="status-loading-spinner"])):not(:has(svg)):not(:has([aria-label="Loading"])) {
+[data-testid="conversation-row-sidebar"] div[class*="group-hover:opacity-0"] > time {
   display: none !important;
 }
 
@@ -2176,7 +2175,7 @@ div[role="dialog"]:has(button.main-row-trigger) {
  * empty enough to be hidden. Opening the conversation clears the dot and the
  * pin comes back.
  * ------------------------------------------------------------------------- */
-[data-testid="conversation-row-sidebar"][data-pinned="true"]:not(:has(div[class*="group-hover:opacity-0"] [data-testid="status-unread-dot"])):not(:has(div[class*="group-hover:opacity-0"] [data-testid="status-loading-spinner"])):not(:has(div[class*="group-hover:opacity-0"] [data-testid="attention-dot"])):not(:has(div[class*="group-hover:opacity-0"] svg)):not(:has(div[class*="group-hover:opacity-0"] [class*="animate-spin"])):not(:has(div[class*="group-hover:opacity-0"] [aria-label="Loading"])) .pointer-events-auto > div::before {
+[data-testid="conversation-row-sidebar"][data-pinned="true"]:not(:has(div[class*="group-hover:opacity-0"] :is(svg, [data-testid*="dot"], [data-testid*="spinner"], [class*="animate-spin"], [aria-label="Loading"]))) .pointer-events-auto > div::before {
   content: "push_pin" !important;
   font-family: var(--gemini-icon-font, "Luminous Symbols"), "Google Symbols", sans-serif !important;
   font-variation-settings: "FILL" 0, "wght" 330, "GRAD" 0, "ROND" 100, "opsz" 16 !important;

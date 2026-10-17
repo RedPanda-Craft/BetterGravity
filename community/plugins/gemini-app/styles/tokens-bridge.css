@@ -1,0 +1,96 @@
+/* ============================================================================
+ * SuperGravity Core Design Token SSOT Specification (28 Core Tokens)
+ * Zero-Reflow / Zero-Overhead Token Engine & Host Bridge
+ * ============================================================================ */
+:root {
+  /* 1. Surface & Elevation (5 levels: solid / premultiplied alpha, zero blur) */
+  --sg-surface-canvas: #0e1015;        /* IDE base canvas / editor background */
+  --sg-surface-base: #13161c;          /* Sidebar / conversation container background */
+  --sg-surface-raised: #1a1e26;        /* AI message card / code block / prompt box background */
+  --sg-surface-overlay: #222731;       /* Dropdowns (plus-menu, slash-menu) / modals */
+  --sg-surface-sunken: #0a0c10;        /* Terminal / sunken code wells */
+
+  /* 2. Typography & Contrast (4 contrast levels) */
+  --sg-text-primary: #e6e9ef;          /* Primary body text (WCAG AAA >= 11:1) */
+  --sg-text-secondary: #9ca3b0;        /* Secondary description / thinking text */
+  --sg-text-muted: #636b78;            /* Placeholder / timestamps / disabled */
+  --sg-text-on-accent: #0e1015;        /* High-contrast text on accent pill */
+
+  /* 3. Borders & Dividers (4 boundary tokens) */
+  --sg-border-subtle: #202530;         /* Subtle separator lines */
+  --sg-border-default: #2b313f;        /* Standard card and input borders */
+  --sg-border-strong: #3d4659;         /* Hover state high-contrast border */
+  --sg-border-focus: #89b4fa;          /* Keyboard focus ring (active prompt box) */
+
+  /* 4. Brand & Accent (4 interaction tokens) */
+  --sg-accent-primary: #89b4fa;        /* Primary brand / send button / active indicator */
+  --sg-accent-hover: #b4befe;          /* Hover state */
+  --sg-accent-subtle: #1e293b;         /* Active selection background (solid color-mix) */
+  --sg-selection-bg: #2d3f5e;          /* Highlighted text selection */
+
+  /* 5. Semantic States (4 feedback tokens) */
+  --sg-state-success: #a6e3a1;         /* Tool success / diff additions */
+  --sg-state-warning: #f9e2af;         /* Approval pending / warnings */
+  --sg-state-danger: #f38ba8;          /* Errors / rejections / diff deletions */
+  --sg-state-info: #89dceb;            /* Thinking / streaming pulse */
+
+  /* 6. Syntax & Code (4 code tokens) */
+  --sg-code-keyword: #cba6f7;
+  --sg-code-string: #a6e3a1;
+  --sg-code-function: #89b4fa;
+  --sg-code-comment: #6c7086;
+
+  /* 7. Geometry & Motion (3 zero-reflow motion constraints) */
+  --sg-radius-sm: 6px;
+  --sg-radius-md: 10px;
+  --sg-motion-fast: 120ms cubic-bezier(0.2, 0, 0, 1);
+
+  /* ==========================================================================
+   * Host Bridge Mapping (VS Code / Monaco / Antigravity Native Tokens)
+   * ========================================================================== */
+  --vscode-editor-background: var(--sg-surface-canvas);
+  --vscode-sideBar-background: var(--sg-surface-base);
+  --vscode-editorWidget-background: var(--sg-surface-overlay);
+  --vscode-input-background: var(--sg-surface-raised);
+  --vscode-input-border: var(--sg-border-default);
+  --vscode-focusBorder: var(--sg-border-focus);
+  --vscode-foreground: var(--sg-text-primary);
+  --vscode-descriptionForeground: var(--sg-text-secondary);
+  --vscode-widget-border: var(--sg-border-subtle);
+  --vscode-list-activeSelectionBackground: var(--sg-accent-subtle);
+  --vscode-button-background: var(--sg-accent-primary);
+  --vscode-button-foreground: var(--sg-text-on-accent);
+
+  /* Willow & Gemini App Compatibility Bridge */
+  --gemini-page-bg: var(--sg-surface-base);
+  --gemini-surface-bg: var(--sg-surface-raised);
+  --gemini-body-text: var(--sg-text-primary);
+  --gemini-muted-text: var(--sg-text-secondary);
+  --gemini-border: var(--sg-border-default);
+  --gemini-accent: var(--sg-accent-primary);
+}
+
+/* ============================================================================
+ * Zero-Reflow Core Invariants & CSS Containment
+ * ============================================================================ */
+/* Strict Hardware-Accelerated Hit-Test Bypass on decorative and overlay layers */
+[data-sg-overlay="decorative"],
+[data-bettergravity-glow],
+[data-gemini-glow] {
+  pointer-events: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Eliminate expensive blur sampling across dialogs and menus */
+[role="dialog"],
+[role="menu"],
+[data-radix-popper-content-wrapper] {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* CSS Containment on message cards to isolate layout/paint dirtying during streaming */
+[data-testid="conversation-view"] [role="article"] {
+  contain: layout style paint;
+}

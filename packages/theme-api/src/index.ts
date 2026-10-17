@@ -116,3 +116,29 @@ export function remoteThemeStub(input: string): RemoteThemeStub | undefined {
 
   return { fileName, css };
 }
+
+export interface ThemeManifest {
+  readonly id: string;
+  readonly name: string;
+  readonly description?: string;
+  readonly author?: string;
+  readonly version?: string;
+  readonly type?: "dark" | "light";
+  readonly tokens: Record<string, string>;
+}
+
+const ALLOWED_TOKEN_PREFIX = "--sg-";
+const BLACKLISTED_VALUE_REGEX = /backdrop-filter|blur\(|url\(\s*['"]?http|expression\(/i;
+
+export function compileThemeManifest(manifest: ThemeManifest): string {
+  const declarations: string[] = [];
+  for (const [key, rawVal] of Object.entries(manifest.tokens)) {
+    const val = String(rawVal).trim();
+    if (!key.startsWith(ALLOWED_TOKEN_PREFIX)) continue;
+    if (BLACKLISTED_VALUE_REGEX.test(val)) {
+      throw new Error(`Security/Performance violation in token ${key}: ${val}`);
+    }
+    declarations.push(`  ${key}: ${val};`);
+  }
+  return declarations.length > 0 ? `:root {\n${declarations.join("\n")}\n}` : ":root {}";
+}

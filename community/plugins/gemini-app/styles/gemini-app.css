@@ -36,6 +36,7 @@
  * Fonts the same way. */
 @import url("https://fonts.googleapis.com/css2?family=Google+Sans+Code:wght@400..700&display=swap");
 
+@import "tokens-bridge.css";
 @import "tokens.css";
 @import "model-selector.css";
 @import "prompt-box.css";

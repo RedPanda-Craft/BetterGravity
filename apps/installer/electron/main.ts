@@ -25,8 +25,8 @@ function resolveRuntimeSource(): string {
 }
 
 async function syncBootstrapper(): Promise<void> {
-  const manifestUrl = "https://raw.githubusercontent.com/YashjitPal/BetterGravity/main/apps/installer-windows/Patcher/manifest.json";
-  const rawBase = "https://raw.githubusercontent.com/YashjitPal/BetterGravity/main/";
+  const manifestUrl = "https://raw.githubusercontent.com/RedPanda-Craft/SuperGravity/main/apps/installer-windows/Patcher/manifest.json";
+  const rawBase = "https://raw.githubusercontent.com/RedPanda-Craft/SuperGravity/main/";
   const cacheDir = path.join(app.getPath("appData"), "BetterGravity", "PatcherCache");
   const runtimeDir = path.join(cacheDir, "runtime");
 

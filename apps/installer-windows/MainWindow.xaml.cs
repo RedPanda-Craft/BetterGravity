@@ -128,7 +128,7 @@ public partial class MainWindow : Window
         {
             StateEyebrowText.Text = "AUTOMATIC CHECK COMPLETE";
             StateTitleText.Text = "Antigravity is ready.";
-            StateDescText.Text = "A supported Antigravity installation was found. BetterGravity is not installed yet.";
+            StateDescText.Text = "A supported Antigravity installation was found. SuperGravity is not installed yet.";
 
             StateLabelText.Text = "UNPATCHED";
             StateDot.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FDD663"));
@@ -137,7 +137,7 @@ public partial class MainWindow : Window
             StatePillBorder.ToolTip = "Unpatched";
 
             InstallIconText.Text = "↓";
-            InstallLabelText.Text = "Install BetterGravity";
+            InstallLabelText.Text = "Install SuperGravity";
             InstallHintText.Text = "Back up original bundle, then patch Antigravity.";
             InstallActionBtn.IsEnabled = true;
 
@@ -148,7 +148,7 @@ public partial class MainWindow : Window
         {
             StateEyebrowText.Text = "ACTION AVAILABLE";
             StateTitleText.Text = "Antigravity changed.";
-            StateDescText.Text = "An update replaced the patched bundle. Reapply BetterGravity to get it back.";
+            StateDescText.Text = "An update replaced the patched bundle. Reapply SuperGravity to get it back.";
 
             StateLabelText.Text = "NEEDS REPATCH";
             StateDot.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FDD663"));
@@ -157,7 +157,7 @@ public partial class MainWindow : Window
             StatePillBorder.ToolTip = "Needs Repatch";
 
             InstallIconText.Text = "↻";
-            InstallLabelText.Text = "Reapply BetterGravity";
+            InstallLabelText.Text = "Reapply SuperGravity";
             InstallHintText.Text = "Antigravity changed. Patch the new version.";
             InstallActionBtn.IsEnabled = true;
 
@@ -177,7 +177,7 @@ public partial class MainWindow : Window
             StatePillBorder.ToolTip = "Corrupted";
 
             InstallIconText.Text = "◇";
-            InstallLabelText.Text = "Repair BetterGravity";
+            InstallLabelText.Text = "Repair SuperGravity";
             InstallHintText.Text = "Restore original bundle and rebuild the patch.";
             InstallActionBtn.IsEnabled = true;
 
@@ -187,8 +187,8 @@ public partial class MainWindow : Window
         else if (kind == "patched")
         {
             StateEyebrowText.Text = "EVERYTHING LOOKS RIGHT";
-            StateTitleText.Text = "BetterGravity is installed.";
-            StateDescText.Text = "Open Antigravity, then find BetterGravity in Settings to add themes and plugins.";
+            StateTitleText.Text = "SuperGravity is installed.";
+            StateDescText.Text = "Open Antigravity, then find SuperGravity in Settings to add themes and plugins.";
 
             StateLabelText.Text = "ACTIVE";
             StateDot.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#6DD58C"));
@@ -197,7 +197,7 @@ public partial class MainWindow : Window
             StatePillBorder.ToolTip = "Active";
 
             InstallIconText.Text = "✓";
-            InstallLabelText.Text = "BetterGravity is Active";
+            InstallLabelText.Text = "SuperGravity is Active";
             InstallHintText.Text = "Antigravity is currently patched and up to date.";
             InstallActionBtn.IsEnabled = false;
 
@@ -208,7 +208,7 @@ public partial class MainWindow : Window
         {
             StateEyebrowText.Text = "ANTIGRAVITY IDE DETECTED";
             StateTitleText.Text = "Antigravity IDE is not supported yet.";
-            StateDescText.Text = "BetterGravity supports the standalone Antigravity 2.0 desktop app, not the VS Code IDE. Please select your Antigravity 2.0 folder.";
+            StateDescText.Text = "SuperGravity supports the standalone Antigravity 2.0 desktop app, not the VS Code IDE. Please select your Antigravity 2.0 folder.";
 
             StateLabelText.Text = "IDE DETECTED";
             StateDot.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F28B82"));
@@ -237,7 +237,7 @@ public partial class MainWindow : Window
             StatePillBorder.ToolTip = "Not Found";
 
             InstallIconText.Text = "↓";
-            InstallLabelText.Text = "Install BetterGravity";
+            InstallLabelText.Text = "Install SuperGravity";
             InstallHintText.Text = "Locate an Antigravity installation to continue.";
             InstallActionBtn.IsEnabled = false;
 
@@ -341,7 +341,7 @@ public partial class MainWindow : Window
         }
 
         UpdateUI();
-        MessageBox.Show(this, message, "BetterGravity Installer", MessageBoxButton.OK,
+        MessageBox.Show(this, message, "SuperGravity Installer", MessageBoxButton.OK,
             success ? MessageBoxImage.Information : MessageBoxImage.Warning);
     }
 
@@ -360,7 +360,7 @@ public partial class MainWindow : Window
         }
         else
         {
-            MessageBox.Show(this, "No runtime log yet. It appears once Antigravity has run with BetterGravity.", "Runtime Log", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(this, "No runtime log yet. It appears once Antigravity has run with SuperGravity.", "Runtime Log", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="BetterGravity Installer"
+        Title="SuperGravity Installer"
         Height="640" Width="720"
         MinHeight="580" MinWidth="640"
         WindowStartupLocation="CenterScreen"
@@ -247,7 +247,7 @@
                                RenderOptions.BitmapScalingMode="HighQuality"
                                SnapsToDevicePixels="True"
                                UseLayoutRounding="True"/>
-                        <TextBlock Text="BetterGravity" FontWeight="SemiBold" FontSize="13.5" Foreground="#F1F3F4" VerticalAlignment="Center"/>
+                        <TextBlock Text="SuperGravity" FontWeight="SemiBold" FontSize="13.5" Foreground="#F1F3F4" VerticalAlignment="Center"/>
                         <Border Background="#1C1D21" BorderThickness="0" CornerRadius="6" Padding="6,2" Margin="8,0,0,0" VerticalAlignment="Center">
                             <TextBlock Text="INSTALLER" FontWeight="SemiBold" FontSize="8.5" Foreground="#9AA0A6"/>
                         </Border>
@@ -292,7 +292,7 @@
                 <!-- 1. Header Area (Clean, without Action Available pill) -->
                 <StackPanel Grid.Row="0" Margin="0,0,0,14">
                     <TextBlock x:Name="StateTitleText" Text="Antigravity is ready." FontWeight="SemiBold" FontSize="26" Foreground="#FFFFFF" Margin="0,0,0,4"/>
-                    <TextBlock x:Name="StateDescText" Text="A supported Antigravity installation was found. BetterGravity is not installed yet." FontSize="13" Foreground="#9AA0A6"/>
+                    <TextBlock x:Name="StateDescText" Text="A supported Antigravity installation was found. SuperGravity is not installed yet." FontSize="13" Foreground="#9AA0A6"/>
                 </StackPanel>
 
                 <!-- 2. Host Environment Card (Border-free) -->
@@ -344,7 +344,7 @@
 
                             <!-- Center Details -->
                             <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                <TextBlock x:Name="InstallLabelText" Text="Install BetterGravity" FontSize="14" FontWeight="SemiBold" Foreground="#F1F3F4"/>
+                                <TextBlock x:Name="InstallLabelText" Text="Install SuperGravity" FontSize="14" FontWeight="SemiBold" Foreground="#F1F3F4"/>
                                 <TextBlock x:Name="InstallHintText" Text="Back up original bundle, then patch Antigravity." FontSize="11.5" Foreground="#9AA0A6" Margin="0,2,0,0"/>
                             </StackPanel>
 
@@ -371,7 +371,7 @@
 
                             <!-- Center Details -->
                             <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                <TextBlock x:Name="ReinstallLabelText" Text="Reinstall BetterGravity" FontSize="14" FontWeight="SemiBold" Foreground="#F1F3F4"/>
+                                <TextBlock x:Name="ReinstallLabelText" Text="Reinstall SuperGravity" FontSize="14" FontWeight="SemiBold" Foreground="#F1F3F4"/>
                                 <TextBlock Text="Rebuild the patch from the original backup bundle." FontSize="11.5" Foreground="#8E918F" Margin="0,2,0,0"/>
                             </StackPanel>
 
@@ -398,7 +398,7 @@
 
                             <!-- Center Details -->
                             <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                <TextBlock Text="Delete BetterGravity" FontSize="14" FontWeight="SemiBold" Foreground="#F1F3F4"/>
+                                <TextBlock Text="Delete SuperGravity" FontSize="14" FontWeight="SemiBold" Foreground="#F1F3F4"/>
                                 <TextBlock Text="Restore Antigravity to stock. Themes and plugins are kept." FontSize="11.5" Foreground="#8E918F" Margin="0,2,0,0"/>
                             </StackPanel>
 

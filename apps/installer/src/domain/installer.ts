@@ -19,34 +19,34 @@ export interface OperationCopy {
 
 export const operations: Record<InstallOperation, OperationCopy> = {
   install: {
-    label: "Install BetterGravity",
+    label: "Install SuperGravity",
     hint: "Back up the original bundle, then patch Antigravity.",
     icon: "↓",
-    running: "Installing BetterGravity"
+    running: "Installing SuperGravity"
   },
   update: {
-    label: "Reapply BetterGravity",
+    label: "Reapply SuperGravity",
     hint: "Antigravity changed. Patch the new version.",
     icon: "↻",
-    running: "Reapplying BetterGravity"
+    running: "Reapplying SuperGravity"
   },
   reinstall: {
-    label: "Reinstall BetterGravity",
+    label: "Reinstall SuperGravity",
     hint: "Rebuild the patch from the original bundle.",
     icon: "⟳",
-    running: "Reinstalling BetterGravity"
+    running: "Reinstalling SuperGravity"
   },
   repair: {
-    label: "Repair BetterGravity",
+    label: "Repair SuperGravity",
     hint: "Restore the original bundle and rebuild the patch.",
     icon: "◇",
-    running: "Repairing BetterGravity"
+    running: "Repairing SuperGravity"
   },
   uninstall: {
-    label: "Uninstall BetterGravity",
+    label: "Uninstall SuperGravity",
     hint: "Restore Antigravity exactly as it was. Your themes and plugins are kept.",
     icon: "×",
-    running: "Removing BetterGravity",
+    running: "Removing SuperGravity",
     destructive: true
   }
 };
@@ -62,19 +62,19 @@ export const states: Record<PatchState, StateCopy> = {
   unpatched: {
     eyebrow: "AUTOMATIC CHECK COMPLETE",
     title: "Antigravity is ready.",
-    description: "A supported Antigravity installation was found. BetterGravity is not installed yet.",
+    description: "A supported Antigravity installation was found. SuperGravity is not installed yet.",
     tone: "neutral"
   },
   patched: {
     eyebrow: "EVERYTHING LOOKS RIGHT",
-    title: "BetterGravity is installed.",
-    description: "Open Antigravity, then find BetterGravity in Settings to add themes and plugins.",
+    title: "SuperGravity is installed.",
+    description: "Open Antigravity, then find SuperGravity in Settings to add themes and plugins.",
     tone: "good"
   },
   "needs-repatch": {
     eyebrow: "ACTION AVAILABLE",
     title: "Antigravity changed.",
-    description: "An update replaced the patched bundle. Reapply BetterGravity to get it back.",
+    description: "An update replaced the patched bundle. Reapply SuperGravity to get it back.",
     tone: "neutral"
   },
   corrupted: {

@@ -111,10 +111,10 @@
 
 .ctp-theme-tabs {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 3px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
   background: rgba(0, 0, 0, 0.35);
-  padding: 3px;
+  padding: 4px;
   border-radius: 9px;
   border: 1px solid rgba(255, 255, 255, 0.08);
 }

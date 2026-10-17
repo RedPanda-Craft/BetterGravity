@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-17T11:22:32.523Z",
+  "generatedAt": "2026-10-17T11:32:27.491Z",
   "entries": [
     {
       "id": "catppuccin-accent",
@@ -31,7 +31,7 @@
         {
           "name": "styles/accent.css",
           "bytes": 24578,
-          "sha256": "f0b437b9b791604ebe3f41aff7a3b3924244299be9bb663096f7a01dca66d556"
+          "sha256": "267e1db814d6c7745993afba4580ca9872eb2219f9ee1b631605057df9a5e60a"
         }
       ]
     },

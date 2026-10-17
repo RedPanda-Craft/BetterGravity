@@ -1,7 +1,7 @@
 {
-  "name": "Catppuccin Accent",
-  "description": "Context-aware dynamic accent color switcher for Catppuccin themes. Only appears when Catppuccin is active.",
-  "version": "2.0.1",
+  "name": "Theme Palette",
+  "description": "Context-aware dynamic theme palette and accent switcher for Catppuccin, Flexoki, Kanagawa, and extensible themes.",
+  "version": "2.2.0",
   "author": "RedPanda-Craft",
   "main": "index.js",
   "styles": [

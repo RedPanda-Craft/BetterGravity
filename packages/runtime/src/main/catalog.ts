@@ -120,7 +120,7 @@ function insidePlugin(base: string, relative: string, what: string): string {
  * look with some behaviour keeps its CSS in .css files. When `styles` is
  * declared and `main` is not, the entry script is optional.
  */
-const BUILTIN_PLUGINS = new Set(["timeslip", "fork-chat"]);
+const BUILTIN_PLUGINS = new Set(["timeslip", "fork-chat", "catppuccin-accent"]);
 
 export function readPlugins(directory: string, settings: RuntimeSettings): CatalogResult<PluginRecord> {
   const isDev = settings.plugins.developerMode;

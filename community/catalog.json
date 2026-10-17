@@ -1,27 +1,27 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-17T10:44:51.660Z",
+  "generatedAt": "2026-10-17T11:12:17.929Z",
   "entries": [
     {
       "id": "catppuccin-accent",
       "kind": "plugin",
-      "name": "Catppuccin Accent",
-      "description": "Context-aware dynamic accent color switcher for Catppuccin themes. Only appears when Catppuccin is active.",
-      "version": "2.0.1",
+      "name": "Theme Palette",
+      "description": "Context-aware dynamic theme palette and accent switcher for Catppuccin, Flexoki, Kanagawa, and extensible themes.",
+      "version": "2.2.0",
       "author": "RedPanda-Craft",
       "source": "https://github.com/YashjitPal/BetterGravity",
       "path": "community/plugins/catppuccin-accent",
-      "bytes": 34712,
+      "bytes": 79437,
       "files": [
         {
           "name": "index.js",
-          "bytes": 28052,
-          "sha256": "f9c3f9c7f5598ff7429e64b3df43923c5e09d4955db1486da465713b9279e549"
+          "bytes": 54781,
+          "sha256": "557cebe39294275807a77a176773472e42725ce900964e19de191044e7d745b9"
         },
         {
           "name": "plugin.json",
-          "bytes": 337,
-          "sha256": "b1cd58abae9be2aea4436e3dedfb9e74c4772ed8fe634f92eadb04de46daa29a"
+          "bytes": 340,
+          "sha256": "5afd2f68d666088a8cd3b3d73cf79fb1ea248bbaa7dbc4d979495a626325ace5"
         },
         {
           "name": "README.md",
@@ -30,8 +30,8 @@
         },
         {
           "name": "styles/accent.css",
-          "bytes": 5492,
-          "sha256": "77890b11c9d91e986e23a8430ec0274f0cc00801772d0d5be41f6ae5b6d26b5b"
+          "bytes": 23485,
+          "sha256": "9d62d0a70c01e03528bba8b68b354accd244299d29a0c1aac8476631ce587d0d"
         }
       ]
     },

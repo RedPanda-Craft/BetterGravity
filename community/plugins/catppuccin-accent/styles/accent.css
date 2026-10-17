@@ -3,6 +3,7 @@
    ========================================================================== */
 
 /* 1. TitleBar Trigger Button */
+[data-bettergravity-button="Palette"],
 [data-bettergravity-button="Accent"] {
   display: inline-flex !important;
   align-items: center !important;
@@ -20,15 +21,18 @@
   margin-right: 4px;
 }
 
+[data-bettergravity-button="Palette"]:hover,
 [data-bettergravity-button="Accent"]:hover {
   background-color: var(--bettergravity-row-hover, rgba(205, 214, 244, 0.08)) !important;
   transform: scale(1.05);
 }
 
+[data-bettergravity-button="Palette"]:active,
 [data-bettergravity-button="Accent"]:active {
   transform: scale(0.95);
 }
 
+[data-bettergravity-button="Palette"] svg,
 [data-bettergravity-button="Accent"] svg {
   width: 18px !important;
   height: 18px !important;
@@ -165,6 +169,145 @@
   padding: 2px 0;
 }
 
+/* Flexoki Theme Adaptations (4x2 Mineral Swatches Grid & Paper Warmth) */
+.ctp-accent-popup[data-theme-id="flexoki"] {
+  background: var(--fx-950, #1C1B1A) !important;
+  border-color: var(--fx-850, #343331) !important;
+  color: var(--fx-200, #CECDC3) !important;
+}
+
+.ctp-accent-popup[data-theme-id="flexoki"] .ctp-accent-header {
+  border-bottom-color: var(--fx-850, #343331) !important;
+}
+
+.ctp-accent-popup[data-theme-id="flexoki"] .ctp-accent-title {
+  color: var(--fx-500, #878580) !important;
+}
+
+.ctp-accent-popup[data-theme-id="flexoki"] .ctp-section-label {
+  color: var(--fx-600, #6F6E69) !important;
+}
+
+.ctp-accent-popup[data-theme-id="flexoki"] .ctp-accent-grid {
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 12px 10px !important;
+  padding: 4px 6px !important;
+}
+
+.ctp-accent-popup[data-theme-id="flexoki"] .ctp-accent-dot::after {
+  background: var(--fx-black, #100F0F) !important;
+  border-color: var(--fx-850, #343331) !important;
+  color: var(--fx-200, #CECDC3) !important;
+}
+
+/* Kanagawa Dragon Theme Adaptations (4x2 Ukiyo-e Swatches Grid & Sumi Ink Canvas) */
+.ctp-accent-popup[data-theme-id="kanagawa"] {
+  background: var(--dragon-black-2, #1D1C19) !important;
+  border-color: var(--dragon-black-4, #282727) !important;
+  color: var(--dragon-white, #c5c9c5) !important;
+}
+
+.ctp-accent-popup[data-theme-id="kanagawa"] .ctp-accent-header {
+  border-bottom-color: var(--dragon-black-4, #282727) !important;
+}
+
+.ctp-accent-popup[data-theme-id="kanagawa"] .ctp-accent-title {
+  color: var(--dragon-gray, #a6a69c) !important;
+}
+
+.ctp-accent-popup[data-theme-id="kanagawa"] .ctp-section-label {
+  color: var(--dragon-gray-2, #7a8382) !important;
+}
+
+.ctp-accent-popup[data-theme-id="kanagawa"] .ctp-accent-grid {
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 12px 10px !important;
+  padding: 4px 6px !important;
+}
+
+.ctp-accent-popup[data-theme-id="kanagawa"] .ctp-accent-dot::after {
+  background: var(--dragon-black-0, #0d0c0c) !important;
+  border-color: var(--dragon-black-4, #282727) !important;
+  color: var(--dragon-white, #c5c9c5) !important;
+}
+
+/* Everforest Theme Adaptations (Forest Moss Warmth & Natural Wood Tones) */
+.ctp-accent-popup[data-theme-id="everforest"] {
+  background: var(--ef-bg1, #262e33) !important;
+  border-color: var(--ef-bg3, #38434a) !important;
+  color: var(--ef-fg, #d3c6aa) !important;
+}
+
+.ctp-accent-popup[data-theme-id="everforest"] .ctp-accent-header {
+  border-bottom-color: var(--ef-bg3, #38434a) !important;
+}
+
+.ctp-accent-popup[data-theme-id="everforest"] .ctp-accent-title {
+  color: var(--ef-grey2, #9da9a0) !important;
+}
+
+.ctp-accent-popup[data-theme-id="everforest"] .ctp-section-label {
+  color: var(--ef-grey1, #859289) !important;
+}
+
+.ctp-accent-popup[data-theme-id="everforest"] .ctp-flavor-tabs {
+  background: var(--ef-bg-dim, #181e21) !important;
+  border-color: var(--ef-bg3, #38434a) !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+}
+
+.ctp-accent-popup[data-theme-id="everforest"] .ctp-flavor-tab {
+  color: var(--ef-grey2, #9da9a0) !important;
+}
+
+.ctp-accent-popup[data-theme-id="everforest"] .ctp-flavor-tab.is-active {
+  background: var(--ef-bg2, #2f383e) !important;
+  color: var(--ef-fg, #d3c6aa) !important;
+}
+
+.ctp-accent-popup[data-theme-id="everforest"] .ctp-accent-grid {
+  grid-template-columns: repeat(7, 1fr) !important;
+  gap: 8px !important;
+  padding: 4px 2px !important;
+}
+
+.ctp-accent-popup[data-theme-id="everforest"] .ctp-accent-dot::after {
+  background: var(--ef-bg-dim, #181e21) !important;
+  border-color: var(--ef-bg3, #38434a) !important;
+  color: var(--ef-fg, #d3c6aa) !important;
+}
+
+/* Melange Dark Theme Adaptations (Warm Stone & Natural Earth Minerals) */
+.ctp-accent-popup[data-theme-id="melange"] {
+  background: var(--melange-bg1, #23201d) !important;
+  border-color: var(--melange-bg3, #393430) !important;
+  color: var(--melange-fg, #ece1d7) !important;
+}
+
+.ctp-accent-popup[data-theme-id="melange"] .ctp-accent-header {
+  border-bottom-color: var(--melange-bg3, #393430) !important;
+}
+
+.ctp-accent-popup[data-theme-id="melange"] .ctp-accent-title {
+  color: var(--melange-grey2, #c1b8ae) !important;
+}
+
+.ctp-accent-popup[data-theme-id="melange"] .ctp-section-label {
+  color: var(--melange-grey1, #988e84) !important;
+}
+
+.ctp-accent-popup[data-theme-id="melange"] .ctp-accent-grid {
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 12px 10px !important;
+  padding: 4px 6px !important;
+}
+
+.ctp-accent-popup[data-theme-id="melange"] .ctp-accent-dot::after {
+  background: var(--melange-bg-dim, #161312) !important;
+  border-color: var(--melange-bg3, #393430) !important;
+  color: var(--melange-fg, #ece1d7) !important;
+}
+
 .ctp-accent-dot {
   position: relative;
   width: 25px;
@@ -216,3 +359,306 @@
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
+
+/* ==========================================================================
+ * 5. Chat Composer Focus Inset Breathing Glow (Zero INP Lag Architecture)
+ * ========================================================================== */
+
+/* 5.0 Strip outer container background, border, and glow to eliminate nested card borders */
+[data-testid="agent-input-box"],
+[data-testid="agent-input-box"]:focus-within {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+[data-testid="agent-input-box"] > .rounded-2xl.bg-card-border,
+[data-testid="agent-input-box"] > .rounded-2xl.bg-card-border:focus-within {
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+body:not(.gemini-app-loaded) [data-testid="agent-input-box"],
+body:not(.gemini-app-loaded) [data-testid="agent-input-box"]:focus-within {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* 5.1 Chat composer card container: relative positioning for aura compositing */
+.bg-chat-composer,
+[data-testid="chat-input-container"],
+[data-testid="agent-input-box"] > .rounded-2xl.bg-card-border > .bg-card:not([data-mention-menu]),
+[data-testid="agent-input-box"] .bg-card:not([data-mention-menu]) {
+  position: relative !important;
+}
+
+/* 5.2 Dedicated GPU compositing glow layer: dual-tier feathered inset aura, opacity-only animation */
+.bg-chat-composer::after,
+[data-testid="chat-input-container"]::after,
+[data-testid="agent-input-box"] > .rounded-2xl.bg-card-border > .bg-card:not([data-mention-menu])::after,
+[data-testid="agent-input-box"] .bg-card:not([data-mention-menu])::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  border-radius: inherit !important;
+  pointer-events: none !important;
+  z-index: 5 !important;
+  /* Dual-tier feathered inset aura (4px close-range skeleton + 18px soft diffuse light) */
+  box-shadow: inset 0 0 4px 1px var(--catppuccin-accent, var(--bettergravity-accent, #3b82f6)),
+              inset 0 0 18px 3px var(--catppuccin-accent-glow, var(--bettergravity-accent-soft, rgba(59, 130, 246, 0.45))) !important;
+  opacity: 0;
+  transform: translateZ(0);
+  will-change: opacity;
+  /* Blur transition: fast GPU opacity fade */
+  transition: opacity 160ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 5.3 Focus triggers single 1.6s breathing aura settling into 30% ambient glow */
+.bg-composer-breathe-1x::after,
+[data-testid="agent-input-box"] .bg-card.bg-composer-breathe-1x::after {
+  animation: bg-composer-breathe 1.6s cubic-bezier(0.2, 0.8, 0.25, 1) forwards !important;
+}
+
+@keyframes bg-composer-breathe {
+  0% {
+    opacity: 0;
+  }
+  28% {
+    /* Peak charge (~0.45s to synchronize with eye fixation) */
+    opacity: 1;
+  }
+  100% {
+    /* Smooth release settling to 30% ambient glow */
+    opacity: 0.30;
+  }
+}
+
+/* 5.4 Physical isolation: prevent caret blinking from triggering relayout/repaint */
+[data-testid="agent-input-box"] [role="combobox"][contenteditable] {
+  contain: layout style;
+}
+
+/* -------------------------------------------------------------------------- */
+/* First-Run Onboarding Callout Bubble (Native Antigravity Header Styling)     */
+/* -------------------------------------------------------------------------- */
+.bg-onboarding-callout {
+  position: fixed;
+  z-index: 10000;
+  width: 240px;
+  background: var(--ctp-mantle, #181825);
+  border: 1px solid var(--ctp-surface1, rgba(255, 255, 255, 0.12));
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 200ms ease, transform 200ms ease;
+  pointer-events: auto;
+  -webkit-app-region: no-drag !important;
+}
+
+.bg-onboarding-callout.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.bg-callout-caret {
+  position: absolute;
+  top: -6px;
+  width: 12px;
+  height: 6px;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  background: var(--ctp-mantle, #181825);
+}
+
+.bg-callout-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+  -webkit-app-region: no-drag !important;
+}
+
+.bg-callout-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.bg-callout-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--catppuccin-accent, #b4befe);
+}
+
+.bg-callout-body {
+  font-size: 12px;
+  color: var(--ctp-subtext0, #a6adc8);
+  line-height: 1.45;
+  margin-bottom: 10px;
+  -webkit-app-region: no-drag !important;
+}
+
+.bg-callout-footer {
+  display: flex;
+  justify-content: flex-end;
+  -webkit-app-region: no-drag !important;
+}
+
+.bg-callout-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--ctp-text, #cdd6f4);
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  cursor: pointer;
+  transition: all 120ms ease;
+  -webkit-app-region: no-drag !important;
+}
+
+.bg-callout-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+}
+
+/* ==========================================================================
+ * 7. Code Blocks & Syntax Highlighting Theme Harmonization
+ * ========================================================================== */
+
+/* Code block container: restore Catppuccin surface & border depth */
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .code-block,
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) pre,
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) div.relative.rounded-xl {
+  background: var(--ctp-mantle, #181825) !important;
+  border: 1px solid var(--ctp-surface0, #313244) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Code block header typography */
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .min-h-7 > .font-sans {
+  color: var(--ctp-subtext0, #a6adc8) !important;
+}
+
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .min-h-7 button {
+  color: var(--ctp-subtext1, #bac2de) !important;
+}
+
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .min-h-7 button:hover {
+  background-color: var(--bettergravity-row-hover, rgba(205, 214, 244, 0.08)) !important;
+  color: var(--ctp-text, #cdd6f4) !important;
+}
+
+/* Code typography */
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .code-block,
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .code-line,
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .line-content,
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) pre,
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) pre code {
+  color: var(--ctp-text, #cdd6f4) !important;
+}
+
+/* Inline code pill */
+html body [data-testid="planner-response-text"] code:not(pre code),
+html body [role="article"][aria-label="Agent response"] .leading-relaxed code:not(pre code) {
+  background: var(--gemini-inline-code-bg, var(--ctp-surface0, #313244)) !important;
+  color: var(--gemini-inline-code-text, var(--bettergravity-accent, var(--catppuccin-accent, #fab387))) !important;
+  border: 1px solid var(--bettergravity-border, var(--ctp-surface1, rgba(255, 255, 255, 0.08))) !important;
+}
+
+/* Prism syntax highlighting tokens */
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .token.comment,
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .token.prolog,
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .token.doctype,
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .token.cdata {
+  color: var(--ctp-overlay0, #6c7086) !important;
+}
+
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .token.keyword,
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .token.selector,
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .token.important {
+  color: var(--ctp-mauve, #cba6f7) !important;
+}
+
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .token.string,
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .token.char,
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .token.attr-value,
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .token.inserted {
+  color: var(--ctp-green, #a6e3a1) !important;
+}
+
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .token.number,
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .token.boolean,
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .token.constant {
+  color: var(--ctp-peach, #fab387) !important;
+}
+
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .token.function,
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .token.class-name {
+  color: var(--ctp-blue, #89b4fa) !important;
+}
+
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .token.property,
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .token.builtin {
+  color: var(--ctp-lavender, #b4befe) !important;
+}
+
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .token.tag {
+  color: var(--ctp-red, #f38ba8) !important;
+}
+
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .token.operator,
+html body :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .token.punctuation {
+  color: var(--ctp-subtext0, #a6adc8) !important;
+}
+
+/* ==========================================================================
+ * 8. Catppuccin Latte (Light Mode) Safeguards for Gemini-App
+ * ========================================================================== */
+
+/* Ensure text in prompt box combobox is readable dark text */
+body.ctp-latte-mode [data-testid="agent-input-box"] [role="combobox"][contenteditable] {
+  color: var(--ctp-text, #4c4f69) !important;
+}
+
+/* Ensure placeholder is visible */
+body.ctp-latte-mode [data-testid="agent-input-box"] [role="combobox"][contenteditable] ~ * {
+  color: var(--ctp-overlay0, #9ca0b0) !important;
+}
+
+/* Markdown tables in Latte mode */
+body.ctp-latte-mode :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) th,
+body.ctp-latte-mode :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) td {
+  color: var(--ctp-text, #4c4f69) !important;
+  border-bottom-color: var(--ctp-surface0, #ccd0da) !important;
+}
+
+/* User message toggle pill in Latte mode */
+body.ctp-latte-mode .willow-bubble-toggle-pill {
+  background: var(--ctp-surface1, #bcc0cc) !important;
+  color: var(--ctp-text, #4c4f69) !important;
+}
+
+/* Link hover in Latte mode */
+body.ctp-latte-mode [data-testid="planner-response-text"] a:hover,
+body.ctp-latte-mode [role="article"][aria-label="Agent response"] .leading-relaxed a:hover {
+  color: var(--catppuccin-accent, #1e66f5) !important;
+  text-decoration-color: var(--catppuccin-accent, #1e66f5) !important;
+}
+
+/* Popover menus in Latte mode */
+body.ctp-latte-mode .bettergravity-fork-popover,
+body.ctp-latte-mode .bettergravity-fork-popover-item {
+  color: var(--ctp-text, #4c4f69) !important;
+}
+
+body.ctp-latte-mode .bettergravity-fork-popover-item:hover {
+  background-color: rgba(76, 79, 105, 0.08) !important;
+}
+

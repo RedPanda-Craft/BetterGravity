@@ -314,6 +314,6 @@ export interface SettingsPatch {
 export const DEFAULT_SETTINGS: RuntimeSettings = {
   schemaVersion: 1,
   themes: { enabled: [] },
-  plugins: { developerMode: false, enabled: ["timeslip", "fork-chat"] },
+  plugins: { developerMode: false, enabled: ["timeslip", "fork-chat", "catppuccin-accent"] },
   reapplyAfterHostUpdate: true
 };

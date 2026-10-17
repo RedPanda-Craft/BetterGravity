@@ -80,7 +80,7 @@ const notes = [];
 const themesDirectory = path.join(community, "themes");
 if (existsSync(themesDirectory)) {
   for (const fileName of readdirSync(themesDirectory)) {
-    if (fileName === "README.md") continue;
+    if (fileName === "README.md" || fileName.endsWith(".manifest.json")) continue;
     const full = path.join(themesDirectory, fileName);
 
     // A theme is one .css file, or a folder with a theme.css and what it uses.

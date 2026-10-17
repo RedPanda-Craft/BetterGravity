@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-14T16:29:09.662Z",
+  "generatedAt": "2026-10-17T10:44:51.660Z",
   "entries": [
     {
       "id": "catppuccin-accent",
@@ -362,7 +362,7 @@
       "author": "Yashjit Pal",
       "source": "https://github.com/YashjitPal/BetterGravity",
       "path": "community/plugins/gemini-app",
-      "bytes": 853443,
+      "bytes": 857380,
       "files": [
         {
           "name": "assets/antigravity-mark.png",
@@ -401,8 +401,8 @@
         },
         {
           "name": "styles/gemini-app.css",
-          "bytes": 2553,
-          "sha256": "9525f98971572e4ae6b7a41a1d823e299e39ac1dbea0e64eacc872a569a0b212"
+          "bytes": 2582,
+          "sha256": "62fb85cd733139fa39efb16a48f5606e29d9dd7db89dc8148fe1c6571d423665"
         },
         {
           "name": "styles/history.css",
@@ -446,8 +446,8 @@
         },
         {
           "name": "styles/sidebar.css",
-          "bytes": 133090,
-          "sha256": "1255201979b6a34565d6b9a6ee590c3393f68355a575206e99a0c2d416b8490b"
+          "bytes": 132290,
+          "sha256": "d1817f6bda0651ff4c64a8d5b71e4bd061d2274c90a48507cfa72f4e3953c58c"
         },
         {
           "name": "styles/skills-tab.css",
@@ -458,6 +458,11 @@
           "name": "styles/slash-menu.css",
           "bytes": 8195,
           "sha256": "ca6cf4ef9ca1a4259c07d155c749a24347199b84a4bbd486e41019c04c99d632"
+        },
+        {
+          "name": "styles/tokens-bridge.css",
+          "bytes": 4708,
+          "sha256": "39b4946e881e2038c1cfb888bfe0f4717b36739543a3ec9a84c1e7dcf023efda"
         },
         {
           "name": "styles/tokens.css",

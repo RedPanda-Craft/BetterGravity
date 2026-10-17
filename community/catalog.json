@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-11T18:01:31.514Z",
+  "generatedAt": "2026-10-14T16:29:09.662Z",
   "entries": [
     {
       "id": "catppuccin-accent",
@@ -80,7 +80,7 @@
         "windows"
       ],
       "path": "community/plugins/computer-use",
-      "bytes": 986199,
+      "bytes": 889182,
       "files": [
         {
           "name": "assets/agent-cursor.png",
@@ -138,24 +138,9 @@
           "sha256": "e543670683f6e4d6fd37dd1538682be7ac2a73bb4d21cdcdf2a585398ed439eb"
         },
         {
-          "name": "bin/windows-native-runner.exe",
-          "bytes": 29184,
-          "sha256": "5133c10e81c30a1dc1d4c3766d24f64ad4b736e69d7de47435f2da00fa240f73"
-        },
-        {
-          "name": "bin/windows-screen-overlay-debug.exe",
-          "bytes": 26112,
-          "sha256": "04861554d3f6c2b489d9c02dbdc838c0038d429f0f97e1e9cf2858914dd70569"
-        },
-        {
           "name": "bin/windows-screen-overlay.cs",
           "bytes": 57316,
           "sha256": "de26ccef41e1c6040b585c6823ba8e1405171c197a862b440becbae9be440259"
-        },
-        {
-          "name": "bin/windows-screen-overlay.exe",
-          "bytes": 42496,
-          "sha256": "1922c15d218a000563f326c786e7c4f62a0164264fd5153d06ecac32e876f2cb"
         },
         {
           "name": "core/approval-manager.js",
@@ -199,8 +184,8 @@
         },
         {
           "name": "core/windows-native-runner.js",
-          "bytes": 11331,
-          "sha256": "34b9b74bb6afbaaa2655ad7c54150eb250e96a8ca839b1d668a0edac415c7ffa"
+          "bytes": 12106,
+          "sha256": "00d15cadb5f0adc426c3b2d23041c080d47695b3d8aab1fc6a25540348f67243"
         },
         {
           "name": "cursor/agent-cursor.png",
@@ -1060,12 +1045,84 @@
       "author": "RedPanda-Craft",
       "source": "https://github.com/catppuccin/catppuccin",
       "path": "community/themes/catppuccin-turbo.css",
-      "bytes": 48804,
+      "bytes": 38641,
       "files": [
         {
           "name": "catppuccin-turbo.css",
-          "bytes": 48804,
-          "sha256": "d4d312ba163d7955778202cbb8e1fdbefde7145e615e9638bc6d31deee269eb1"
+          "bytes": 38641,
+          "sha256": "047773b66dbef18d09515011dcbfaf9390400d96e004c1c343657e8fc9053dce"
+        }
+      ]
+    },
+    {
+      "id": "everforest-dark.css",
+      "kind": "theme",
+      "name": "Everforest Dark",
+      "description": "A natural green-tinted, warm analog color scheme designed by sainnhe for comfortable, long-duration viewing.",
+      "version": "1.0.0",
+      "author": "sainnhe (adapted for BetterGravity)",
+      "source": "https://github.com/sainnhe/everforest",
+      "path": "community/themes/everforest-dark.css",
+      "bytes": 16583,
+      "files": [
+        {
+          "name": "everforest-dark.css",
+          "bytes": 16583,
+          "sha256": "74deb8527e82bc9508b857641f6ce11d7a0cec1f89033bb700a2e9371f4774ec"
+        }
+      ]
+    },
+    {
+      "id": "flexoki-dark.css",
+      "kind": "theme",
+      "name": "Flexoki Dark",
+      "description": "An inky, analog-inspired color scheme designed by Steph Ango for deep reading and long-session coding.",
+      "version": "1.0.0",
+      "author": "Steph Ango (adapted for BetterGravity)",
+      "source": "https://stephango.com/flexoki",
+      "path": "community/themes/flexoki-dark.css",
+      "bytes": 16434,
+      "files": [
+        {
+          "name": "flexoki-dark.css",
+          "bytes": 16434,
+          "sha256": "6f73aed38ef4a0f58fe61982d4a00d8320e0279f3e02fb01a95a3d610004bb1b"
+        }
+      ]
+    },
+    {
+      "id": "kanagawa-dragon.css",
+      "kind": "theme",
+      "name": "Kanagawa Dragon",
+      "description": "Traditional Japanese Ukiyo-e woodblock & Sumi-e ink wash aesthetic with deep sumi ink canvas and low-contrast warm highlights.",
+      "version": "1.0.0",
+      "author": "rebelot (adapted for BetterGravity)",
+      "source": "https://github.com/rebelot/kanagawa.nvim",
+      "path": "community/themes/kanagawa-dragon.css",
+      "bytes": 17381,
+      "files": [
+        {
+          "name": "kanagawa-dragon.css",
+          "bytes": 17381,
+          "sha256": "3217b996c1034515e7d585b1e04e67b2c9e1253139958a7142dde1ffd7ce1604"
+        }
+      ]
+    },
+    {
+      "id": "melange-dark.css",
+      "kind": "theme",
+      "name": "Melange Dark",
+      "description": "Warm stone, peat wood, and sun-dried earth mineral color scheme designed by savq.",
+      "version": "1.0.0",
+      "author": "savq (adapted for BetterGravity)",
+      "source": "https://github.com/savq/melange-nvim",
+      "path": "community/themes/melange-dark.css",
+      "bytes": 17094,
+      "files": [
+        {
+          "name": "melange-dark.css",
+          "bytes": 17094,
+          "sha256": "495ccc8e9952343022f89de9abea7eedf77ddd27ed1c3cab3e5ac448d50164f3"
         }
       ]
     },

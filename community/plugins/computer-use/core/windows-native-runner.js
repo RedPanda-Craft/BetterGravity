@@ -14,6 +14,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const BIN_PATH = path.resolve(__dirname, "../bin/windows-native-runner.exe");
 const CS_PATH = path.resolve(__dirname, "../bin/windows-native-runner.cs");
 const OVERLAY_BIN = path.resolve(__dirname, "../bin/windows-screen-overlay.exe");
+const OVERLAY_CS = path.resolve(__dirname, "../bin/windows-screen-overlay.cs");
 const INTERRUPT_PATHS = [
   path.resolve(__dirname, "../interrupt.signal"),
   path.join(
@@ -55,7 +56,32 @@ function pingOverlay() {
   });
 }
 
+function ensureOverlayBinary() {
+  if (fs.existsSync(OVERLAY_BIN)) return;
+  if (fs.existsSync(OVERLAY_CS) && fs.existsSync(CSC_COMPILER)) {
+    try {
+      execFileSync(CSC_COMPILER, [
+        "/nologo",
+        "/target:winexe",
+        "/optimize+",
+        "/lib:C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\WPF",
+        "/r:System.Drawing.dll",
+        "/r:System.Windows.Forms.dll",
+        "/r:System.Xaml.dll",
+        "/r:PresentationCore.dll",
+        "/r:PresentationFramework.dll",
+        "/r:WindowsBase.dll",
+        `/out:${OVERLAY_BIN}`,
+        OVERLAY_CS,
+      ], { windowsHide: true });
+    } catch {
+      // Handled silently
+    }
+  }
+}
+
 async function ensureOverlay() {
+  ensureOverlayBinary();
   if (!fs.existsSync(OVERLAY_BIN)) return;
   const alive = await pingOverlay();
   if (alive) return;

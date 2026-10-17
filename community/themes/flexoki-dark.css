@@ -1,0 +1,502 @@
+/**
+ * @name        Flexoki Dark
+ * @description An inky, analog-inspired color scheme designed by Steph Ango for deep reading and long-session coding.
+ * @author      Steph Ango (adapted for BetterGravity)
+ * @version     1.0.0
+ * @source      https://stephango.com/flexoki
+ */
+
+/* ==========================================================================
+   0. Flexoki Palette Definition (Steph Ango Official Specifications)
+   ========================================================================== */
+:root {
+  /* --- Flexoki Inky Base Scale --- */
+  --fx-black:     #100F0F; /* Deepest inky canvas (L 6.1%, zero blue-haze) */
+  --fx-950:       #1C1B1A; /* Layer 1: Composer, message bubbles, panels */
+  --fx-900:       #282726; /* Layer 2: Elevated cards, code blocks, popovers */
+  --fx-850:       #343331; /* Layer 3: Borders, divider lines, row hover */
+  --fx-800:       #403E3C; /* Layer 4: Active pills, selected tab backgrounds */
+  --fx-700:       #575653; /* Subtle muted borders, resting scrollbar */
+  --fx-600:       #6F6E69; /* Comments, placeholders, inactive icons */
+  --fx-500:       #878580; /* Metadata text, timestamps, section tags */
+  --fx-300:       #B7B5AC; /* Secondary text, bullet markers */
+  --fx-200:       #CECDC3; /* Primary body text (Matte warm paper gray) */
+  --fx-100:       #E6E4D9; /* Headings, strong emphasis */
+  --fx-paper:     #FFFCF0; /* Pure analog paper white */
+
+  /* --- Flexoki Natural Mineral Accent Colors (400 Dark Scale) --- */
+  --fx-red:       #D14D41; /* Cinnabar Red */
+  --fx-orange:    #DA702C; /* Ochre Orange (Default Accent) */
+  --fx-yellow:    #D0A215; /* Orpiment Yellow */
+  --fx-green:     #879A39; /* Malachite Green */
+  --fx-cyan:      #3AA99F; /* Turquoise Cyan */
+  --fx-blue:      #4385BE; /* Azurite Blue */
+  --fx-purple:    #8B7EC8; /* Iolite Purple */
+  --fx-magenta:   #CE5D97; /* Fluorite Magenta */
+
+  /* --- Primary Theme Accent & Breathing Auras --- */
+  --flexoki-accent: var(--fx-orange);
+  --flexoki-accent-soft: rgba(218, 112, 44, 0.16);
+  --flexoki-accent-glow: rgba(218, 112, 44, 0.28);
+  --bettergravity-accent: var(--flexoki-accent);
+  --bettergravity-accent-soft: var(--flexoki-accent-soft);
+
+  /* ==========================================================================
+     1. Host Native Design Tokens (Antigravity 2.0 / Willow)
+     ========================================================================== */
+  --background: var(--fx-black) !important;
+  --foreground: var(--fx-200) !important;
+
+  --primary: var(--flexoki-accent) !important;
+  --primary-foreground: var(--fx-black) !important;
+  --secondary: var(--fx-950) !important;
+  --secondary-foreground: var(--fx-200) !important;
+
+  --muted: var(--fx-black) !important;
+  --muted-foreground: var(--fx-500) !important;
+
+  --border: var(--fx-850) !important;
+  --card: var(--fx-950) !important;
+  --card-border: var(--fx-850) !important;
+
+  --sidebar: var(--fx-black) !important;
+  --sidebar-secondary: var(--fx-950) !important;
+  --sidebar-muted: var(--fx-950) !important;
+
+  --placeholder: var(--fx-600) !important;
+  --link: var(--fx-blue) !important;
+  --focus-ring-color: var(--flexoki-accent) !important;
+
+  --error: var(--fx-red) !important;
+  --warning: var(--fx-yellow) !important;
+  --success: var(--fx-green) !important;
+  --code-foreground: var(--flexoki-accent) !important;
+
+  /* ==========================================================================
+     2. BetterGravity Shared Runtime Namespace
+     ========================================================================== */
+  --bettergravity-surface: var(--fx-950);
+  --bettergravity-border: var(--fx-850);
+  --bettergravity-text: var(--fx-200);
+  --bettergravity-row-hover: rgba(206, 205, 195, 0.05);
+
+  /* ==========================================================================
+     3. Gemini App & Willow Shell Tokens
+     ========================================================================== */
+  --studio-surface: var(--fx-black) !important;
+  --gemini-page-bg: var(--fx-black) !important;
+  --gemini-surface: var(--fx-950) !important;
+  --gemini-surface-hover: var(--fx-900) !important;
+  --gemini-trigger-hover: var(--fx-900) !important;
+  --gemini-control-hover: var(--fx-900) !important;
+  --gemini-separator: var(--fx-850) !important;
+  --gemini-switch-track: var(--fx-black) !important;
+  --gemini-switch-slider: var(--fx-950) !important;
+  --gemini-body-text: var(--fx-200) !important;
+  --gemini-text: var(--fx-200) !important;
+  --gemini-text-trigger: var(--fx-500) !important;
+  --gemini-text-trigger-hover: var(--fx-100) !important;
+  --gemini-text-dim: var(--fx-500) !important;
+  --gemini-bubble-bg: var(--fx-950) !important;
+  --gemini-composer-bg: var(--fx-950) !important;
+  --gemini-composer-placeholder: var(--fx-600) !important;
+  --gemini-inline-code-bg: var(--fx-900) !important;
+  --gemini-inline-code-text: var(--flexoki-accent) !important;
+  --gemini-link: var(--fx-blue) !important;
+  --gemini-send-bg: var(--flexoki-accent) !important;
+  --gemini-send-bg-hover: #c45f22 !important;
+  --gemini-home-glow-accent: var(--flexoki-accent-soft) !important;
+  --gemini-row-selected: var(--fx-900) !important;
+  --gemini-row-hover: rgba(206, 205, 195, 0.05) !important;
+}
+
+/* ==========================================================================
+   4. Turbo Engine & Paint Optimization
+   ========================================================================== */
+[data-testid="user-input-step"],
+[data-testid="planner-response-text"],
+[role="article"][aria-label="Agent response"],
+[role="article"][aria-label="User message"] {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 120px;
+}
+
+body,
+#root,
+[data-testid="conversation-view"] {
+  text-shadow: none !important;
+  color-scheme: dark !important;
+}
+
+/* ==========================================================================
+   5. Window Shell, TitleBar & Window Drag Boundaries
+   ========================================================================== */
+
+
+[data-testid="window-titlebar"],
+header,
+.titlebar {
+  background: var(--fx-black) !important;
+  border-bottom: 1px solid var(--fx-850) !important;
+  user-select: none;
+}
+
+[data-testid="sidebar-toggle"],
+[data-bettergravity-button],
+div.go-back-btn,
+button[aria-label="Go Back"] {
+  flex-shrink: 0 !important;
+  -webkit-app-region: no-drag !important;
+}
+
+/* ==========================================================================
+   6. Navigation & Sidebar Refinements
+   ========================================================================== */
+[role="navigation"][aria-label="Sidebar"],
+[role="navigation"] {
+  background-color: var(--fx-black) !important;
+  border-right: 1px solid var(--fx-850) !important;
+}
+
+html body [role="navigation"] .bg-sidebar,
+html body [role="navigation"] div[class*="bg-sidebar"]:not([data-testid="conversation-row-sidebar"]) {
+  background-color: var(--fx-black) !important;
+}
+
+[data-testid="conversation-row-sidebar"] {
+  border-radius: 8px !important;
+  margin: 1px 6px !important;
+  transition: background-color 130ms cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  --row-bg: transparent !important;
+  background-color: transparent !important;
+  position: relative !important;
+}
+
+[data-testid="conversation-row-sidebar"]:hover {
+  --row-bg: var(--fx-950) !important;
+  background-color: var(--fx-950) !important;
+}
+
+[data-testid="conversation-row-sidebar"][data-selected="true"],
+html body [role="navigation"] div[data-testid="conversation-row-sidebar"][data-selected="true"] {
+  --row-bg: var(--fx-800) !important;
+  background-color: var(--fx-800) !important;
+  color: var(--fx-100) !important;
+}
+
+[data-testid="conversation-row-sidebar"] div[class*="can-hover"],
+[data-testid="conversation-row-sidebar"] div[style*="linear-gradient"] {
+  background: linear-gradient(to right, transparent 0%, var(--row-bg) 24%) !important;
+}
+
+[data-testid="conversation-row-sidebar"] button[data-testid^="conversation-"] {
+  color: var(--fx-500) !important;
+  background-color: transparent !important;
+  opacity: 0.85 !important;
+}
+
+[data-testid="conversation-row-sidebar"] button[data-testid^="conversation-"]:hover {
+  color: var(--fx-100) !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  opacity: 1 !important;
+}
+
+[data-testid="conversation-row-sidebar"]:not([data-selected="true"])::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 7px;
+  bottom: 7px;
+  width: 3px;
+  border-radius: 2px;
+  background-color: var(--flexoki-accent);
+  opacity: 0;
+  pointer-events: none;
+}
+
+[data-testid="conversation-row-sidebar"]:hover:not([data-selected="true"])::before {
+  opacity: 0.65;
+}
+
+[data-testid="conversation-row-sidebar"][data-selected="true"]::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 3px;
+  border-radius: 2px;
+  background-color: var(--flexoki-accent);
+  opacity: 1;
+}
+
+[data-testid="conversation-row-sidebar"] span.truncate {
+  color: var(--fx-200) !important;
+}
+
+[role="navigation"] [data-testid="section-header"] {
+  color: var(--fx-500) !important;
+}
+
+/* ==========================================================================
+   7. Typography, Markdown & Digital Ink Flow
+   ========================================================================== */
+::selection {
+  background: var(--flexoki-accent-soft) !important;
+  color: var(--fx-paper) !important;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background-clip: content-box;
+  background-color: var(--fx-700);
+  transition: background-color 150ms ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--flexoki-accent);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Headings in warm matte paper tone */
+:is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--fx-100) !important;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+}
+
+/* Markdown Blockquotes: warm mineral ink accent */
+blockquote {
+  position: relative !important;
+  border-left: 3px solid var(--flexoki-accent) !important;
+  background: var(--flexoki-accent-soft) !important;
+  border-radius: 0 8px 8px 0 !important;
+  padding: 8px 16px !important;
+  margin: 12px 0 !important;
+  color: var(--fx-300) !important;
+  font-style: italic !important;
+}
+
+/* Markdown Tables */
+table {
+  width: 100%;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  margin: 14px 0 !important;
+  border: 1px solid var(--fx-850) !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+th {
+  background-color: var(--fx-900) !important;
+  color: var(--fx-100) !important;
+  font-weight: 600 !important;
+  padding: 8px 12px !important;
+  border-bottom: 1px solid var(--fx-850) !important;
+  border-right: 1px solid var(--fx-850) !important;
+}
+
+th:last-child {
+  border-right: none !important;
+}
+
+td {
+  padding: 8px 12px !important;
+  border-bottom: 1px solid var(--fx-850) !important;
+  border-right: 1px solid var(--fx-850) !important;
+  color: var(--fx-300) !important;
+}
+
+td:last-child {
+  border-right: none !important;
+}
+
+tr:last-child td {
+  border-bottom: none !important;
+}
+
+tr:nth-child(even) td {
+  background-color: var(--fx-950) !important;
+}
+
+tr:hover td {
+  background-color: var(--bettergravity-row-hover) !important;
+}
+
+/* Inline Code Badges */
+:not(pre) > code,
+code:not(pre code) {
+  background-color: var(--fx-900) !important;
+  color: var(--gemini-inline-code-text, var(--flexoki-accent)) !important;
+  border: 1px solid var(--fx-850) !important;
+  padding: 2px 6px !important;
+  border-radius: 6px !important;
+  font-size: 0.88em !important;
+  font-family: var(--gemini-code-font, ui-monospace, SFMono-Regular, Consolas, monospace) !important;
+}
+
+/* Code Blocks Container */
+pre,
+.code-block,
+:is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) div.relative.rounded-xl {
+  background-color: var(--fx-950) !important;
+  border: 1px solid var(--fx-850) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+pre code,
+.line-content {
+  color: var(--fx-200) !important;
+}
+
+/* ==========================================================================
+   8. Prism & Tree-sitter Syntax Tokens (Flexoki Mineral Palette)
+   ========================================================================== */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: var(--fx-600) !important;
+  font-style: italic;
+}
+
+.token.keyword,
+.token.selector,
+.token.important {
+  color: var(--fx-purple) !important;
+  font-weight: 550;
+}
+
+.token.string,
+.token.char,
+.token.attr-value,
+.token.inserted {
+  color: var(--fx-green) !important;
+}
+
+.token.number,
+.token.boolean,
+.token.constant {
+  color: var(--fx-orange) !important;
+}
+
+.token.function,
+.token.class-name {
+  color: var(--fx-blue) !important;
+}
+
+.token.property,
+.token.builtin {
+  color: var(--fx-cyan) !important;
+}
+
+.token.tag,
+.token.deleted {
+  color: var(--fx-red) !important;
+}
+
+.token.operator,
+.token.punctuation {
+  color: var(--fx-500) !important;
+}
+
+/* ==========================================================================
+   9. Chat Composer (Prompt Box) & Mineral Breathing Inset Aura
+   ========================================================================== */
+[data-testid="agent-input-box"] {
+  background: transparent !important;
+}
+
+[data-testid="agent-input-box"] > .rounded-2xl.bg-card-border > .bg-card:not([data-mention-menu]) {
+  background: var(--fx-950) !important;
+  border: 1px solid var(--fx-850) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* Inset breathing glow tailored for warm terracotta */
+[data-testid="agent-input-box"] > .rounded-2xl.bg-card-border > .bg-card:not([data-mention-menu])::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  border-radius: inherit !important;
+  pointer-events: none !important;
+  z-index: 5 !important;
+  box-shadow: inset 0 0 4px 1px var(--flexoki-accent),
+              inset 0 0 16px 2px var(--flexoki-accent-soft) !important;
+  opacity: 0;
+  transition: opacity 160ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-testid="agent-input-box"]:focus-within > .rounded-2xl.bg-card-border > .bg-card:not([data-mention-menu])::after {
+  opacity: 0.35;
+}
+
+[data-testid="agent-input-box"] [role="combobox"][contenteditable] {
+  color: var(--fx-200) !important;
+}
+
+[data-testid="agent-input-box"] [role="combobox"][contenteditable] ~ * {
+  color: var(--fx-600) !important;
+}
+
+/* Send button */
+[data-testid="send-button"]:not(:disabled):not([disabled]):not([aria-disabled="true"]) {
+  background-color: var(--flexoki-accent) !important;
+  color: var(--fx-black) !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  box-shadow: 0 2px 8px var(--flexoki-accent-glow) !important;
+}
+
+[data-testid="send-button"]:not(:disabled):not([disabled]):not([aria-disabled="true"]):hover {
+  filter: brightness(1.1) !important;
+  transform: translateY(-1px) scale(1.02);
+}
+
+[data-testid="send-button"]:disabled,
+[data-testid="send-button"][disabled],
+[data-testid="send-button"][aria-disabled="true"] {
+  background-color: var(--fx-900) !important;
+  color: var(--fx-600) !important;
+  border: 1px solid var(--fx-850) !important;
+  opacity: 0.6 !important;
+}
+
+/* New Conversation button */
+[data-testid="new-conversation-button"] {
+  background: var(--fx-950) !important;
+  color: var(--fx-200) !important;
+  border: 1px solid var(--fx-850) !important;
+  border-radius: 8px !important;
+}
+
+[data-testid="new-conversation-button"]:hover {
+  background: var(--fx-900) !important;
+  border-color: var(--flexoki-accent) !important;
+  box-shadow: 0 2px 10px var(--flexoki-accent-soft) !important;
+}
+
+/* ==========================================================================
+   10. Dialogs, Popovers & Context Menus
+   ========================================================================== */
+[role="dialog"],
+[role="menu"],
+[data-radix-popper-content-wrapper] > div,
+.bg-popover {
+  background-color: var(--fx-950) !important;
+  border: 1px solid var(--fx-850) !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.65), 0 0 1px 1px rgba(255, 255, 255, 0.04) !important;
+  border-radius: 12px !important;
+  color: var(--fx-200) !important;
+}

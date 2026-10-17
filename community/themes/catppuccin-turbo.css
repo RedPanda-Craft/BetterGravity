@@ -51,15 +51,15 @@
    ========================================================================== */
 :root {
   /* --- 1.1 Antigravity Host Native Tokens --- */
-  --background: var(--ctp-base) !important;
+  --background: var(--ctp-crust) !important;
   --foreground: var(--ctp-text) !important;
 
   --primary: var(--catppuccin-accent) !important;
   --primary-foreground: var(--ctp-crust) !important;
-  --secondary: var(--ctp-surface0) !important;
+  --secondary: var(--ctp-mantle) !important;
   --secondary-foreground: var(--ctp-text) !important;
 
-  --muted: var(--ctp-mantle) !important;
+  --muted: var(--ctp-crust) !important;
   --muted-foreground: var(--ctp-subtext0) !important;
 
   --border: var(--ctp-surface0) !important;
@@ -67,8 +67,8 @@
   --card-border: var(--ctp-surface0) !important;
 
   --sidebar: var(--ctp-crust) !important;
-  --sidebar-secondary: var(--ctp-base) !important;
-  --sidebar-muted: var(--ctp-overlay1) !important;
+  --sidebar-secondary: var(--ctp-mantle) !important;
+  --sidebar-muted: var(--ctp-mantle) !important;
 
   --placeholder: var(--ctp-overlay0) !important;
   --link: var(--ctp-blue) !important;
@@ -108,7 +108,6 @@
 }
 
 pre,
-div.relative:has(> pre),
 .code-block {
   content-visibility: auto;
   contain-intrinsic-size: auto 160px;
@@ -125,14 +124,12 @@ body,
 button:not([data-no-transition]),
 [role="button"],
 a,
-input,
-textarea,
-select,
 .bg-tree-toggle-btn,
 .bg-branch-btn,
 .bettergravity-pet__badge {
-  transition-duration: 140ms !important;
-  transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  transition: background-color 140ms cubic-bezier(0.2, 0.8, 0.2, 1),
+              color 140ms cubic-bezier(0.2, 0.8, 0.2, 1),
+              border-color 140ms cubic-bezier(0.2, 0.8, 0.2, 1) !important;
 }
 
 /* 2.4 Instant Keyframe Overrides (Antigravity native entrance animations) */
@@ -147,20 +144,11 @@ select,
    3. Host Native Layout & Immersive Window Shell (TitleBar & Sidebar)
    ========================================================================== */
 
-/* 3.1 Immersive TitleBar Styling & Window Drag Boundaries */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0 0 auto 0;
-  height: 2px;
-  z-index: 9999;
-  background: linear-gradient(90deg, var(--catppuccin-accent), var(--ctp-mauve) 45%, var(--ctp-blue) 75%, transparent 95%);
-  pointer-events: none;
-}
+
 
 /* Immersive titlebar layout and boundary preservation */
 [data-testid="window-titlebar"],
-header:has([data-testid="sidebar-toggle"]),
+header,
 .titlebar {
   background: var(--ctp-crust) !important;
   border-bottom: 1px solid var(--ctp-surface0) !important;
@@ -170,14 +158,14 @@ header:has([data-testid="sidebar-toggle"]),
 /* Ensure titlebar buttons and plugin anchors never wrap or compress */
 [data-testid="sidebar-toggle"],
 [data-bettergravity-button],
-div:has(> button[aria-label="Go Back"]) {
+div.go-back-btn, button[aria-label="Go Back"] {
   flex-shrink: 0 !important;
   -webkit-app-region: no-drag !important;
 }
 
 /* Truncated header text protection */
 [data-testid="window-titlebar"] span.truncate,
-header:has([data-testid="sidebar-toggle"]) .truncate {
+header .truncate {
   min-width: 0 !important;
   flex: 1 1 auto !important;
 }
@@ -192,15 +180,54 @@ header:has([data-testid="sidebar-toggle"]) .truncate {
   border-radius: 8px !important;
   margin: 1px 6px !important;
   transition: background-color 140ms cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  --row-bg: transparent !important;
+  background-color: transparent !important;
+  position: relative !important;
 }
 
 [data-testid="conversation-row-sidebar"]:hover {
-  background-color: var(--bettergravity-row-hover) !important;
+  --row-bg: var(--ctp-mantle) !important;
+  background-color: var(--ctp-mantle) !important;
 }
 
 [data-testid="conversation-row-sidebar"][data-selected="true"] {
+  --row-bg: var(--ctp-surface0) !important;
   background-color: var(--ctp-surface0) !important;
   color: var(--ctp-text) !important;
+}
+
+[data-testid="conversation-row-sidebar"] div[class*="can-hover"],
+[data-testid="conversation-row-sidebar"] div[style*="linear-gradient"] {
+  background: linear-gradient(to right, transparent 0%, var(--row-bg) 24%) !important;
+}
+
+[data-testid="conversation-row-sidebar"] button[data-testid^="conversation-"] {
+  color: var(--ctp-overlay1) !important;
+  background-color: transparent !important;
+  opacity: 0.85 !important;
+}
+
+[data-testid="conversation-row-sidebar"] button[data-testid^="conversation-"]:hover {
+  color: var(--ctp-text) !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  opacity: 1 !important;
+}
+
+[data-testid="conversation-row-sidebar"]:not([data-selected="true"])::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 7px;
+  bottom: 7px;
+  width: 3px;
+  border-radius: 2px;
+  background-color: var(--catppuccin-accent);
+  opacity: 0;
+  pointer-events: none;
+}
+
+[data-testid="conversation-row-sidebar"]:hover:not([data-selected="true"])::before {
+  opacity: 0.65;
 }
 
 [data-testid="conversation-row-sidebar"][data-selected="true"]::before {
@@ -212,6 +239,7 @@ header:has([data-testid="sidebar-toggle"]) .truncate {
   width: 3px;
   border-radius: 2px;
   background-color: var(--catppuccin-accent);
+  opacity: 1;
 }
 
 /* 3.3 Dialogs, Menus & Radix Popovers */
@@ -417,8 +445,8 @@ body:not(.gemini-app-loaded) [data-testid="agent-input-box"]:focus-within,
    6.1 Gemini-app Interoperability & Navigation Flex Lock
    -------------------------------------------------------------------------- */
 /* Lock topbar navigation arrows against compression or line wraps */
-div:has(> button[aria-label="Go Back"]),
-[data-testid="sidebar-toggle"][aria-label*="Toggle Sidebar"] + div:has([aria-label="Go Back"]) {
+div.go-back-btn, button[aria-label="Go Back"],
+[data-testid="sidebar-toggle"][aria-label*="Toggle Sidebar"] + div {
   flex-shrink: 0 !important;
   display: inline-flex !important;
   align-items: center !important;
@@ -452,6 +480,7 @@ div:has(> button[aria-label="Go Back"]),
 /* Protect topbar & sidebar paw buttons and accent palette triggers */
 [data-bettergravity-button="Pet"],
 [data-bettergravity-button="Pets"],
+[data-bettergravity-button="Cards"],
 [data-bettergravity-button="Accent"],
 [data-bettergravity-button="Voyager"] {
   display: inline-flex !important;
@@ -465,10 +494,26 @@ div:has(> button[aria-label="Go Back"]),
 }
 
 [data-bettergravity-button="Pet"] > svg,
-[data-bettergravity-button="Pets"] > svg,
 [data-bettergravity-button="Accent"] > svg {
   width: 20px !important;
   height: 20px !important;
+  flex-shrink: 0 !important;
+  fill: currentColor !important;
+}
+
+[data-bettergravity-button="Pets"] > svg {
+  box-sizing: border-box !important;
+  width: 32px !important;
+  height: 32px !important;
+  padding: 6px !important;
+  flex-shrink: 0 !important;
+  fill: currentColor !important;
+}
+
+[data-bettergravity-button="Cards"] > svg {
+  width: 16px !important;
+  height: 16px !important;
+  padding: 0 !important;
   flex-shrink: 0 !important;
   fill: currentColor !important;
 }
@@ -482,6 +527,7 @@ div:has(> button[aria-label="Go Back"]),
 
 [data-bettergravity-button="Pet"]:hover,
 [data-bettergravity-button="Pets"]:hover,
+[data-bettergravity-button="Cards"]:hover,
 [data-bettergravity-button="Accent"]:hover,
 [data-bettergravity-button="Voyager"]:hover {
   background-color: var(--bettergravity-row-hover) !important;
@@ -490,6 +536,7 @@ div:has(> button[aria-label="Go Back"]),
 
 [data-bettergravity-button="Pet"][aria-pressed="true"],
 [data-bettergravity-button="Pets"][aria-pressed="true"],
+[data-bettergravity-button="Cards"][aria-pressed="true"],
 [data-bettergravity-button="Accent"][aria-pressed="true"],
 [data-bettergravity-button="Voyager"][aria-pressed="true"] {
   background-color: var(--ctp-surface0) !important;
@@ -526,23 +573,21 @@ div:has(> button[aria-label="Go Back"]),
 .bg-timeline-rail:hover {
   background: rgba(24, 24, 37, 0.96) !important;
   border-color: var(--ctp-surface1) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6) !important;
   transition: width 200ms cubic-bezier(0.16, 1, 0.3, 1) 0.28s,
               padding 200ms ease 0.28s,
               background-color 180ms ease 0.28s,
               border-color 180ms ease 0.28s,
-              box-shadow 200ms ease 0.28s,
-              backdrop-filter 180ms ease 0.28s,
-              -webkit-backdrop-filter 180ms ease 0.28s;
+              box-shadow 200ms ease 0.28s,;
 }
 
 .bg-timeline-rail.bg-expanded {
   background: rgba(24, 24, 37, 0.96) !important;
   border-color: var(--ctp-surface1) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6) !important;
   transition: width 200ms cubic-bezier(0.16, 1, 0.3, 1) 0s,
               padding 200ms ease 0s,
@@ -594,25 +639,25 @@ div:has(> button[aria-label="Go Back"]),
 
 /* 7.1 Dynamic token bindings linking Gemini/Studio surfaces to Catppuccin Flavors */
 :root {
-  --gemini-page-bg: var(--ctp-base) !important;
+  --gemini-page-bg: var(--ctp-crust) !important;
   --gemini-body-text: var(--ctp-text) !important;
   --gemini-link: var(--catppuccin-accent) !important;
-  --gemini-surface: var(--ctp-surface0) !important;
-  --gemini-surface-hover: var(--ctp-surface1) !important;
+  --gemini-surface: var(--ctp-mantle) !important;
+  --gemini-surface-hover: var(--ctp-surface0) !important;
   --gemini-text: var(--ctp-text) !important;
-  --gemini-switch-track: var(--ctp-mantle) !important;
-  --gemini-switch-slider: var(--ctp-surface0) !important;
-  --gemini-inline-code-bg: var(--ctp-surface0) !important;
+  --gemini-switch-track: var(--ctp-crust) !important;
+  --gemini-switch-slider: var(--ctp-mantle) !important;
+  --gemini-inline-code-bg: var(--ctp-mantle) !important;
   --gemini-inline-code-text: var(--catppuccin-accent) !important;
-  --studio-surface: var(--ctp-base) !important;
+  --studio-surface: var(--ctp-crust) !important;
 }
 
 /* 7.2 Dark flavors (Mocha / Macchiato / Frappé) message bubbles and composer */
 body:not(.ctp-latte-mode) {
-  --gemini-bubble-bg: var(--ctp-surface0) !important;
-  --gemini-composer-bg: var(--ctp-surface0) !important;
+  --gemini-bubble-bg: var(--ctp-mantle) !important;
+  --gemini-composer-bg: var(--ctp-mantle) !important;
   --gemini-row-hover: rgba(205, 214, 244, 0.08) !important;
-  --studio-surface: var(--ctp-base) !important;
+  --studio-surface: var(--ctp-crust) !important;
 }
 
 /* 7.3 Latte Light Mode token inversions (Eliminates harsh black-and-white zebra glare) */
@@ -626,92 +671,6 @@ body.ctp-latte-mode {
   --gemini-surface: var(--ctp-surface0, #ccd0da) !important;
   --gemini-switch-track: var(--ctp-mantle, #e6e9ef) !important;
   --gemini-switch-slider: var(--ctp-surface0, #ccd0da) !important;
-}
-
-/* Gemini-app user message bubble light mode override */
-body.ctp-latte-mode [data-testid="lifted-context-menu-trigger"] > .bg-card,
-body.ctp-latte-mode [data-testid="lifted-context-menu-trigger"] [data-quotable="true"] {
-  background-color: var(--ctp-surface0, #ccd0da) !important;
-  color: var(--ctp-text, #4c4f69) !important;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08) !important;
-}
-
-body.ctp-latte-mode [data-testid="lifted-context-menu-trigger"] .whitespace-pre-wrap {
-  color: var(--ctp-text, #4c4f69) !important;
-}
-
-/* Gemini-app prompt box composer light mode styling and paper-like contrast */
-:root:root body.ctp-latte-mode [data-testid="agent-input-box"] > .rounded-2xl.bg-card-border > .bg-card:not([data-mention-menu]) {
-  background-color: var(--ctp-mantle, #e6e9ef) !important;
-  border: 1px solid var(--ctp-surface0, #ccd0da) !important;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06) !important;
-  color: var(--ctp-text, #4c4f69) !important;
-}
-
-/* Combat high-contrast white text glare inside composer editable combobox */
-:root:root body.ctp-latte-mode [data-testid="agent-input-box"] [role="combobox"][contenteditable],
-:root:root body.ctp-latte-mode [data-testid="agent-input-box"] [role="combobox"][contenteditable] * {
-  color: var(--ctp-text, #4c4f69) !important;
-  caret-color: var(--catppuccin-accent, #fe640b) !important;
-}
-
-:root:root body.ctp-latte-mode [data-testid="agent-input-box"] [role="combobox"][contenteditable] ~ * {
-  color: var(--ctp-overlay0, #9ca0b0) !important;
-}
-
-:root:root body.ctp-latte-mode [data-testid="agent-input-box"] [data-beautiful-mention],
-:root:root body.ctp-latte-mode [data-testid="agent-input-box"] [data-mention] {
-  color: var(--catppuccin-accent, #fe640b) !important;
-  background-color: rgba(254, 100, 11, 0.12) !important;
-}
-
-/* Gemini-app code blocks & headers light mode adaptation */
-body.ctp-latte-mode :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) div:has(> .min-h-7):has(.code-block),
-body.ctp-latte-mode :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) div.relative.rounded-xl:has(> .min-h-7),
-body.ctp-latte-mode :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) div.relative.whitespace-pre-wrap:has(.code-block) {
-  background: var(--ctp-mantle, #e6e9ef) !important;
-  border: 1px solid var(--ctp-surface0, #ccd0da) !important;
-}
-
-body.ctp-latte-mode :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .min-h-7:has(+ .p-3),
-body.ctp-latte-mode :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .min-h-7:has(+ .p-3) > .font-sans {
-  color: var(--ctp-text, #4c4f69) !important;
-}
-
-body.ctp-latte-mode :is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) .min-h-7:has(+ .p-3) button {
-  color: var(--ctp-text, #4c4f69) !important;
-}
-
-/* Sidebar Chat/Work mode tabs slider light background */
-body.ctp-latte-mode .app-tabs,
-body.ctp-latte-mode [data-testid="sidebar-toggle"] ~ div .app-tabs {
-  background: var(--ctp-mantle, #e6e9ef) !important;
-}
-
-/* 7.4 Latte Light Mode sidebar active item and row hover remodeling */
-body.ctp-latte-mode {
-  --gemini-row-selected: var(--ctp-surface0, #ccd0da) !important;
-  --gemini-row-hover: rgba(76, 79, 105, 0.08) !important;
-}
-
-/* Selected row background inverted from pitch black to soft Surface0 */
-body.ctp-latte-mode [data-testid="conversation-row-sidebar"][data-selected="true"],
-body.ctp-latte-mode [role="navigation"] [data-selected="true"],
-body.ctp-latte-mode .app-tabs-slider {
-  background-color: var(--ctp-surface0, #ccd0da) !important;
-  color: var(--ctp-text, #4c4f69) !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
-}
-
-/* Ensure high-contrast dark text and SVG icons on active sidebar items */
-body.ctp-latte-mode [data-testid="conversation-row-sidebar"][data-selected="true"] :is(span, p, svg, button) {
-  color: var(--ctp-text, #4c4f69) !important;
-  fill: currentColor !important;
-}
-
-/* Subtle brightness lift on active item hover */
-body.ctp-latte-mode [data-testid="conversation-row-sidebar"]:hover:not([data-selected="true"]) {
-  background-color: rgba(76, 79, 105, 0.06) !important;
 }
 
 /* ==========================================================================
@@ -800,13 +759,6 @@ body.ctp-latte-mode [data-testid="conversation-row-sidebar"]:hover:not([data-sel
   [data-testid="new-conversation-button"],
   [data-testid="history-button"],
   [data-testid="automations-button"],
-  #gemini-skills-button,
-  #gemini-scheduled-tasks-button,
-  #gemini-new-project-button,
-  #gemini-display-options-button,
-  [data-bettergravity-button],
-  #gemini-scroll-nav > *,
-  .gemini-nav-item
 ) {
   color: var(--ctp-text, #4c4f69) !important;
 }
@@ -815,13 +767,6 @@ body.ctp-latte-mode [data-testid="conversation-row-sidebar"]:hover:not([data-sel
   [data-testid="new-conversation-button"],
   [data-testid="history-button"],
   [data-testid="automations-button"],
-  #gemini-skills-button,
-  #gemini-scheduled-tasks-button,
-  #gemini-new-project-button,
-  #gemini-display-options-button,
-  [data-bettergravity-button],
-  #gemini-scroll-nav > *,
-  .gemini-nav-item
 ) span {
   color: var(--ctp-text, #4c4f69) !important;
 }
@@ -830,13 +775,6 @@ body.ctp-latte-mode [data-testid="conversation-row-sidebar"]:hover:not([data-sel
   [data-testid="new-conversation-button"],
   [data-testid="history-button"],
   [data-testid="automations-button"],
-  #gemini-skills-button,
-  #gemini-scheduled-tasks-button,
-  #gemini-new-project-button,
-  #gemini-display-options-button,
-  [data-bettergravity-button],
-  #gemini-scroll-nav > *,
-  .gemini-nav-item
 ) svg {
   color: var(--ctp-subtext0, #6c6f85) !important;
   fill: currentColor !important;
@@ -880,12 +818,6 @@ body.ctp-latte-mode [data-testid="conversation-row-sidebar"]:hover:not([data-sel
   [data-bettergravity-button][data-selected="true"],
   [data-bettergravity-button][data-bettergravity-active="true"],
   [data-bettergravity-button].bg-sidebar-secondary,
-  #gemini-scroll-nav > *[aria-pressed="true"],
-  #gemini-scroll-nav > *[aria-selected="true"],
-  #gemini-scroll-nav > *[data-active="true"],
-  #gemini-scroll-nav > *[data-selected="true"],
-  #gemini-scroll-nav > *[data-bettergravity-active="true"],
-  #gemini-scroll-nav > *.bg-sidebar-secondary
 ) :is(span, svg) {
   color: var(--ctp-text, #4c4f69) !important;
   fill: currentColor !important;
@@ -896,13 +828,6 @@ body.ctp-latte-mode [data-testid="conversation-row-sidebar"]:hover:not([data-sel
   [data-testid="new-conversation-button"],
   [data-testid="history-button"],
   [data-testid="automations-button"],
-  #gemini-skills-button,
-  #gemini-scheduled-tasks-button,
-  #gemini-new-project-button,
-  #gemini-display-options-button,
-  [data-bettergravity-button],
-  #gemini-scroll-nav > *,
-  .gemini-nav-item
 ):hover:not(.bg-sidebar-secondary):not([aria-pressed="true"]):not([data-selected="true"]) {
   background-color: rgba(76, 79, 105, 0.08) !important;
   color: var(--ctp-text, #4c4f69) !important;
@@ -918,7 +843,6 @@ body.ctp-latte-mode [data-testid="conversation-row-sidebar"]:hover:not([data-sel
 /* Popover menus (Display options, conversation context menus) */
 :root:root body.ctp-latte-mode :is(
   [role="menu"],
-  [role="menu"][data-gemini-conversation-menu],
   div[role="menu"],
   [data-radix-popper-content-wrapper] [role="menu"],
   .menu-content
@@ -947,8 +871,7 @@ body.ctp-latte-mode [data-testid="conversation-row-sidebar"]:hover:not([data-sel
   [data-testid*="file-change"],
   [data-testid*="file-diff"],
   [data-testid="trajectory-file-changes"],
-  .file-changes-badge,
-  div:has(> [data-testid*="file-diff"])
+  .file-changes-badge
 ) {
   background: var(--ctp-mantle, #e6e9ef) !important;
   background-color: var(--ctp-mantle, #e6e9ef) !important;
@@ -991,23 +914,21 @@ body.ctp-latte-mode [data-testid="conversation-row-sidebar"]:hover:not([data-sel
 :root:root body.ctp-latte-mode .bg-timeline-rail:hover {
   background: rgba(24, 24, 37, 0.96) !important;
   border-color: var(--ctp-surface1) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6) !important;
   transition: width 200ms cubic-bezier(0.16, 1, 0.3, 1) 0.28s,
               padding 200ms ease 0.28s,
               background-color 180ms ease 0.28s,
               border-color 180ms ease 0.28s,
-              box-shadow 200ms ease 0.28s,
-              backdrop-filter 180ms ease 0.28s,
-              -webkit-backdrop-filter 180ms ease 0.28s;
+              box-shadow 200ms ease 0.28s,;
 }
 
 :root:root body.ctp-latte-mode .bg-timeline-rail.bg-expanded {
   background: rgba(24, 24, 37, 0.96) !important;
   border-color: var(--ctp-surface1) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6) !important;
   transition: width 200ms cubic-bezier(0.16, 1, 0.3, 1) 0s,
               padding 200ms ease 0s,
@@ -1032,206 +953,15 @@ body.ctp-latte-mode [data-testid="conversation-row-sidebar"]:hover:not([data-sel
 }
 
 /* --------------------------------------------------------------------------
-   8.6 Conversation History Full-Screen View Light Mode Adaptation
+   8.6 BetterGravity Pets Page Light Mode
    -------------------------------------------------------------------------- */
-/* Conversation history viewport canvas and sticky search header */
-:root:root body.ctp-latte-mode .h-full.w-full.flex.flex-col.items-center.overflow-y-auto:has([data-testid="history-search-input"]),
-:root:root body.ctp-latte-mode .sticky.top-0:has([data-testid="history-search-input"]) {
+:root:root body.ctp-latte-mode :is(.bettergravity-pets-page, .bettergravity-pet-library, [data-pet-page-host]) {
   background: var(--ctp-base, #eff1f5) !important;
-  background-color: var(--ctp-base, #eff1f5) !important;
-}
-
-/* 64px rounded search bar pill */
-:root:root body.ctp-latte-mode .sticky.top-0:has([data-testid="history-search-input"]) > div.flex.items-center.gap-2 {
-  background: var(--ctp-mantle, #e6e9ef) !important;
-  border: 1px solid var(--ctp-surface0, #ccd0da) !important;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
-}
-
-:root:root body.ctp-latte-mode [data-testid="history-search-input"] {
   color: var(--ctp-text, #4c4f69) !important;
 }
 
-:root:root body.ctp-latte-mode [data-testid="history-search-input"]::placeholder {
-  color: var(--ctp-overlay0, #9ca0b0) !important;
-}
-
-:root:root body.ctp-latte-mode .sticky.top-0:has([data-testid="history-search-input"]) div.relative > svg {
-  color: var(--ctp-subtext0, #6c6f85) !important;
-}
-
-:root:root body.ctp-latte-mode .sticky.top-0:has([data-testid="history-search-input"]) > div:first-child:not(.flex)::after {
-  color: var(--ctp-subtext0, #6c6f85) !important;
-}
-
-:root:root body.ctp-latte-mode .willow-search-clear-btn {
-  color: var(--ctp-subtext0, #6c6f85) !important;
-}
-
-:root:root body.ctp-latte-mode .willow-search-clear-btn:hover {
-  background: rgba(76, 79, 105, 0.08) !important;
+:root:root body.ctp-latte-mode :is(.bettergravity-pet-library__header h1, .bettergravity-pet-library__header p, .bettergravity-pet-library__state-name) {
   color: var(--ctp-text, #4c4f69) !important;
-}
-
-/* Eliminate stark Desktop header blocks for seamless background blending */
-:root:root body.ctp-latte-mode .h-full:has([data-testid="history-search-input"]) div:has(> svg + span.truncate),
-:root:root body.ctp-latte-mode .h-full:has([data-testid="history-search-input"]) div.bg-muted,
-:root:root body.ctp-latte-mode .h-full:has([data-testid="history-search-input"]) div.bg-secondary {
-  background-color: transparent !important;
-  background: transparent !important;
-  color: var(--ctp-text, #4c4f69) !important;
-}
-
-/* History conversation rows & hover states */
-:root:root body.ctp-latte-mode [data-testid="conversation-row-history"] {
-  background: transparent !important;
-}
-
-:root:root body.ctp-latte-mode [data-testid="conversation-row-history"]:hover {
-  background: rgba(76, 79, 105, 0.08) !important;
-}
-
-:root:root body.ctp-latte-mode [data-testid="conversation-row-history"] span.truncate.text-sm {
-  color: var(--ctp-text, #4c4f69) !important;
-}
-
-:root:root body.ctp-latte-mode [data-testid="conversation-row-history"] span.text-xs.text-muted-foreground,
-:root:root body.ctp-latte-mode [data-testid="conversation-row-history"] span.text-xs.text-foreground.opacity-60,
-:root:root body.ctp-latte-mode [data-testid="conversation-row-history"] [data-screenshot-volatile="true"] {
-  color: var(--ctp-subtext0, #6c6f85) !important;
-}
-
-:root:root body.ctp-latte-mode [data-testid="conversation-row-history"] button[data-testid="conversation-kebab"] {
-  color: var(--ctp-subtext0, #6c6f85) !important;
-}
-
-/* --------------------------------------------------------------------------
-   8.7 Skills Library, Pets Page & Scheduled Tasks Light Mode Adaptation
-   -------------------------------------------------------------------------- */
-:root:root body.ctp-latte-mode :is(
-  .spark-customise-page--skills,
-  .bettergravity-pets-page,
-  .bettergravity-pet-library,
-  #gemini-skills-view,
-  #gemini-scheduled-tasks-view,
-  [data-testid="skills-view"],
-  [data-pet-page-host]
-) {
-  background: var(--ctp-base, #eff1f5) !important;
-  background-color: var(--ctp-base, #eff1f5) !important;
-  color: var(--ctp-text, #4c4f69) !important;
-}
-
-:root:root body.ctp-latte-mode :is(
-  .spark-customise-header h1,
-  .spark-customise-header p,
-  .bettergravity-pet-library__header h1,
-  .bettergravity-pet-library__header p,
-  .bettergravity-pet-library__state-name,
-  .spark-customise-page--skills h1,
-  .spark-customise-page--skills h2,
-  .spark-customise-page--skills p,
-  .spark-skills-library > h2,
-  .spark-recommended-skills > h2
-) {
-  color: var(--ctp-text, #4c4f69) !important;
-}
-
-/* Skills search bar pill */
-:root:root body.ctp-latte-mode .spark-skills-search-box {
-  background: var(--ctp-mantle, #e6e9ef) !important;
-  border: 1px solid var(--ctp-surface0, #ccd0da) !important;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
-}
-
-:root:root body.ctp-latte-mode .spark-skills-search-box:hover,
-:root:root body.ctp-latte-mode .spark-skills-search-box:focus-within {
-  background: var(--ctp-surface0, #ccd0da) !important;
-}
-
-:root:root body.ctp-latte-mode .spark-skills-search-box input {
-  color: var(--ctp-text, #4c4f69) !important;
-}
-
-:root:root body.ctp-latte-mode .spark-skills-search-box input::placeholder {
-  color: var(--ctp-overlay0, #9ca0b0) !important;
-}
-
-:root:root body.ctp-latte-mode .spark-skills-search-box .search-icon {
-  color: var(--ctp-subtext0, #6c6f85) !important;
-}
-
-/* Skills library container and row items */
-:root:root body.ctp-latte-mode .spark-skills-library__list {
-  background: var(--ctp-mantle, #e6e9ef) !important;
-  border: 1px solid var(--ctp-surface0, #ccd0da) !important;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
-}
-
-:root:root body.ctp-latte-mode .spark-skill-row {
-  background: var(--ctp-mantle, #e6e9ef) !important;
-  border-bottom: 1px solid var(--ctp-surface0, #ccd0da) !important;
-}
-
-:root:root body.ctp-latte-mode .spark-skill-row:hover,
-:root:root body.ctp-latte-mode .spark-skill-row:focus-within,
-:root:root body.ctp-latte-mode .spark-skill-row.has-menu-open {
-  background: var(--ctp-surface0, #ccd0da) !important;
-}
-
-:root:root body.ctp-latte-mode .spark-skill-card {
-  color: var(--ctp-text, #4c4f69) !important;
-}
-
-:root:root body.ctp-latte-mode .spark-skill-card__title {
-  color: var(--ctp-text, #4c4f69) !important;
-  font-weight: 500 !important;
-}
-
-:root:root body.ctp-latte-mode .spark-skill-card__description {
-  color: var(--ctp-subtext0, #6c6f85) !important;
-}
-
-:root:root body.ctp-latte-mode .spark-skill-badge {
-  background: var(--ctp-surface1, #bcc0cc) !important;
-  color: var(--ctp-text, #4c4f69) !important;
-}
-
-:root:root body.ctp-latte-mode .spark-page-action:not(.spark-page-action--primary) {
-  background: var(--ctp-mantle, #e6e9ef) !important;
-  border: 1px solid var(--ctp-surface0, #ccd0da) !important;
-  color: var(--ctp-text, #4c4f69) !important;
-}
-
-:root:root body.ctp-latte-mode .spark-page-action:not(.spark-page-action--primary):hover {
-  background: var(--ctp-surface0, #ccd0da) !important;
-}
-
-:root:root body.ctp-latte-mode .spark-skills-empty {
-  border: 1px solid var(--ctp-surface0, #ccd0da) !important;
-}
-
-:root:root body.ctp-latte-mode :is(.spark-skills-empty h2, .spark-skills-empty p) {
-  color: var(--ctp-subtext0, #6c6f85) !important;
-}
-
-/* Pet library buttons and stage containers */
-:root:root body.ctp-latte-mode :is(
-  .bettergravity-pet-library__button,
-  .bettergravity-pet-library__row,
-  .bettergravity-pet-library__stage,
-  .bettergravity-pet-library__progress,
-  [data-testid="skill-card"]
-) {
-  background: var(--ctp-mantle, #e6e9ef) !important;
-  background-color: var(--ctp-mantle, #e6e9ef) !important;
-  border: 1px solid var(--ctp-surface0, #ccd0da) !important;
-  color: var(--ctp-text, #4c4f69) !important;
-}
-
-:root:root body.ctp-latte-mode .bettergravity-pet-library__button:hover:not(:disabled) {
-  background: var(--ctp-surface0, #ccd0da) !important;
-  background-color: var(--ctp-surface0, #ccd0da) !important;
 }
 
 /* --------------------------------------------------------------------------
@@ -1240,8 +970,7 @@ body.ctp-latte-mode [data-testid="conversation-row-sidebar"]:hover:not([data-sel
 :root:root body.ctp-latte-mode :is(
   header,
   [data-testid="window-titlebar"],
-  .titlebar,
-  header:has([data-testid="sidebar-toggle"])
+  .titlebar
 ) {
   background-color: var(--ctp-mantle, #e6e9ef) !important;
   background: var(--ctp-mantle, #e6e9ef) !important;
@@ -1270,8 +999,7 @@ body.ctp-latte-mode [data-testid="conversation-row-sidebar"]:hover:not([data-sel
 
 /* Bottom-right floating voice dictation pill */
 :root:root body.ctp-latte-mode :is(
-  div.fixed:has(button svg path[d*="mic" i]),
-  div.fixed:has(button svg),
+  
   [data-testid*="voice"],
   [data-testid*="dictat"],
   [data-testid*="speech"]
@@ -1284,8 +1012,7 @@ body.ctp-latte-mode [data-testid="conversation-row-sidebar"]:hover:not([data-sel
 }
 
 :root:root body.ctp-latte-mode :is(
-  div.fixed:has(button svg path[d*="mic" i]),
-  div.fixed:has(button svg)
+  
 ) :is(button, svg, span) {
   color: var(--ctp-text, #4c4f69) !important;
   fill: currentColor !important;
@@ -1325,3 +1052,18 @@ body.ctp-latte-mode [data-testid="conversation-row-sidebar"]:hover:not([data-sel
 
 
 
+
+/* ==========================================================================
+   Turbocharge: Layout & Paint Containment (Zero-Reflow Engine)
+   ========================================================================== */
+[role="article"],
+[data-testid="conversation-item"],
+[data-testid="history-item"] {
+  contain: layout style;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 120px;
+}
+
+[data-testid="planner-response-text"] {
+  contain: layout style;
+}

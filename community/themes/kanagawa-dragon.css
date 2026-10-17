@@ -1,0 +1,504 @@
+/**
+ * @name        Kanagawa Dragon
+ * @description Traditional Japanese Ukiyo-e woodblock & Sumi-e ink wash aesthetic with deep sumi ink canvas and low-contrast warm highlights.
+ * @author      rebelot (adapted for BetterGravity)
+ * @version     1.0.0
+ * @source      https://github.com/rebelot/kanagawa.nvim
+ */
+
+/* ==========================================================================
+   0. Kanagawa Dragon Palette Definition (Official rebelot/kanagawa.nvim)
+   ========================================================================== */
+:root {
+  /* --- Sumi Ink Dark Canvas Scale (Dragon Variant) --- */
+  --dragon-black-0:   #0d0c0c; /* Deepest sumi void / gutter (L 4.8%) */
+  --dragon-black-1:   #12120f; /* Shell base: Titlebar, window header, sidebar canvas */
+  --dragon-black-2:   #1D1C19; /* Elevated surfaces: Message bubbles, composer, popovers */
+  --dragon-black-3:   #181616; /* Primary conversation canvas & editor background */
+  --dragon-black-4:   #282727; /* Borders, dividers, subtle separators */
+  --dragon-black-5:   #393836; /* Inactive button borders, row hover */
+  --dragon-black-6:   #625e5a; /* Resting scrollbar thumb, comments, placeholders */
+
+  /* --- Ukiyo-e Foreground & Typography Scale --- */
+  --dragon-white:     #c5c9c5; /* Primary body text (Warm sumi-e paper gray) */
+  --dragon-green-2:   #8a9a7b; /* Strings, subtext accents */
+  --dragon-gray:      #a6a69c; /* Secondary text, metadata timestamps */
+  --dragon-gray-2:    #7a8382; /* Muted subtext, section headers */
+  --dragon-gray-3:    #8a8980; /* Subtle borders, secondary comments */
+
+  /* --- 8 Traditional Ukiyo-e Ink Accents (Dragon Variant) --- */
+  --dragon-orange:    #b6927b; /* Autumn Ochre (Default Accent) */
+  --dragon-green:     #87a987; /* Moss Bamboo (Success) */
+  --dragon-blue:      #658594; /* Deep Indigo (Links, Functions) */
+  --dragon-yellow:    #c4b28a; /* Carp Gold (Warnings, Numbers) */
+  --dragon-aqua:      #8ba4b0; /* Stream Foam (Types, Identifiers) */
+  --dragon-pink:      #a292a3; /* Faded Plum (Special Operators) */
+  --dragon-red:       #c4746e; /* Seal Vermilion (Errors, Danger) */
+  --dragon-violet:    #8992a7; /* Iris Sumi (Keywords, Statements) */
+
+  /* --- Primary Theme Accent & Breathing Auras --- */
+  --kanagawa-accent: var(--dragon-orange);
+  --kanagawa-accent-soft: rgba(182, 146, 123, 0.16);
+  --kanagawa-accent-glow: rgba(182, 146, 123, 0.28);
+  --bettergravity-accent: var(--kanagawa-accent);
+  --bettergravity-accent-soft: var(--kanagawa-accent-soft);
+
+  /* ==========================================================================
+     1. Host Native Design Tokens (Antigravity 2.0 / Willow)
+     ========================================================================= */
+  --background: var(--dragon-black-3) !important;
+  --foreground: var(--dragon-white) !important;
+
+  --primary: var(--kanagawa-accent) !important;
+  --primary-foreground: var(--dragon-black-1) !important;
+  --secondary: var(--dragon-black-2) !important;
+  --secondary-foreground: var(--dragon-white) !important;
+
+  --muted: var(--dragon-black-1) !important;
+  --muted-foreground: var(--dragon-gray) !important;
+
+  --border: var(--dragon-black-4) !important;
+  --card: var(--dragon-black-2) !important;
+  --card-border: var(--dragon-black-4) !important;
+
+  --sidebar: var(--dragon-black-1) !important;
+  --sidebar-secondary: var(--dragon-black-2) !important;
+  --sidebar-muted: var(--dragon-black-2) !important;
+
+  --placeholder: var(--dragon-black-6) !important;
+  --link: var(--dragon-blue) !important;
+  --focus-ring-color: var(--kanagawa-accent) !important;
+
+  --error: var(--dragon-red) !important;
+  --warning: var(--dragon-yellow) !important;
+  --success: var(--dragon-green) !important;
+  --code-foreground: var(--kanagawa-accent) !important;
+
+  /* ==========================================================================
+     2. BetterGravity Shared Runtime Namespace
+     ========================================================================= */
+  --bettergravity-surface: var(--dragon-black-2);
+  --bettergravity-border: var(--dragon-black-4);
+  --bettergravity-text: var(--dragon-white);
+  --bettergravity-row-hover: rgba(197, 201, 197, 0.06);
+
+  /* ==========================================================================
+     3. Gemini App & Willow Shell Tokens
+     ========================================================================= */
+  --studio-surface: var(--dragon-black-1) !important;
+  --gemini-page-bg: var(--dragon-black-3) !important;
+  --gemini-surface: var(--dragon-black-2) !important;
+  --gemini-surface-hover: var(--dragon-black-5) !important;
+  --gemini-trigger-hover: var(--dragon-black-5) !important;
+  --gemini-control-hover: var(--dragon-black-5) !important;
+  --gemini-separator: var(--dragon-black-4) !important;
+  --gemini-switch-track: var(--dragon-black-0) !important;
+  --gemini-switch-slider: var(--dragon-black-2) !important;
+  --gemini-body-text: var(--dragon-white) !important;
+  --gemini-text: var(--dragon-white) !important;
+  --gemini-text-trigger: var(--dragon-gray) !important;
+  --gemini-text-trigger-hover: var(--dragon-white) !important;
+  --gemini-text-dim: var(--dragon-gray) !important;
+  --gemini-bubble-bg: var(--dragon-black-2) !important;
+  --gemini-composer-bg: var(--dragon-black-2) !important;
+  --gemini-composer-placeholder: var(--dragon-black-6) !important;
+  --gemini-inline-code-bg: var(--dragon-black-1) !important;
+  --gemini-inline-code-text: var(--kanagawa-accent) !important;
+  --gemini-link: var(--dragon-blue) !important;
+  --gemini-send-bg: var(--kanagawa-accent) !important;
+  --gemini-send-bg-hover: #9f7b64 !important;
+  --gemini-home-glow-accent: var(--kanagawa-accent-soft) !important;
+  --gemini-row-selected: var(--dragon-black-5) !important;
+  --gemini-row-hover: rgba(197, 201, 197, 0.06) !important;
+}
+
+/* ==========================================================================
+   4. Turbo Engine & Paint Optimization
+   ========================================================================== */
+[data-testid="user-input-step"],
+[data-testid="planner-response-text"],
+[role="article"][aria-label="Agent response"],
+[role="article"][aria-label="User message"] {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 120px;
+}
+
+body,
+#root,
+[data-testid="conversation-view"] {
+  text-shadow: none !important;
+  color-scheme: dark !important;
+}
+
+/* ==========================================================================
+   5. Window Shell, TitleBar & Window Drag Boundaries
+   ========================================================================== */
+
+
+[data-testid="window-titlebar"],
+header,
+.titlebar {
+  background: var(--dragon-black-1) !important;
+  border-bottom: 1px solid var(--dragon-black-4) !important;
+  user-select: none;
+}
+
+[data-testid="sidebar-toggle"],
+[data-bettergravity-button],
+div.go-back-btn,
+button[aria-label="Go Back"] {
+  flex-shrink: 0 !important;
+  -webkit-app-region: no-drag !important;
+}
+
+/* ==========================================================================
+   6. Navigation & Sidebar Refinements
+   ========================================================================== */
+[role="navigation"][aria-label="Sidebar"],
+[role="navigation"] {
+  background-color: var(--dragon-black-1) !important;
+  border-right: 1px solid var(--dragon-black-4) !important;
+}
+
+html body [role="navigation"] .bg-sidebar,
+html body [role="navigation"] div[class*="bg-sidebar"]:not([data-testid="conversation-row-sidebar"]) {
+  background-color: var(--dragon-black-1) !important;
+}
+
+[data-testid="conversation-row-sidebar"] {
+  border-radius: 8px !important;
+  margin: 1px 6px !important;
+  transition: background-color 130ms cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  --row-bg: transparent !important;
+  background-color: transparent !important;
+  position: relative !important;
+}
+
+[data-testid="conversation-row-sidebar"]:hover {
+  --row-bg: var(--dragon-black-2) !important;
+  background-color: var(--dragon-black-2) !important;
+}
+
+[data-testid="conversation-row-sidebar"][data-selected="true"],
+html body [role="navigation"] div[data-testid="conversation-row-sidebar"][data-selected="true"] {
+  --row-bg: var(--dragon-black-5) !important;
+  background-color: var(--dragon-black-5) !important;
+  color: var(--dragon-white) !important;
+}
+
+[data-testid="conversation-row-sidebar"] div[class*="can-hover"],
+[data-testid="conversation-row-sidebar"] div[style*="linear-gradient"] {
+  background: linear-gradient(to right, transparent 0%, var(--row-bg) 24%) !important;
+}
+
+[data-testid="conversation-row-sidebar"] button[data-testid^="conversation-"] {
+  color: var(--dragon-gray) !important;
+  background-color: transparent !important;
+  opacity: 0.85 !important;
+}
+
+[data-testid="conversation-row-sidebar"] button[data-testid^="conversation-"]:hover {
+  color: var(--dragon-white) !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  opacity: 1 !important;
+}
+
+[data-testid="conversation-row-sidebar"]:not([data-selected="true"])::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 7px;
+  bottom: 7px;
+  width: 3px;
+  border-radius: 2px;
+  background-color: var(--kanagawa-accent);
+  opacity: 0;
+  pointer-events: none;
+}
+
+[data-testid="conversation-row-sidebar"]:hover:not([data-selected="true"])::before {
+  opacity: 0.65;
+}
+
+[data-testid="conversation-row-sidebar"][data-selected="true"]::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 3px;
+  border-radius: 2px;
+  background-color: var(--kanagawa-accent);
+  opacity: 1;
+}
+
+[data-testid="conversation-row-sidebar"] span.truncate {
+  color: var(--dragon-white) !important;
+}
+
+[role="navigation"] [data-testid="section-header"] {
+  color: var(--dragon-gray) !important;
+}
+
+/* ==========================================================================
+   7. Typography, Markdown & Digital Ink Flow
+   ========================================================================== */
+::selection {
+  background: var(--kanagawa-accent-soft) !important;
+  color: #ffffff !important;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background-clip: content-box;
+  background-color: var(--dragon-black-6);
+  transition: background-color 150ms ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--kanagawa-accent);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Headings in warm sumi ink gray */
+:is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) :is(h1, h2, h3, h4, h5, h6) {
+  color: #e0e4e0 !important;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+}
+
+/* Markdown Blockquotes: Sumi ink stroke */
+blockquote {
+  position: relative !important;
+  border-left: 3px solid var(--kanagawa-accent) !important;
+  background: var(--kanagawa-accent-soft) !important;
+  border-radius: 0 8px 8px 0 !important;
+  padding: 8px 16px !important;
+  margin: 12px 0 !important;
+  color: var(--dragon-gray) !important;
+  font-style: italic !important;
+}
+
+/* Markdown Tables */
+table {
+  width: 100%;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  margin: 14px 0 !important;
+  border: 1px solid var(--dragon-black-4) !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+th {
+  background-color: var(--dragon-black-1) !important;
+  color: var(--dragon-white) !important;
+  font-weight: 600 !important;
+  padding: 8px 12px !important;
+  border-bottom: 1px solid var(--dragon-black-4) !important;
+  border-right: 1px solid var(--dragon-black-4) !important;
+}
+
+th:last-child {
+  border-right: none !important;
+}
+
+td {
+  padding: 8px 12px !important;
+  border-bottom: 1px solid var(--dragon-black-4) !important;
+  border-right: 1px solid var(--dragon-black-4) !important;
+  color: var(--dragon-gray) !important;
+}
+
+td:last-child {
+  border-right: none !important;
+}
+
+tr:last-child td {
+  border-bottom: none !important;
+}
+
+tr:nth-child(even) td {
+  background-color: var(--dragon-black-2) !important;
+}
+
+tr:hover td {
+  background-color: var(--bettergravity-row-hover) !important;
+}
+
+/* Inline Code Badges */
+:not(pre) > code,
+code:not(pre code) {
+  background-color: var(--dragon-black-1) !important;
+  color: var(--gemini-inline-code-text, var(--kanagawa-accent)) !important;
+  border: 1px solid var(--dragon-black-4) !important;
+  padding: 2px 6px !important;
+  border-radius: 6px !important;
+  font-size: 0.88em !important;
+  font-family: var(--gemini-code-font, ui-monospace, SFMono-Regular, Consolas, monospace) !important;
+}
+
+/* Code Blocks Container */
+pre,
+.code-block,
+:is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) div.relative.rounded-xl {
+  background-color: var(--dragon-black-1) !important;
+  border: 1px solid var(--dragon-black-4) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+pre code,
+.line-content {
+  color: var(--dragon-white) !important;
+}
+
+/* ==========================================================================
+   8. Prism & Tree-sitter Syntax Tokens (Kanagawa Dragon Palette)
+   ========================================================================== */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: var(--dragon-black-6) !important;
+  font-style: italic;
+}
+
+.token.keyword,
+.token.selector,
+.token.important {
+  color: var(--dragon-violet) !important;
+  font-weight: 550;
+}
+
+.token.string,
+.token.char,
+.token.attr-value,
+.token.inserted {
+  color: var(--dragon-green) !important;
+}
+
+.token.number,
+.token.boolean,
+.token.constant {
+  color: var(--dragon-orange) !important;
+}
+
+.token.function,
+.token.class-name {
+  color: var(--dragon-blue) !important;
+}
+
+.token.property,
+.token.builtin {
+  color: var(--dragon-aqua) !important;
+}
+
+.token.tag,
+.token.deleted {
+  color: var(--dragon-red) !important;
+}
+
+.token.operator,
+.token.punctuation {
+  color: var(--dragon-gray-2) !important;
+}
+
+/* ==========================================================================
+   9. Chat Composer (Prompt Box) & Sumi-e Breathing Inset Aura
+   ========================================================================== */
+[data-testid="agent-input-box"] {
+  background: transparent !important;
+}
+
+[data-testid="agent-input-box"] > .rounded-2xl.bg-card-border > .bg-card:not([data-mention-menu]) {
+  background: var(--dragon-black-2) !important;
+  border: 1px solid var(--dragon-black-4) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Inset breathing glow tailored for autumn ochre ink */
+[data-testid="agent-input-box"] > .rounded-2xl.bg-card-border > .bg-card:not([data-mention-menu])::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  border-radius: inherit !important;
+  pointer-events: none !important;
+  z-index: 5 !important;
+  box-shadow: inset 0 0 4px 1px var(--kanagawa-accent),
+              inset 0 0 16px 2px var(--kanagawa-accent-soft) !important;
+  opacity: 0;
+  transition: opacity 160ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-testid="agent-input-box"]:focus-within > .rounded-2xl.bg-card-border > .bg-card:not([data-mention-menu])::after {
+  opacity: 0.35;
+}
+
+[data-testid="agent-input-box"] [role="combobox"][contenteditable] {
+  color: var(--dragon-white) !important;
+}
+
+[data-testid="agent-input-box"] [role="combobox"][contenteditable] ~ * {
+  color: var(--dragon-black-6) !important;
+}
+
+/* Send button */
+[data-testid="send-button"]:not(:disabled):not([disabled]):not([aria-disabled="true"]) {
+  background-color: var(--kanagawa-accent) !important;
+  color: var(--dragon-black-1) !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  box-shadow: 0 2px 8px var(--kanagawa-accent-glow) !important;
+}
+
+[data-testid="send-button"]:not(:disabled):not([disabled]):not([aria-disabled="true"]):hover {
+  filter: brightness(1.1) !important;
+  transform: translateY(-1px) scale(1.02);
+}
+
+[data-testid="send-button"]:disabled,
+[data-testid="send-button"][disabled],
+[data-testid="send-button"][aria-disabled="true"] {
+  background-color: var(--dragon-black-5) !important;
+  color: var(--dragon-black-6) !important;
+  border: 1px solid var(--dragon-black-4) !important;
+  opacity: 0.6 !important;
+}
+
+/* New Conversation button */
+[data-testid="new-conversation-button"] {
+  background: var(--dragon-black-2) !important;
+  color: var(--dragon-white) !important;
+  border: 1px solid var(--dragon-black-4) !important;
+  border-radius: 8px !important;
+}
+
+[data-testid="new-conversation-button"]:hover {
+  background: var(--dragon-black-5) !important;
+  border-color: var(--kanagawa-accent) !important;
+  box-shadow: 0 2px 10px var(--kanagawa-accent-soft) !important;
+}
+
+/* ==========================================================================
+   10. Dialogs, Popovers & Context Menus
+   ========================================================================== */
+[role="dialog"],
+[role="menu"],
+[data-radix-popper-content-wrapper] > div,
+.bg-popover {
+  background-color: var(--dragon-black-2) !important;
+  border: 1px solid var(--dragon-black-4) !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7), 0 0 1px 1px rgba(255, 255, 255, 0.04) !important;
+  border-radius: 12px !important;
+  color: var(--dragon-white) !important;
+}

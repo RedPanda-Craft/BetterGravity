@@ -1,0 +1,502 @@
+/**
+ * @name        Everforest Dark
+ * @description A natural green-tinted, warm analog color scheme designed by sainnhe for comfortable, long-duration viewing.
+ * @author      sainnhe (adapted for BetterGravity)
+ * @version     1.0.0
+ * @source      https://github.com/sainnhe/everforest
+ */
+
+/* ==========================================================================
+   0. Everforest Dark Palette Definition (Default: Medium Variant)
+   ========================================================================== */
+:root {
+  /* --- Everforest Dark Base Scale (Medium Variant - Calibrated Deep Tone) --- */
+  --ef-bg-dim:    #181e21; /* Gutter, statusline, titlebar background (L ~11%) */
+  --ef-bg0:       #1e2529; /* Primary workspace canvas, editor background (L ~13.8%) */
+  --ef-bg1:       #262e33; /* Layer 1: Composer, message bubbles, elevated cards (L ~17.5%) */
+  --ef-bg2:       #2f383e; /* Layer 2: Popovers, active rows, dropdowns (L ~21.5%) */
+  --ef-bg3:       #38434a; /* Layer 3: Borders, dividers, subtle separators */
+  --ef-bg4:       #414e56; /* Layer 4: Inactive borders, secondary dividers */
+  --ef-bg5:       #4b5860; /* Layer 5: Row hover, inactive button borders */
+
+  /* --- Everforest Foreground & Typography Scale --- */
+  --ef-fg:        #d3c6aa; /* Primary body text (Warm parchment rice paper) */
+  --ef-grey2:     #9da9a0; /* Secondary text, metadata timestamps */
+  --ef-grey1:     #859289; /* Section labels, inactive triggers */
+  --ef-grey0:     #7a8478; /* Comments, placeholders, resting scrollbar */
+
+  /* --- 7 Natural Forest Accents (Dark Scale) --- */
+  --ef-green:     #a7c080; /* Forest Moss (Default Signature Accent) */
+  --ef-aqua:      #83c092; /* Stream Mist */
+  --ef-blue:      #7fbbb3; /* Pine Needle */
+  --ef-orange:    #e69875; /* Autumn Leaf */
+  --ef-yellow:    #dbbc7f; /* Ginkgo Gold */
+  --ef-purple:    #d699b6; /* Wild Heather */
+  --ef-red:       #e67e80; /* Maple Berry */
+
+  /* --- Primary Theme Accent & Breathing Auras --- */
+  --everforest-accent: var(--ef-green);
+  --everforest-accent-soft: rgba(167, 192, 128, 0.16);
+  --everforest-accent-glow: rgba(167, 192, 128, 0.28);
+  --bettergravity-accent: var(--everforest-accent);
+  --bettergravity-accent-soft: var(--everforest-accent-soft);
+
+  /* ==========================================================================
+     1. Host Native Design Tokens (Antigravity 2.0 / Willow)
+     ========================================================================== */
+  --background: var(--ef-bg0) !important;
+  --foreground: var(--ef-fg) !important;
+
+  --primary: var(--everforest-accent) !important;
+  --primary-foreground: var(--ef-bg-dim) !important;
+  --secondary: var(--ef-bg1) !important;
+  --secondary-foreground: var(--ef-fg) !important;
+
+  --muted: var(--ef-bg-dim) !important;
+  --muted-foreground: var(--ef-grey1) !important;
+
+  --border: var(--ef-bg3) !important;
+  --card: var(--ef-bg1) !important;
+  --card-border: var(--ef-bg3) !important;
+
+  --sidebar: var(--ef-bg-dim) !important;
+  --sidebar-secondary: var(--ef-bg1) !important;
+  --sidebar-muted: var(--ef-bg1) !important;
+
+  --placeholder: var(--ef-grey0) !important;
+  --link: var(--ef-blue) !important;
+  --focus-ring-color: var(--everforest-accent) !important;
+
+  --error: var(--ef-red) !important;
+  --warning: var(--ef-yellow) !important;
+  --success: var(--ef-green) !important;
+  --code-foreground: var(--everforest-accent) !important;
+
+  /* ==========================================================================
+     2. BetterGravity Shared Runtime Namespace
+     ========================================================================== */
+  --bettergravity-surface: var(--ef-bg1);
+  --bettergravity-border: var(--ef-bg3);
+  --bettergravity-text: var(--ef-fg);
+  --bettergravity-row-hover: rgba(211, 198, 170, 0.07);
+
+  /* ==========================================================================
+     3. Gemini App & Willow Shell Tokens
+     ========================================================================== */
+  --studio-surface: var(--ef-bg-dim) !important;
+  --gemini-page-bg: var(--ef-bg0) !important;
+  --gemini-surface: var(--ef-bg1) !important;
+  --gemini-surface-hover: var(--ef-bg2) !important;
+  --gemini-trigger-hover: var(--ef-bg2) !important;
+  --gemini-control-hover: var(--ef-bg2) !important;
+  --gemini-separator: var(--ef-bg3) !important;
+  --gemini-switch-track: var(--ef-bg-dim) !important;
+  --gemini-switch-slider: var(--ef-bg1) !important;
+  --gemini-body-text: var(--ef-fg) !important;
+  --gemini-text: var(--ef-fg) !important;
+  --gemini-text-trigger: var(--ef-grey1) !important;
+  --gemini-text-trigger-hover: var(--ef-fg) !important;
+  --gemini-text-dim: var(--ef-grey1) !important;
+  --gemini-bubble-bg: var(--ef-bg1) !important;
+  --gemini-composer-bg: var(--ef-bg1) !important;
+  --gemini-composer-placeholder: var(--ef-grey0) !important;
+  --gemini-inline-code-bg: var(--ef-bg-dim) !important;
+  --gemini-inline-code-text: var(--everforest-accent) !important;
+  --gemini-link: var(--ef-blue) !important;
+  --gemini-send-bg: var(--everforest-accent) !important;
+  --gemini-send-bg-hover: #96af70 !important;
+  --gemini-home-glow-accent: var(--everforest-accent-soft) !important;
+  --gemini-row-selected: var(--ef-bg2) !important;
+  --gemini-row-hover: rgba(211, 198, 170, 0.07) !important;
+}
+
+/* ==========================================================================
+   4. Turbo Engine & Paint Optimization
+   ========================================================================== */
+[data-testid="user-input-step"],
+[data-testid="planner-response-text"],
+[role="article"][aria-label="Agent response"],
+[role="article"][aria-label="User message"] {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 120px;
+}
+
+body,
+#root,
+[data-testid="conversation-view"] {
+  text-shadow: none !important;
+  color-scheme: dark !important;
+}
+
+/* ==========================================================================
+   5. Window Shell, TitleBar & Window Drag Boundaries
+   ========================================================================== */
+
+
+[data-testid="window-titlebar"],
+header,
+.titlebar {
+  background: var(--ef-bg-dim) !important;
+  border-bottom: 1px solid var(--ef-bg3) !important;
+  user-select: none;
+}
+
+[data-testid="sidebar-toggle"],
+[data-bettergravity-button],
+div.go-back-btn,
+button[aria-label="Go Back"] {
+  flex-shrink: 0 !important;
+  -webkit-app-region: no-drag !important;
+}
+
+/* ==========================================================================
+   6. Navigation & Sidebar Refinements
+   ========================================================================== */
+[role="navigation"][aria-label="Sidebar"],
+[role="navigation"] {
+  background-color: var(--ef-bg-dim) !important;
+  border-right: 1px solid var(--ef-bg3) !important;
+}
+
+html body [role="navigation"] .bg-sidebar,
+html body [role="navigation"] div[class*="bg-sidebar"]:not([data-testid="conversation-row-sidebar"]) {
+  background-color: var(--ef-bg-dim) !important;
+}
+
+[data-testid="conversation-row-sidebar"] {
+  border-radius: 8px !important;
+  margin: 1px 6px !important;
+  transition: background-color 130ms cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  --row-bg: transparent !important;
+  background-color: transparent !important;
+  position: relative !important;
+}
+
+[data-testid="conversation-row-sidebar"]:hover {
+  --row-bg: var(--ef-bg1) !important;
+  background-color: var(--ef-bg1) !important;
+}
+
+[data-testid="conversation-row-sidebar"][data-selected="true"],
+html body [role="navigation"] div[data-testid="conversation-row-sidebar"][data-selected="true"] {
+  --row-bg: var(--ef-bg2) !important;
+  background-color: var(--ef-bg2) !important;
+  color: var(--ef-fg) !important;
+}
+
+[data-testid="conversation-row-sidebar"] div[class*="can-hover"],
+[data-testid="conversation-row-sidebar"] div[style*="linear-gradient"] {
+  background: linear-gradient(to right, transparent 0%, var(--row-bg) 24%) !important;
+}
+
+[data-testid="conversation-row-sidebar"] button[data-testid^="conversation-"] {
+  color: var(--ef-grey2) !important;
+  background-color: transparent !important;
+  opacity: 0.85 !important;
+}
+
+[data-testid="conversation-row-sidebar"] button[data-testid^="conversation-"]:hover {
+  color: var(--ef-fg) !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  opacity: 1 !important;
+}
+
+[data-testid="conversation-row-sidebar"]:not([data-selected="true"])::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 7px;
+  bottom: 7px;
+  width: 3px;
+  border-radius: 2px;
+  background-color: var(--everforest-accent);
+  opacity: 0;
+  pointer-events: none;
+}
+
+[data-testid="conversation-row-sidebar"]:hover:not([data-selected="true"])::before {
+  opacity: 0.65;
+}
+
+[data-testid="conversation-row-sidebar"][data-selected="true"]::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 3px;
+  border-radius: 2px;
+  background-color: var(--everforest-accent);
+  opacity: 1;
+}
+
+[data-testid="conversation-row-sidebar"] span.truncate {
+  color: var(--ef-fg) !important;
+}
+
+[role="navigation"] [data-testid="section-header"] {
+  color: var(--ef-grey1) !important;
+}
+
+/* ==========================================================================
+   7. Typography, Markdown & Digital Forest Flow
+   ========================================================================== */
+::selection {
+  background: var(--everforest-accent-soft) !important;
+  color: #ffffff !important;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background-clip: content-box;
+  background-color: var(--ef-grey0);
+  transition: background-color 150ms ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--everforest-accent);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Headings in warm parchment rice paper tone */
+:is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) :is(h1, h2, h3, h4, h5, h6) {
+  color: #ede2c8 !important;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+}
+
+/* Markdown Blockquotes: Warm forest moss accent */
+blockquote {
+  position: relative !important;
+  border-left: 3px solid var(--everforest-accent) !important;
+  background: var(--everforest-accent-soft) !important;
+  border-radius: 0 8px 8px 0 !important;
+  padding: 8px 16px !important;
+  margin: 12px 0 !important;
+  color: var(--ef-grey2) !important;
+  font-style: italic !important;
+}
+
+/* Markdown Tables */
+table {
+  width: 100%;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  margin: 14px 0 !important;
+  border: 1px solid var(--ef-bg3) !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+th {
+  background-color: var(--ef-bg-dim) !important;
+  color: var(--ef-fg) !important;
+  font-weight: 600 !important;
+  padding: 8px 12px !important;
+  border-bottom: 1px solid var(--ef-bg3) !important;
+  border-right: 1px solid var(--ef-bg3) !important;
+}
+
+th:last-child {
+  border-right: none !important;
+}
+
+td {
+  padding: 8px 12px !important;
+  border-bottom: 1px solid var(--ef-bg3) !important;
+  border-right: 1px solid var(--ef-bg3) !important;
+  color: var(--ef-grey2) !important;
+}
+
+td:last-child {
+  border-right: none !important;
+}
+
+tr:last-child td {
+  border-bottom: none !important;
+}
+
+tr:nth-child(even) td {
+  background-color: var(--ef-bg1) !important;
+}
+
+tr:hover td {
+  background-color: var(--bettergravity-row-hover) !important;
+}
+
+/* Inline Code Badges */
+:not(pre) > code,
+code:not(pre code) {
+  background-color: var(--ef-bg-dim) !important;
+  color: var(--gemini-inline-code-text, var(--everforest-accent)) !important;
+  border: 1px solid var(--ef-bg3) !important;
+  padding: 2px 6px !important;
+  border-radius: 6px !important;
+  font-size: 0.88em !important;
+  font-family: var(--gemini-code-font, ui-monospace, SFMono-Regular, Consolas, monospace) !important;
+}
+
+/* Code Blocks Container */
+pre,
+.code-block,
+:is([data-testid="planner-response-text"], [role="article"][aria-label="Agent response"]) div.relative.rounded-xl {
+  background-color: var(--ef-bg-dim) !important;
+  border: 1px solid var(--ef-bg3) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+pre code,
+.line-content {
+  color: var(--ef-fg) !important;
+}
+
+/* ==========================================================================
+   8. Prism & Tree-sitter Syntax Tokens (Everforest Dark Palette)
+   ========================================================================== */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: var(--ef-grey0) !important;
+  font-style: italic;
+}
+
+.token.keyword,
+.token.selector,
+.token.important {
+  color: var(--ef-purple) !important;
+  font-weight: 550;
+}
+
+.token.string,
+.token.char,
+.token.attr-value,
+.token.inserted {
+  color: var(--ef-green) !important;
+}
+
+.token.number,
+.token.boolean,
+.token.constant {
+  color: var(--ef-orange) !important;
+}
+
+.token.function,
+.token.class-name {
+  color: var(--ef-blue) !important;
+}
+
+.token.property,
+.token.builtin {
+  color: var(--ef-aqua) !important;
+}
+
+.token.tag,
+.token.deleted {
+  color: var(--ef-red) !important;
+}
+
+.token.operator,
+.token.punctuation {
+  color: var(--ef-yellow) !important;
+}
+
+/* ==========================================================================
+   9. Chat Composer (Prompt Box) & Forest Breathing Inset Aura
+   ========================================================================== */
+[data-testid="agent-input-box"] {
+  background: transparent !important;
+}
+
+[data-testid="agent-input-box"] > .rounded-2xl.bg-card-border > .bg-card:not([data-mention-menu]) {
+  background: var(--ef-bg1) !important;
+  border: 1px solid var(--ef-bg3) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* Inset breathing glow tailored for moss green */
+[data-testid="agent-input-box"] > .rounded-2xl.bg-card-border > .bg-card:not([data-mention-menu])::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  border-radius: inherit !important;
+  pointer-events: none !important;
+  z-index: 5 !important;
+  box-shadow: inset 0 0 4px 1px var(--everforest-accent),
+              inset 0 0 16px 2px var(--everforest-accent-soft) !important;
+  opacity: 0;
+  transition: opacity 160ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-testid="agent-input-box"]:focus-within > .rounded-2xl.bg-card-border > .bg-card:not([data-mention-menu])::after {
+  opacity: 0.35;
+}
+
+[data-testid="agent-input-box"] [role="combobox"][contenteditable] {
+  color: var(--ef-fg) !important;
+}
+
+[data-testid="agent-input-box"] [role="combobox"][contenteditable] ~ * {
+  color: var(--ef-grey0) !important;
+}
+
+/* Send button */
+[data-testid="send-button"]:not(:disabled):not([disabled]):not([aria-disabled="true"]) {
+  background-color: var(--everforest-accent) !important;
+  color: var(--ef-bg-dim) !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  box-shadow: 0 2px 8px var(--everforest-accent-glow) !important;
+}
+
+[data-testid="send-button"]:not(:disabled):not([disabled]):not([aria-disabled="true"]):hover {
+  filter: brightness(1.1) !important;
+  transform: translateY(-1px) scale(1.02);
+}
+
+[data-testid="send-button"]:disabled,
+[data-testid="send-button"][disabled],
+[data-testid="send-button"][aria-disabled="true"] {
+  background-color: var(--ef-bg2) !important;
+  color: var(--ef-grey0) !important;
+  border: 1px solid var(--ef-bg3) !important;
+  opacity: 0.6 !important;
+}
+
+/* New Conversation button */
+[data-testid="new-conversation-button"] {
+  background: var(--ef-bg1) !important;
+  color: var(--ef-fg) !important;
+  border: 1px solid var(--ef-bg3) !important;
+  border-radius: 8px !important;
+}
+
+[data-testid="new-conversation-button"]:hover {
+  background: var(--ef-bg2) !important;
+  border-color: var(--everforest-accent) !important;
+  box-shadow: 0 2px 10px var(--everforest-accent-soft) !important;
+}
+
+/* ==========================================================================
+   10. Dialogs, Popovers & Context Menus
+   ========================================================================== */
+[role="dialog"],
+[role="menu"],
+[data-radix-popper-content-wrapper] > div,
+.bg-popover {
+  background-color: var(--ef-bg1) !important;
+  border: 1px solid var(--ef-bg3) !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.65), 0 0 1px 1px rgba(255, 255, 255, 0.04) !important;
+  border-radius: 12px !important;
+  color: var(--ef-fg) !important;
+}

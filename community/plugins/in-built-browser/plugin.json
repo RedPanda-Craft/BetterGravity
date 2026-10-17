@@ -1,7 +1,7 @@
 {
   "name": "In Built Browser",
   "description": "A tabbed browser in the right sidebar, shared with your model. Open websites and localhost, inspect pages, use browser computer controls, and leave visual feedback. Browser tools exist only while this plugin is enabled.",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "author": "BetterGravity Community",
   "main": "index.js",
   "styles": "styles/browser.css",

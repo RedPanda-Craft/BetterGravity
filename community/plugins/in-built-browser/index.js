@@ -475,6 +475,7 @@ const agentTabs = new Set(), agentPoints = new Map();
 let agentActivitySequence = 0;
 let state = null;
 let open = false;
+let userOpened = false;
 let context = currentContext();
 let paneContext;
 let requestedPaneOpen = null;
@@ -510,7 +511,7 @@ const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 // a persistent full-window container. Track each pane, not that empty container.
 const OVERLAYS = '[role="tooltip"]:not(.willow-tooltip-description), .willow-tooltip-pane, [data-base-ui-tooltip-popup], [data-radix-tooltip-content], [role="dialog"], [role="menu"], .react-tooltip, .gemini-tooltip, .bettergravity-pet, .bettergravity-pet-tray, .bettergravity-pet-chat, [data-floating-ui-portal], [data-base-ui-portal]';
 const CHAT_CONTENT = '[role="article"][aria-label="Agent response"], [data-testid="agent-input-box"]';
-const BROWSER_STRUCTURE = `${OVERLAYS}, [data-testid="conversation-view"], [data-testid="agent-input-box"], button[data-tab-id="terminal"], [data-aux-pane-open], [data-tooltip-id="input-send-button-cancel-tooltip"]`;
+const BROWSER_STRUCTURE = `${OVERLAYS}, [data-testid="conversation-view"], [data-testid="agent-input-box"], [data-active-tab-id], [data-aux-pane-open], [data-tooltip-id="input-send-button-cancel-tooltip"]`;
 let noteStyles = {};
 let originalStyle;
 let previewTimer;
@@ -780,14 +781,22 @@ function agentEffect(node, duration, onHidden) {
   };
 }
 
-function mount(terminal) {
-  if (!terminal) return;
-  const header = terminal.closest("[data-active-tab-id]");
+function findAuxAnchor(anchor) {
+  if (anchor?.closest) {
+    const h = anchor.closest("[data-active-tab-id]");
+    if (h) return h;
+  }
+  return document.querySelector("[data-active-tab-id]") || document.querySelector("[data-aux-pane-open] > div > div:first-child");
+}
+
+function mount(anchor) {
+  const header = findAuxAnchor(anchor);
   const paneBody = header?.nextElementSibling;
   if (!header || !paneBody || root?.isConnected && toolbar === header && body === paneBody) return;
   if (activeConversationContext() !== context) return;
   const previousSession = agentSession, previousTaskContext = taskContext, previousTabs = [...agentTabs], previousPoints = [...agentPoints];
   if (root) unmount();
+  for (const old of document.querySelectorAll("#bg-in-built-browser")) { if (old !== root) old.remove(); }
   toolbar = header; body = paneBody;
   updateSelection();
   root = element("section", "bg-browser"); root.id = "bg-in-built-browser"; root.setAttribute("aria-label", "In Built Browser"); root.hidden = true;
@@ -807,7 +816,7 @@ function mount(terminal) {
     if (event.key === "ArrowDown" && overlay?.querySelector(".bg-browser-history-item")) { event.preventDefault(); overlay.querySelector(".bg-browser-history-item").focus(); }
   });
   locationField.append(scheme, address, button("Open in default browser", "external", () => act("external")));
-  navigation.append(back, forward, reload, locationField, button("Annotate page", "comment", () => { closeOverlay(); act("annotate", { enabled: true }); }), button("Browser menu", "menu", showMenu));
+  navigation.append(back, forward, reload, locationField, button("Annotate page", "comment", () => { closeOverlay(); act("annotate", { enabled: true }); }), button("Browser menu", "menu", showMenu), button("Close browser", "close", hide));
   const loading = element("div", "bg-browser-loading"); loading.setAttribute("aria-hidden", "true"); loading.append(element("div")); navigation.append(loading);
   navigation.addEventListener("submit", event => { event.preventDefault(); const url = address.value; closeOverlay(); address.blur(); errorBox.hidden = true; act("navigate", { url }); });
   findBar = element("div", "bg-browser-find"); findBar.hidden = true;
@@ -819,7 +828,11 @@ function mount(terminal) {
   viewport = element("div", "bg-browser-viewport"); viewport.dataset.testid = "in-built-browser-viewport";
   const blank = element("div", "bg-browser-blank");
   const globe = element("span", "bg-browser-blank-icon"); globe.innerHTML = svg("globe");
-  blank.append(globe, element("h2", "", "Start browsing"), element("p", "", "Enter a URL to open a page"));
+  const returnBtn = element("button", "bg-browser-return-btn", "Back to launcher");
+  returnBtn.type = "button";
+  returnBtn.style.cssText = "margin-top: 16px; padding: 6px 16px; border-radius: 8px; background: var(--secondary, rgba(255,255,255,0.08)); border: 1px solid var(--border, rgba(255,255,255,0.12)); color: var(--foreground, currentColor); font-size: 13px; cursor: pointer;";
+  returnBtn.addEventListener("click", event => { event.stopPropagation(); hide(); });
+  blank.append(globe, element("h2", "", "Start browsing"), element("p", "", "Enter a URL to open a page"), returnBtn);
   blank.addEventListener("click", focusAddress);
   const frozen = element("img", "bg-browser-frozen"); frozen.alt = "Current browser page"; frozen.hidden = true;
   surface = element("img", "bg-browser-surface"); surface.alt = ""; surface.hidden = true; surface.draggable = false;
@@ -862,13 +875,21 @@ function mount(terminal) {
   note = element("div", "bg-browser-note"); note.hidden = true;
   root.append(navigation, findBar, errorBox, viewport, note);
   body.setAttribute("data-bg-browser-container", ""); body.append(root);
-  const onNativeTab = event => { const native = event.target.closest?.("[data-tab-id]"); if (native && !native.hasAttribute("data-bg-browser-page-tab")) hide(); };
+  const onNativeTab = event => {
+    const isPlus = event.target.closest?.('[data-testid="aux-pane-new-tab-button"]');
+    if (isPlus) { hide(); return; }
+    const native = event.target.closest?.("[data-tab-id]");
+    if (native && !native.hasAttribute("data-bg-browser-page-tab")) hide();
+  };
   toolbar.addEventListener("click", onNativeTab, true);
   toolbar._bgBrowserCleanup = () => toolbar?.removeEventListener("click", onNativeTab, true);
   let nativeTab = toolbar.getAttribute("data-active-tab-id");
   toolbarObserver = new MutationObserver(() => {
     const next = toolbar.getAttribute("data-active-tab-id");
-    if (next !== nativeTab) { nativeTab = next; if (open) hide(); }
+    if (next !== nativeTab) {
+      nativeTab = next;
+      if (next === "newTab__empty" || open) hide();
+    }
     updateSelection();
   });
   toolbarObserver.observe(toolbar, { attributes: true, attributeFilter: ["data-active-tab-id"] });
@@ -892,13 +913,15 @@ function showNativePane() {
 }
 async function show() {
   if (activeConversationContext() !== context) { plugin.ui.toast?.("Open a conversation to use the browser."); return; }
+  userOpened = true;
   showNativePane();
-  if (!root) mount(document.querySelector('button[data-tab-id="terminal"]'));
+  if (!root) mount(document.querySelector('[data-active-tab-id]'));
   if (root) { open = true; root.hidden = false; watchLayout(); maskNative(); updateSelection(); scheduleBounds(); }
   try { await request("open"); focusAddress(); } catch (error) { showError(error); }
 }
 function hide() {
   if (!root) return;
+  userOpened = false;
   open = false; pendingReveal = 0; clearAgentCursor(false); finishResize(true); root.hidden = true; closeOverlay(); restoreNative(); updateSelection(); updateResize();
   suspendView();
   act("hide");
@@ -945,11 +968,25 @@ function renderPageTabs() {
       item = element("div", "bg-browser-tab"); item.setAttribute("role", "tab");
       item.dataset.bgBrowserPageTab = tab.id; item.dataset.tabId = `in-built-browser:${tab.id}`;
       const icon = element("span", "bg-browser-tab-icon");
-      const close = button("Close tab", "close", event => { event.stopPropagation(); act("close-tab", { tabId: tab.id }); }, "bg-browser-tab-close");
+      const close = button("Close tab", "close", event => {
+        event.stopPropagation();
+        const remaining = tabList.filter(t => t.id !== tab.id);
+        item.remove();
+        if (remaining.length === 0) hide();
+        act("close-tab", { tabId: tab.id });
+      }, "bg-browser-tab-close");
       close.tabIndex = -1;
       item.append(icon, element("span", "bg-browser-tab-title"), close);
       item.addEventListener("click", () => selectPageTab(tab.id));
-      item.addEventListener("auxclick", event => { if (event.button === 1) { event.preventDefault(); act("close-tab", { tabId: tab.id }); } });
+      item.addEventListener("auxclick", event => {
+        if (event.button === 1) {
+          event.preventDefault();
+          const remaining = tabList.filter(t => t.id !== tab.id);
+          item.remove();
+          if (remaining.length === 0) hide();
+          act("close-tab", { tabId: tab.id });
+        }
+      });
       item.addEventListener("keydown", event => {
         if (event.target !== item) return;
         if (event.key === "Enter" || event.key === " ") { event.preventDefault(); selectPageTab(tab.id); }
@@ -958,7 +995,13 @@ function renderPageTabs() {
           const at = event.key === "Home" ? 0 : event.key === "End" ? pages.length - 1 : (current + (event.key === "ArrowRight" ? 1 : -1) + pages.length) % pages.length;
           pages[at]?.focus({ preventScroll: true }); pages[at]?.scrollIntoView({ block: "nearest", inline: "nearest" });
         }
-        if (event.key === "Delete") { event.preventDefault(); act("close-tab", { tabId: tab.id }); }
+        if (event.key === "Delete") {
+          event.preventDefault();
+          const remaining = tabList.filter(t => t.id !== tab.id);
+          item.remove();
+          if (remaining.length === 0) hide();
+          act("close-tab", { tabId: tab.id });
+        }
       });
     }
     existing.delete(tab.id);
@@ -987,6 +1030,22 @@ function selectPageTab(tabId) {
   // Explicitly open first for compatibility with already-running runtimes.
   if (!open) void request("open").then(() => { if (selectedContext === context && activeConversationContext() === context) return request("select", { tabId }); }).catch(showError);
   else act("select", { tabId });
+}
+
+
+function mountLauncherEntry() {
+  const searchInput = document.querySelector('input[placeholder*="Search tabs"]');
+  if (!searchInput) return;
+  const list = searchInput.closest('.max-w-md')?.querySelector('.flex-col:last-child') || searchInput.parentElement?.parentElement?.querySelector('.flex-col:not(.max-w-md)');
+  if (!list || list.querySelector('.bg-browser-launcher-btn')) return;
+  const btn = element('button', 'flex h-8 items-center gap-2 rounded-lg border-none bg-transparent px-3 text-left text-sm text-secondary-foreground cursor-pointer hover:bg-muted hover:text-foreground outline-none bg-browser-launcher-btn');
+  btn.type = 'button';
+  btn.dataset.testid = 'new-tab-card-browser';
+  btn.innerHTML = `<span class="shrink-0 flex items-center">${svg("globe")}</span><span>Browser tab</span>`;
+  btn.addEventListener('click', () => {
+    show();
+  });
+  list.appendChild(btn);
 }
 
 function mountPlusMenu() {
@@ -1129,7 +1188,7 @@ function revealForAgent(next) {
   if (!requested && !legacyActivity) return;
   if (requested) { revealSequence = next.revealSequence; pendingReveal = revealSequence; }
   if (!root) {
-    const terminal = document.querySelector('button[data-tab-id="terminal"]');
+    const terminal = document.querySelector('[data-active-tab-id]');
     if (terminal) mount(terminal);
   }
   showNativePane();
@@ -1376,9 +1435,21 @@ function render(next, restored = false) {
   for (const id of agentTabs) if (!next.tabs.some(tab => tab.id === id)) { agentTabs.delete(id); agentPoints.delete(id); }
   if (next.agentCursor && agentTabs.has(next.agentCursor.tabId)) agentPoints.set(next.agentCursor.tabId, next.agentCursor);
   if (!root) return;
-  if (!next.enabled) { open = false; pendingReveal = 0; clearAgentCursor(); finishResize(true); root.hidden = true; restoreNative(); updateSelection(); updateResize(); suspendView(); return; }
-  if (next.visible && !open) { open = true; root.hidden = false; maskNative(); updateSelection(); }
-  if (!next.visible && open) { open = false; finishResize(true); root.hidden = true; restoreNative(); updateSelection(); }
+  const hasTabs = (next.tabs || []).some(tab => tab && tab.title !== "Closed tab");
+  if (!next.enabled || (!hasTabs && !agentSession)) {
+    if (open) {
+      open = false; pendingReveal = 0; clearAgentCursor(); finishResize(true); root.hidden = true; restoreNative(); updateResize(); suspendView();
+    }
+    updateSelection();
+    return;
+  }
+  if (next.visible && !open) {
+    const currentTab = toolbar?.getAttribute("data-active-tab-id");
+    if (userOpened || currentTab !== "newTab__empty" || agentSession) {
+      open = true; root.hidden = false; maskNative(); updateSelection();
+    }
+  }
+  if (!next.visible && open && !userOpened) { open = false; finishResize(true); root.hidden = true; restoreNative(); updateSelection(); }
   renderPageTabs();
   const active = activeTab();
   root.toggleAttribute("data-bg-browser-loading", !!active?.loading);
@@ -1563,7 +1634,7 @@ function syncContext() {
   syncPaneVisibility(active, routeChanged);
   if (!active) return null;
   if (routeChanged || viewChanged) {
-    mount(document.querySelector('button[data-tab-id="terminal"]'));
+    mount(document.querySelector('[data-active-tab-id]'));
     if (!root && plugin.browser?.available) act("attach");
   }
   return active;
@@ -1608,7 +1679,7 @@ if (typeof document !== "undefined" && !document.body) {
   }, { once: true });
 }
 syncContext();
-plugin.dom.observe('button[data-tab-id="terminal"]', mount);
+plugin.dom.observe('[data-active-tab-id]', mount);
 if (plugin.browser?.available) plugin.browser.onStateChanged(next => {
   if (next.context !== context) return;
   if (activeConversationContext() !== context) { render(next); return; }
@@ -1635,6 +1706,7 @@ plugin.patcher.after(history, "replaceState", () => { queueMicrotask(syncContext
 function changesBrowserStructure(records) {
   for (const record of records) {
     const target = record.target;
+    if (target.closest?.('#bg-in-built-browser') || target.closest?.('.bg-browser-launcher-btn') || target.closest?.('[data-bg-browser-tab-host]')) continue;
     if (record.type !== "childList" || !target.closest?.(CHAT_CONTENT) || target.closest(OVERLAYS)) return true;
     // Text and command suggestions inside chat do not change browser context.
     // Keep popup insertion/removal, native host mounts, and the Stop-button
@@ -1652,9 +1724,10 @@ const occlusion = new MutationObserver(records => {
   const active = syncContext();
   if (active !== context) return;
   if (!root || !root.isConnected || !toolbar?.isConnected || body !== toolbar.nextElementSibling) {
-    const terminal = document.querySelector('button[data-tab-id="terminal"]');
-    if (terminal) mount(terminal); else if (root) unmount();
+    const anchor = findAuxAnchor();
+    if (anchor) mount(anchor); else if (root) unmount();
   }
+  mountLauncherEntry();
   if (root) { mountPageTabs(); mountPlusMenu(); watchLayout(); connectTaskState(); if (!taskStore) refreshTaskState(); if (open) watchOverlays(); scheduleBounds(); }
 });
 occlusion.observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ["data-aux-pane-open", "data-state", "hidden", "aria-hidden", "role", "data-tooltip-id"] });

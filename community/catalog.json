@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-17T11:32:27.491Z",
+  "generatedAt": "2026-10-17T15:08:24.519Z",
   "entries": [
     {
       "id": "catppuccin-accent",
@@ -534,16 +534,16 @@
       "kind": "plugin",
       "name": "In Built Browser",
       "description": "A tabbed browser in the right sidebar, shared with your model. Open websites and localhost, inspect pages, use browser computer controls, and leave visual feedback. Browser tools exist only while this plugin is enabled.",
-      "version": "1.0.18",
+      "version": "1.0.19",
       "author": "BetterGravity Community",
       "source": "https://github.com/YashjitPal/BetterGravity",
       "path": "community/plugins/in-built-browser",
-      "bytes": 804051,
+      "bytes": 808697,
       "files": [
         {
           "name": "index.js",
-          "bytes": 109728,
-          "sha256": "7177c60dec0136c5f88fe74db982e6c912dfab57daa27d84a94e4bf85001d4f1"
+          "bytes": 114367,
+          "sha256": "d6eb23ce59f768a1586a1b7cc76c79dd8ccba72de9c4e59bab9c9724640d5ab7"
         },
         {
           "name": "mcp-server.cjs",
@@ -552,8 +552,8 @@
         },
         {
           "name": "plugin.json",
-          "bytes": 450,
-          "sha256": "023f45940f53583a055cc1446a51c93d750bddbfe2766527baa199f7c417b460"
+          "bytes": 457,
+          "sha256": "8ac7aca526033a099445e2920661832114167394315449cfb059bd7a5946c49e"
         },
         {
           "name": "README.md",

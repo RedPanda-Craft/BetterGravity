@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-17T15:46:00.015Z",
+  "generatedAt": "2026-10-17T15:50:46.680Z",
   "entries": [
     {
       "id": "catppuccin-accent",
@@ -538,12 +538,12 @@
       "author": "BetterGravity Community",
       "source": "https://github.com/YashjitPal/BetterGravity",
       "path": "community/plugins/in-built-browser",
-      "bytes": 808697,
+      "bytes": 806947,
       "files": [
         {
           "name": "index.js",
-          "bytes": 114367,
-          "sha256": "d6eb23ce59f768a1586a1b7cc76c79dd8ccba72de9c4e59bab9c9724640d5ab7"
+          "bytes": 112625,
+          "sha256": "32c80f6aee3af5b85d2f8f65a845a6a5b7ecd3ee5f7f4fe589468ad5e578aadd"
         },
         {
           "name": "mcp-server.cjs",
@@ -552,8 +552,8 @@
         },
         {
           "name": "plugin.json",
-          "bytes": 457,
-          "sha256": "8ac7aca526033a099445e2920661832114167394315449cfb059bd7a5946c49e"
+          "bytes": 449,
+          "sha256": "fb2a606a480f2f4a80b33d8f58d99d41f541e45086c68fddb3a0ccd65328046c"
         },
         {
           "name": "README.md",

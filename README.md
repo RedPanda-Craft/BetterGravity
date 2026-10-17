@@ -1,13 +1,14 @@
 <div align="center">
 
-<img src="docs/images/logo.png" alt="BetterGravity Logo" width="130">
+<img src="docs/images/logo.png" alt="SuperGravity Logo" width="130">
 
-# BetterGravity
+# SuperGravity 🚀
 
-**The open community modification platform for [Google Antigravity](https://antigravity.google).**
+**An independent community branch of [BetterGravity](https://github.com/YashjitPal/BetterGravity) for [Google Antigravity](https://antigravity.google).**
 
-Drop in a `.css` file and the interface restyles instantly. Write a plugin in plain JavaScript with no build step. Experience a revamped UI, animated desktop companions, in-app browser with autonomous computer use, personal Gemini API keys, and Discord Rich Presence.
+[English](README.md) · [简体中文](README_zh.md)
 
+[![Upstream: BetterGravity](https://img.shields.io/badge/Upstream-BetterGravity-blue.svg)](https://github.com/YashjitPal/BetterGravity)
 [![Checks](https://github.com/YashjitPal/BetterGravity/actions/workflows/ci.yml/badge.svg)](https://github.com/YashjitPal/BetterGravity/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Antigravity 2.x](https://img.shields.io/badge/Antigravity-2.x-FFC799)](https://antigravity.google)
@@ -19,18 +20,29 @@ Drop in a `.css` file and the interface restyles instantly. Write a plugin in pl
 
 <br><br>
 
-<img src="docs/images/home.png" alt="The BetterGravity interface inside Google Antigravity" width="800">
+<img src="docs/images/home.png" alt="The SuperGravity interface inside Google Antigravity" width="800">
 
 </div>
 
 ---
 
+> [!NOTE]
+> **Upstream Credit & Lineage**:  
+> **SuperGravity** is an independent community branch evolving from the awesome [BetterGravity](https://github.com/YashjitPal/BetterGravity) created by [@YashjitPal](https://github.com/YashjitPal).  
+> All upstream core architecture, themes, plugin APIs, and MIT licensing are 100% preserved. We regularly sync upstream changes while exploring independent experimental features, typing performance guards, and developer workflows.
+
 > [!IMPORTANT]
-> **Compatibility Notice**: BetterGravity is designed specifically for the standalone **Google Antigravity 2.0 desktop application** (`Antigravity.exe` / `Antigravity.app`). It does **not** currently support the separate VS Code-based **Antigravity IDE** (`Antigravity IDE.exe`). Dedicated Antigravity IDE support is planned for a future release.
+> **Compatibility Notice**: SuperGravity is designed specifically for the standalone **Google Antigravity 2.0 desktop application** (`Antigravity.exe` / `Antigravity.app`). It does **not** currently support the separate VS Code-based **Antigravity IDE** (`Antigravity IDE.exe`). Dedicated Antigravity IDE support is planned for a future release.
 
-## What BetterGravity unlocks
+## Independent Features & Exploration
 
-BetterGravity is both an extensible modification platform and a curated suite of power-user capabilities built directly into Antigravity.
+SuperGravity inherits BetterGravity's extensible modification platform while exploring independent workflow features directly inside Antigravity.
+
+### ⚡ Anti-Thrashing Typing Guard & Zero-Reflow Defense
+Engineered for smooth coding: automatically silences high-frequency DOM MutationObservers and Redux store subscriptions while the user is actively typing. Isolates hover overlays with GPU hardware acceleration (`transform: translateZ(0)`) to eliminate frame drops and UI jitter.
+
+### 🛡️ Deterministic Agent Sentinel Harness
+Pre-configured with zero-noise verification scripts (`pnpm agent:verify`). Intercepts voluminous CLI logs and condenses them into clean, high-SNR status cards for AI pair-programming assistants (Antigravity, Claude Code, Cursor) without polluting context memory.
 
 ### 🎨 Revamped Gemini Workspace
 Restyled with the clean Willow design system, dedicated sidebar navigation (Chat, Work, Skills, Scheduled Tasks, and Pets), refined typography, and distraction-free conversation layouts.

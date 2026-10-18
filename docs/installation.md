@@ -1,20 +1,20 @@
-# Installing BetterGravity
+# Installing SuperGravity
 
 Windows, macOS & Linux, Antigravity 2.x.
 
 ## Install
 
 ### Windows
-1. Download `BetterGravity-Installer-<version>-<arch>.exe` (or native `BetterGravity-Installer-Windows-<arch>.exe`) from the
-   [releases page](https://github.com/YashjitPal/BetterGravity/releases). Choose **x64** for Intel/AMD processors or **arm64** for Snapdragon X Elite and Windows on ARM devices.
+1. Download `SuperGravity-Installer-Windows-<arch>.exe` from the
+   [releases page](https://github.com/RedPanda-Craft/SuperGravity/releases). Choose **x64** for Intel/AMD processors or **arm64** for Snapdragon X Elite and Windows on ARM devices.
 2. Run it. Windows SmartScreen will warn, because the build is not code-signed
    yet — choose **More info → Run anyway**.
 3. The installer finds Antigravity on its own. Press **Install**.
-4. Reopen Antigravity. BetterGravity is now in **Settings → BetterGravity**.
+4. Reopen Antigravity. SuperGravity is now in **Settings → BetterGravity** (or SuperGravity).
 
 ### macOS
 1. Download `BetterGravity-Installer-<version>-<arch>.dmg` from the
-   [releases page](https://github.com/YashjitPal/BetterGravity/releases).
+   [releases page](https://github.com/RedPanda-Craft/SuperGravity/releases).
 2. Open the DMG and launch BetterGravity Installer.
    - **If macOS warns that the app is "damaged and can’t be opened" or cannot be verified**: Because BetterGravity is an open-source tool without paid Apple Developer ID notarization, macOS Gatekeeper quarantines downloaded binaries.
      - **Quick Terminal fix**: Run:
@@ -24,11 +24,11 @@ Windows, macOS & Linux, Antigravity 2.x.
        (or `xattr -cr /Volumes/BetterGravity/BetterGravityInstaller.app` if running directly from the disk image).
      - **Settings alternative**: Open **System Settings → Privacy & Security**, scroll down to the **Security** section, and click **Open Anyway**.
 3. The installer automatically discovers `/Applications/Antigravity.app`. Press **Install**.
-4. Reopen Antigravity. BetterGravity is now in **Settings → BetterGravity**.
+4. Reopen Antigravity. SuperGravity is now in **Settings → BetterGravity** (or SuperGravity).
 
 ### Linux
 1. Download `BetterGravity-Installer-<version>-<arch>.AppImage` (or `.deb` / `.tar.gz`) from the
-   [releases page](https://github.com/YashjitPal/BetterGravity/releases).
+   [releases page](https://github.com/RedPanda-Craft/SuperGravity/releases).
 2. For AppImage: make it executable (`chmod +x BetterGravity-Installer-*.AppImage`) and run it.
    For Debian/Ubuntu: `sudo dpkg -i BetterGravity-Installer-*.deb`.
 3. The installer automatically discovers `/opt/Antigravity` or `~/.local/share/Antigravity`. Press **Install**.

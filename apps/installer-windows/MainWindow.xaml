@@ -263,7 +263,7 @@
                         </Border>
 
                         <Border Background="#1C1D21" BorderThickness="0" CornerRadius="6" Padding="7,2.5" Margin="0,0,12,0" VerticalAlignment="Center">
-                            <TextBlock x:Name="VersionBadgeText" Text="v3.0.0" Foreground="#8E918F" FontSize="10.5" FontFamily="Consolas, monospace"/>
+                            <TextBlock x:Name="VersionBadgeText" Text="v1.0.0" Foreground="#8E918F" FontSize="10.5" FontFamily="Consolas, monospace"/>
                         </Border>
                         <Button Style="{StaticResource WindowControlBtnStyle}" Content="─" Click="Minimize_Click" FontSize="10"/>
                         <Button Style="{StaticResource WindowCloseBtnStyle}" Content="✕" Click="Close_Click" FontSize="11"/>

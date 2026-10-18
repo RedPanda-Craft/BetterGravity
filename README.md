@@ -93,7 +93,7 @@ Test web applications, inspect live DOM trees, and let your agent browse the web
 
 Windows, macOS & Linux, Antigravity 2.x.
 
-Download the installer from [releases](https://github.com/YashjitPal/BetterGravity/releases), run it, and press **Install**.
+Download the installer from [releases](https://github.com/RedPanda-Craft/SuperGravity/releases), run it, and press **Install**.
 
 ### Enabling features & plugins
 

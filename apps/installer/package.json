@@ -1,11 +1,11 @@
 {
   "name": "@bettergravity/installer",
-  "version": "3.0.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "main": "dist-electron/main.cjs",
-  "description": "The BetterGravity installer.",
-  "homepage": "https://github.com/YashjitPal/BetterGravity",
+  "description": "The SuperGravity installer.",
+  "homepage": "https://github.com/RedPanda-Craft/SuperGravity",
   "author": "BetterGravity Contributors <contributors@bettergravity.org>",
   "scripts": {
     "dev": "vite",

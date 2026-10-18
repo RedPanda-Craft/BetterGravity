@@ -1,6 +1,6 @@
 {
-  "version": "3.0.0",
-  "generatedAt": "2026-10-17T11:32:40.000Z",
+  "version": "1.0.0",
+  "generatedAt": "2026-10-18T19:12:24.616Z",
   "files": {
     "patcher-cli.cjs": {
       "path": "apps/installer-windows/Patcher/patcher-cli.cjs",

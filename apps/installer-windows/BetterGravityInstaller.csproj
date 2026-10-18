@@ -8,8 +8,8 @@
     <UseWPF>true</UseWPF>
     <AssemblyName>BetterGravityInstaller</AssemblyName>
     <RootNamespace>BetterGravityInstaller</RootNamespace>
-    <Version>3.0.0</Version>
-    <Product>SuperGravity Installer 3.0</Product>
+    <Version>1.0.0</Version>
+    <Product>SuperGravity Installer 1.0</Product>
   </PropertyGroup>
 
   <ItemGroup>

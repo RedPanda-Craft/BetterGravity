@@ -18,7 +18,7 @@ import type { RuntimePaths } from "./paths.js";
  * Community section and not before, so an installation that is never browsed
  * makes no network requests at all.
  */
-const REPOSITORY = "YashjitPal/BetterGravity";
+const REPOSITORY = "RedPanda-Craft/SuperGravity";
 const BRANCH = "main";
 const ORIGIN = "https://raw.githubusercontent.com";
 const BASE = `${ORIGIN}/${REPOSITORY}/${BRANCH}/`;

@@ -12,7 +12,7 @@ vi.mock("../src/main/logger.js", () => ({
 
 const { fetchCatalog, installEntry, resetCatalogCache } = await import("../src/main/marketplace.js");
 
-const RAW = "https://raw.githubusercontent.com/YashjitPal/BetterGravity/main/";
+const RAW = "https://raw.githubusercontent.com/RedPanda-Craft/SuperGravity/main/";
 
 const sha256 = (content: string): string => createHash("sha256").update(content).digest("hex");
 

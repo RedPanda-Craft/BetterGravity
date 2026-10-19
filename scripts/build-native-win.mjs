@@ -4,7 +4,6 @@ import { resolve } from "node:path";
 
 const workspace = resolve(import.meta.dirname, "..");
 const outDir = resolve(workspace, "dist-native");
-const lightPublishDir = resolve(outDir, "windows-light");
 
 mkdirSync(outDir, { recursive: true });
 
@@ -106,21 +105,3 @@ for (const arch of targetArches) {
   rmSync(winPublishDir, { recursive: true, force: true });
 }
 
-// 2. Build lightweight framework-dependent package (<1MB)
-execSync(
-  `dotnet publish apps/installer-windows/BetterGravityInstaller.csproj -c Release -r win-x64 --self-contained false -o "${lightPublishDir}"`,
-  { cwd: workspace, stdio: "inherit" }
-);
-
-try {
-  rmSync(resolve(lightPublishDir, "BetterGravityInstaller.pdb"), { force: true });
-} catch {}
-
-const superLightZip = resolve(outDir, "SuperGravity-Installer-Windows-Light.zip");
-execSync(
-  `powershell -NoProfile -Command "Compress-Archive -Path '${lightPublishDir}\\*' -DestinationPath '${superLightZip}' -Force"`,
-  { cwd: workspace, stdio: "inherit" }
-);
-
-// Clean up intermediate staging directory
-rmSync(lightPublishDir, { recursive: true, force: true });
